@@ -1,4 +1,5 @@
 // Filepath: E:\WEB JS\fyp\opti-trade\src\components\Main.jsx
+import Footer from './Footer';
 const Main = () => {
     return (
         <main className="flex flex-col md:flex-row justify-center pt-24 gap-12 px-4 md:px-8">
@@ -14,6 +15,7 @@ const Main = () => {
                     Learn more
                 </button>
             </div>
+            <Footer />
         </main>
     );
 };

@@ -1,0 +1,158 @@
+.custom-grid .e-headercell {
+    min-width: 50px; /* Set a minimum width for header cells */
+    white-space: nowrap; /* Prevent text from wrapping */
+    overflow: hidden; /* Hide overflow */
+    text-overflow: ellipsis; /* Add ellipsis for overflow text */
+}
+
+/* Custom Grid Styling */
+.custom-grid {
+    border-radius: 10px; /* Rounded corners */
+    overflow: hidden; /* Ensure rounded corners are visible */
+    border: 1px solid #086EBA; /* Border color */
+}
+
+/* Header Styling */
+.custom-grid .e-headercell {
+    background-color: #086EBA; /* Header background color */
+    color: white; /* Header text color */
+    font-weight: bold; /* Bold header text */
+    padding: 12px; /* Header padding */
+    border-bottom: 2px solid #086EBA; /* Header bottom border */
+}
+
+/* Row Styling */
+.custom-grid .e-row {
+    border-bottom: 1px solid #e0e0e0; /* Row bottom border */
+    padding: 10px; /* Row padding */
+}
+
+/* Hover Effect */
+.custom-grid .e-row:hover {
+    background-color: #f0f8ff; /* Light blue hover effect */
+}
+
+/* Pager Styling */
+.custom-grid .e-pager {
+    background-color: #f5f5f5; /* Pager background color */
+    border-top: 1px solid #086EBA; /* Pager top border */
+    padding: 10px; /* Pager padding */
+}
+
+/* Pager Button Styling */
+.custom-grid .e-pager .e-numericitem {
+    color: #086EBA; /* Pager button text color */
+    border: 1px solid #086EBA; /* Pager button border */
+    border-radius: 5px; /* Rounded corners for pager buttons */
+    margin: 0 5px; /* Spacing between pager buttons */
+}
+
+.custom-grid .e-pager .e-numericitem:hover {
+    background-color: #086EBA; /* Hover background color */
+    color: white; /* Hover text color */
+}
+
+/* Selected Pager Button */
+.custom-grid .e-pager .e-numericitem.e-currentitem {
+    background-color: #086EBA; /* Selected button background color */
+    color: white; /* Selected button text color */
+}
+
+/* Custom Grid Styling */
+.custom-grid {
+    border-radius: 10px; /* Rounded corners */
+    overflow: hidden; /* Ensure rounded corners are visible */
+    border: 1px solid #086EBA; /* Border color */
+    font-size: 16px; /* Increase text size by 4px (default is 12px) */
+}
+
+/* Header Styling */
+.custom-grid .e-headercell {
+    background-color: #086EBA; /* Header background color */
+    color: white; /* Header text color */
+    font-weight: bold; /* Bold header text */
+    padding: 12px; /* Header padding */
+    border-bottom: 2px solid #086EBA; /* Header bottom border */
+    font-size: 18px; /* Increase header text size */
+}
+
+/* Row Styling */
+.custom-grid .e-row {
+    border-bottom: 1px solid #e0e0e0; /* Row bottom border */
+    padding: 10px; /* Row padding */
+}
+
+/* Hover Effect */
+.custom-grid .e-row:hover {
+    background-color: #f0f8ff; /* Light blue hover effect */
+}
+
+/* Pager Styling */
+.custom-grid .e-pager {
+    background-color: #f5f5f5; /* Pager background color */
+    border-top: 1px solid #086EBA; /* Pager top border */
+    padding: 10px; /* Pager padding */
+}
+
+/* Pager Button Styling */
+.custom-grid .e-pager .e-numericitem {
+    color: #086EBA; /* Pager button text color */
+    border: 1px solid #086EBA; /* Pager button border */
+    border-radius: 5px; /* Rounded corners for pager buttons */
+    margin: 0 5px; /* Spacing between pager buttons */
+}
+
+.custom-grid .e-pager .e-numericitem:hover {
+    background-color: #086EBA; /* Hover background color */
+    color: white; /* Hover text color */
+}
+
+/* Selected Pager Button */
+.custom-grid .e-pager .e-numericitem.e-currentitem {
+    background-color: #086EBA; /* Selected button background color */
+    color: white; /* Selected button text color */
+}
+
+/* Flip Card Container */
+.flip-card {
+    width: 300px;
+    height: 300px;
+    perspective: 1000px;
+}
+
+/* Flip Card Inner Container */
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+
+/* Flip Effect on Hover */
+.flip-card:hover .flip-card-inner {
+    transform: rotateY(180deg);
+}
+
+/* Front and Back Sides */
+.flip-card-front,
+.flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Front Side */
+.flip-card-front {
+    background-color: #fff;
+}
+
+/* Back Side */
+.flip-card-back {
+    background-color: #fff;
+    transform: rotateY(180deg);
+}

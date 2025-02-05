@@ -1,0 +1,160 @@
+import React, { useEffect, useState } from 'react';
+import {
+    ChartComponent,
+    SeriesCollectionDirective,
+    SeriesDirective,
+    Inject,
+    DateTime,
+    LineSeries,
+    Legend,
+    Tooltip,
+    Category,
+} from '@syncfusion/ej2-react-charts';
+import { ButtonComponent } from '@syncfusion/ej2-react-buttons';
+import '@syncfusion/ej2/styles/customized/material.css';
+
+const BuySell = ({ stock }) => {
+    const [chartData, setChartData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        if (!stock) return;
+
+        // Fetch historical data from the backend API
+        const fetchHistoricalData = async () => {
+            try {
+                const response = await fetch(`http://localhost:5000/api/historical/${stock.symbol}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                const result = await response.json();
+
+                // Format data for the chart
+                const formattedData = result.map((entry) => ({
+                    time: new Date(entry.date), // Ensure that date is a Date object
+                    price: entry.price, // Use price from backend
+                }));
+
+                setChartData(formattedData);
+                setLoading(false);
+            } catch (err) {
+                console.error('Error fetching historical data:', err);
+                setError('Failed to fetch historical data. Please try again later.');
+                setLoading(false);
+            }
+        };
+
+        fetchHistoricalData();
+    }, [stock]);
+
+    if (!stock) {
+        return <div className="bg-gray-800 text-white rounded-lg shadow-md p-4">Buy & Sell</div>;
+    }
+
+    const { open, high, low, close, volume, marketCap } = stock;
+
+    const formatMarketCap = (marketCap) => {
+        if (marketCap >= 1e12) {
+            return `$${(marketCap / 1e12).toFixed(2)}T`; // Trillions
+        } else if (marketCap >= 1e9) {
+            return `$${(marketCap / 1e9).toFixed(2)}B`; // Billions
+        } else if (marketCap >= 1e6) {
+            return `$${(marketCap / 1e6).toFixed(2)}M`; // Millions
+        } else {
+            return `$${marketCap.toLocaleString()}`; // Less than a million
+        }
+    };
+
+    return (
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+            {/* Stock Information */}
+            <div className="flex items-center mb-6">
+                <img
+                    src={stock.logo_high_light}
+                    alt={`${stock.symbol} Logo`}
+                    className="w-16 h-16 rounded-full mr-4"
+                />
+                <div>
+                    <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
+                        {stock.symbol} - ${close.toFixed(2)}
+                    </h2>
+                    <p className="text-gray-600 dark:text-gray-300">{stock.name}</p>
+                </div>
+            </div>
+
+            {/* OHLCV and Market Cap Data */}
+            <div className="grid grid-cols-2 gap-4 mb-6">
+                <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg">
+                    <p className="text-gray-600 dark:text-gray-300">Open</p>
+                    <p className="text-lg font-semibold text-gray-900 dark:text-white">${open.toFixed(2)}</p>
+                </div>
+                <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg">
+                    <p className="text-gray-600 dark:text-gray-300">High</p>
+                    <p className="text-lg font-semibold text-gray-900 dark:text-white">${high.toFixed(2)}</p>
+                </div>
+                <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg">
+                    <p className="text-gray-600 dark:text-gray-300">Low</p>
+                    <p className="text-lg font-semibold text-gray-900 dark:text-white">${low.toFixed(2)}</p>
+                </div>
+                <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg">
+                    <p className="text-gray-600 dark:text-gray-300">Close</p>
+                    <p className="text-lg font-semibold text-gray-900 dark:text-white">${close.toFixed(2)}</p>
+                </div>
+                <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg">
+                    <p className="text-gray-600 dark:text-gray-300">Volume</p>
+                    <p className="text-lg font-semibold text-gray-900 dark:text-white">{volume.toLocaleString()}</p>
+                </div>
+                <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg">
+                    <p className="text-gray-600 dark:text-gray-300">Market Cap</p>
+                    <p className="text-lg font-semibold text-gray-900 dark:text-white">{formatMarketCap(marketCap)}</p>
+                </div>
+            </div>
+
+            {/* Syncfusion Chart */}
+            <div className="mb-6">
+                {loading ? (
+                    <p className="text-center text-white dark:text-blue-900">Loading chart data...</p>
+                ) : error ? (
+                    <p className="text-center text-red-500">{error}</p>
+                ) : (
+                    <ChartComponent
+                        id="line-chart"
+                        primaryXAxis={{ valueType: 'Category', title: 'Time', labelFormat: 'MMM dd' }}
+                        primaryYAxis={{ title: 'Price' }}
+                        tooltip={{ enable: true }}
+                        legendSettings={{ visible: true }}
+                    >
+                        <Inject services={[LineSeries, DateTime, Legend, Tooltip, Category]} />
+                        <SeriesCollectionDirective>
+                            <SeriesDirective
+                                dataSource={chartData}
+                                xName="time"
+                                yName="price"
+                                type="Line"
+                                name="Price"
+                                marker={{ visible: true, width: 10, height: 10 }}
+                            />
+                        </SeriesCollectionDirective>
+                    </ChartComponent>
+                )}
+            </div>
+
+            {/* Buy/Sell Buttons */}
+            <div className="flex justify-between">
+                <ButtonComponent
+                    cssClass="e-success"
+                    content="Buy"
+                    style={{ padding: '10px 20px', borderRadius: '8px' }}
+                />
+                <ButtonComponent
+                    cssClass="e-danger"
+                    content="Sell"
+                    style={{ padding: '10px 20px', borderRadius: '8px' }}
+                />
+            </div>
+        </div>
+    );
+};
+
+export default BuySell;

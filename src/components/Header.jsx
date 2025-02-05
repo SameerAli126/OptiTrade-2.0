@@ -1,4 +1,4 @@
-// Filepath: E:\WEB JS\fyp\opti-trade\src\components\Header.jsx
+// Filepath: E:\WEB JS\fyp\opti-trade\src\components\DashHeader.jsx
 
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";

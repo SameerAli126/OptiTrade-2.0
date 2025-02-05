@@ -1,123 +1,117 @@
 import React, { useState, useEffect } from 'react';
-import data from '../../../data/csvjson.json'; // Adjust the path as necessary
 
-const StockScreener = () => {
+const StockScreener = ({ setSelectedStock }) => {
     const [stocks, setStocks] = useState([]);
-    const [searchTerm, setSearchTerm] = useState('');
-    const [sortKey, setSortKey] = useState('symbol');
-    const [sortOrder, setSortOrder] = useState('asc');
     const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const stocksPerPage = 10; // Number of stocks per page
     const maxPageButtons = 5; // Maximum number of page buttons to display
 
     useEffect(() => {
-        // Load data from JSON file
-        setStocks(data);
+        const fetchStocks = async () => {
+            setLoading(true);
+            setError(null);
+            try {
+                const response = await fetch('https://archlinux.tail9023a4.ts.net/stocks');
+                const data = await response.json();
+                setStocks(data);
+                setTotalPages(Math.ceil(data.length / stocksPerPage));
+            } catch (error) {
+                console.error('Error fetching stocks:', error);
+                setError('Failed to fetch stocks.');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchStocks();
     }, []);
 
-    const handleSearch = (e) => {
-        setSearchTerm(e.target.value);
+    const handleStockClick = (stock) => {
+        setSelectedStock(stock);
     };
-
-    const handleSort = (key) => {
-        const order = sortKey === key && sortOrder === 'asc' ? 'desc' : 'asc';
-        setSortKey(key);
-        setSortOrder(order);
-    };
-
-    const filteredStocks = stocks.filter(stock =>
-        stock.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-
-    const sortedStocks = [...filteredStocks].sort((a, b) => {
-        if (a[sortKey] < b[sortKey]) return sortOrder === 'asc' ? -1 : 1;
-        if (a[sortKey] > b[sortKey]) return sortOrder === 'asc' ? 1 : -1;
-        return 0;
-    });
-
-    // Calculate the stocks to display on the current page
-    const indexOfLastStock = currentPage * stocksPerPage;
-    const indexOfFirstStock = indexOfLastStock - stocksPerPage;
-    const currentStocks = sortedStocks.slice(indexOfFirstStock, indexOfLastStock);
-
-    // Calculate total pages
-    const totalPages = Math.ceil(sortedStocks.length / stocksPerPage);
 
     const handlePageChange = (pageNumber) => {
-        setCurrentPage(pageNumber);
+        if (pageNumber >= 1 && pageNumber <= totalPages) {
+            setCurrentPage(pageNumber);
+        }
     };
 
     // Determine the range of page numbers to display
     const startPage = Math.max(1, currentPage - Math.floor(maxPageButtons / 2));
     const endPage = Math.min(totalPages, startPage + maxPageButtons - 1);
 
+    // Get current stocks to display
+    const indexOfLastStock = currentPage * stocksPerPage;
+    const indexOfFirstStock = indexOfLastStock - stocksPerPage;
+    const currentStocks = stocks.slice(indexOfFirstStock, indexOfLastStock);
+
     return (
         <div className="stock-screener-container p-4">
             <h2 className="text-2xl mb-4">Stock Screener</h2>
-            <input
-                type="text"
-                value={searchTerm}
-                onChange={handleSearch}
-                placeholder="Search stocks"
-                className="p-2 border border-green-800 rounded mb-4"
-            />
-            <table className="min-w-full bg-cyan-700 rounded-md">
-                <thead>
-                <tr>
-                    {['symbol', 'name', 'price', 'change', 'marketCap', 'peRatio', 'dividendYield', 'sector'].map((key) => (
-                        <th
-                            key={key}
-                            onClick={() => handleSort(key)}
-                            className="cursor-pointer p-2 bg-cyan-700 hover:bg-gray-200 transition-colors"
+            {loading ? (
+                <p>Loading stocks...</p>
+            ) : error ? (
+                <p>{error}</p>
+            ) : (
+                <>
+                    <table className="min-w-full bg-cyan-700 rounded-md">
+                        <thead>
+                        <tr>
+                            <th>Symbol</th>
+                            <th>Name</th>
+                            <th>Last Sale</th>
+                            <th>Net Change</th>
+                            <th>Pct Change</th>
+                            <th>Volume</th>
+                            <th>Market Cap</th>
+                            <th>Sector</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {currentStocks.map((stock) => (
+                            <tr key={stock.symbol} onClick={() => handleStockClick(stock)} className="cursor-pointer hover:bg-gray-100">
+                                <td>{stock.symbol}</td>
+                                <td>{stock.name}</td>
+                                <td>{stock.lastsale}</td>
+                                <td>{stock.netchange}</td>
+                                <td>{stock.pctchange}</td>
+                                <td>{stock.volume}</td>
+                                <td>{stock.marketCap}</td>
+                                <td>{stock.sector}</td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
+                    <div className="flex justify-center mt-4">
+                        <button
+                            onClick={() => handlePageChange(currentPage - 1)}
+                            disabled={currentPage === 1}
+                            className="px-3 py-1 mx-1 bg-gray-200"
                         >
-                            {key.charAt(0).toUpperCase() + key.slice(1)}
-                            <span className="ml-2">
-                                {sortKey === key ? (sortOrder === 'asc' ? '↑' : '↓') : '↕'}
-                            </span>
-                        </th>
-                    ))}
-                </tr>
-                </thead>
-                <tbody>
-                {currentStocks.map(stock => (
-                    <tr key={stock.symbol} className="hover:bg-gray-100 transition-colors">
-                        <td className="p-2">{stock.symbol}</td>
-                        <td className="p-2">{stock.name}</td>
-                        <td className="p-2">${stock.price}</td>
-                        <td className="p-2">{stock.change}%</td>
-                        <td className="p-2">{stock.marketCap}</td>
-                        <td className="p-2">{stock.peRatio}</td>
-                        <td className="p-2">{stock.dividendYield}%</td>
-                        <td className="p-2">{stock.sector}</td>
-                    </tr>
-                ))}
-                </tbody>
-            </table>
-            <div className="flex justify-center mt-4">
-                <button
-                    onClick={() => handlePageChange(currentPage - 1)}
-                    disabled={currentPage === 1}
-                    className="px-3 py-1 mx-1 bg-cyan-700"
-                >
-                    &lt;
-                </button>
-                {Array.from({ length: endPage - startPage + 1 }, (_, i) => (
-                    <button
-                        key={i}
-                        onClick={() => handlePageChange(startPage + i)}
-                        className={`px-3 py-1 mx-1 ${currentPage === startPage + i ? 'bg-green-600 text-white' : 'bg-cyan-700'}`}
-                    >
-                        {startPage + i}
-                    </button>
-                ))}
-                <button
-                    onClick={() => handlePageChange(currentPage + 1)}
-                    disabled={currentPage === totalPages}
-                    className="px-3 py-1 mx-1 bg-cyan-700"
-                >
-                    &gt;
-                </button>
-            </div>
+                            &lt;
+                        </button>
+                        {Array.from({ length: endPage - startPage + 1 }, (_, i) => (
+                            <button
+                                key={i}
+                                onClick={() => handlePageChange(startPage + i)}
+                                className={`px-3 py-1 mx-1 ${currentPage === startPage + i ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+                            >
+                                {startPage + i}
+                            </button>
+                        ))}
+                        <button
+                            onClick={() => handlePageChange(currentPage + 1)}
+                            disabled={currentPage === totalPages}
+                            className="px-3 py-1 mx-1 bg-gray-200"
+                        >
+                            &gt;
+                        </button>
+                    </div>
+                </>
+            )}
         </div>
     );
 };
