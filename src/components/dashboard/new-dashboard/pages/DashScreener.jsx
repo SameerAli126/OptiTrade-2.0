@@ -10,7 +10,7 @@ import {
     Group
 } from '@syncfusion/ej2-react-grids';
 import '../../../../assets/DashScreener.css'; // Import custom CSS
-
+import DashHeader from '../components/DashHeader';
 const DashScreener = ({ setSelectedStock }) => {
     const [stocks, setStocks] = useState([]);
     const navigate = useNavigate();
@@ -50,6 +50,7 @@ const DashScreener = ({ setSelectedStock }) => {
 
     return (
         <div style={{ margin: '10%', marginTop: '5%', marginLeft: '0%', marginRight: '2%', maxWidth: '95%', overflowX: 'auto' }}>
+            <DashHeader category="Analysis" title="Stock Screener" /> {/* Add DashHeader here */}
             <GridComponent
                 dataSource={stocks}
                 allowPaging={true}

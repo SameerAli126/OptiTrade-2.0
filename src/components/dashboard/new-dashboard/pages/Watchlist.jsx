@@ -8,6 +8,7 @@ import {
     Filter,
     Group
 } from '@syncfusion/ej2-react-grids';
+import DashHeader from '../components/DashHeader';
 
 const Watchlist = () => {
     const [stocks, setStocks] = useState([]);
@@ -30,6 +31,7 @@ const Watchlist = () => {
 
     return (
         <div style={{ margin: '10%', marginTop: '1%', marginLeft: '0%', maxWidth: '95%', overflowX: 'auto' }}>
+            <DashHeader category="Favorites" title="Watchlist" /> {/* Add DashHeader here */}
             <GridComponent
                 dataSource={stocks}
                 allowPaging={false} // Disable paging since we only show top 10

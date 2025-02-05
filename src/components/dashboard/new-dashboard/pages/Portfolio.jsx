@@ -7,6 +7,7 @@ import PortfolioCost from '../../../dashboard/portfolio-components/PortfolioCost
 import PortfolioValue from '../../../dashboard/portfolio-components/PortfolioValue.jsx';
 import Dividends from '../../../dashboard/portfolio-components/Dividends.jsx';
 import { useStateContext } from '../contexts/ContextProvider.jsx'; // Import the context
+import DashHeader from '../components/DashHeader'; // Import DashHeader
 
 // New component for the sixth box
 const NewComponent = () => (
@@ -18,7 +19,8 @@ const NewComponent = () => (
 
 const Portfolio = () => {
     return (
-        <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
+        <div className="m-2 md:m-10 mt-24 p-2 md:p-2 bg-white rounded-3xl">
+            <DashHeader category="Numbers" title="Portfolio" /> {/* Add DashHeader here */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <PerformanceToday />
                 <OverallReturn />

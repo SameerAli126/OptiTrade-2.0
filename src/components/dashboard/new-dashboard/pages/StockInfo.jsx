@@ -13,6 +13,8 @@ import {
 import { ButtonComponent } from '@syncfusion/ej2-react-buttons';
 import '@syncfusion/ej2/styles/customized/material.css';
 import OHLCVMarketCap from './buy-sell/OHLCVMarketCap.jsx';
+import DashHeader from '../components/DashHeader';
+import LoadingBars from "../../../UItilities/LoadingBars.jsx";
 
 const StockInfo = ({ stock }) => {
     const [chartData, setChartData] = useState([]);
@@ -50,12 +52,21 @@ const StockInfo = ({ stock }) => {
     }, [stock]);
 
     if (!stock) {
-        return <div className="bg-gray-800 text-white rounded-lg shadow-md p-4">Buy & Sell</div>;
+        return (
+            <div className="flex items-center justify-center h-screen overflow-hidden"> {/* Add overflow-hidden to prevent scrollbar */}
+                <div style={{ transform: 'scale(2)' }}>
+                    <LoadingBars />
+                </div>
+            </div>
+        );
     }
+
 
     return (
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
             {/* Stock Information */}
+            <DashHeader category="Trading" title="Buy & Sell" /> {/* Add DashHeader here */}
+
             <div className="flex items-center mb-6">
                 <img
                     src={stock.logo_high_light}

@@ -8,6 +8,7 @@ import {
   Filter,
   Group
 } from '@syncfusion/ej2-react-grids';
+import DashHeader from '../components/DashHeader'; // Import DashHeader
 
 const DashNews = () => {
   const [news, setNews] = useState([]);
@@ -38,6 +39,7 @@ const DashNews = () => {
 
   return (
       <div style={{ margin: '10%', marginTop: '1%', marginLeft: '0%', maxWidth: '95%', overflowX: 'auto' }}>
+        <DashHeader category="Insights" title="News" /> {/* Add DashHeader here */}
         <GridComponent
             dataSource={news}
             allowPaging={true}
