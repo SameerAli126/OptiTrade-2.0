@@ -53,6 +53,14 @@ const Navbar = () => {
 
     const handleActiveMenu = () => setActiveMenu(!activeMenu);
 
+    // Toggle UserProfile dropdown
+    // const toggleUserProfile = () => {
+    //     handleClick('userProfile');
+    // };
+    const toggleUserProfile = () => {
+        handleClick('userProfile');
+    };
+
     return (
         <div className="flex justify-between p-2 md:ml-6 md:mr-6 relative border-b border-[#02a1ac] dark:border-[#02a1ac]">
             {/* Added border-b for bottom border */}
@@ -65,7 +73,7 @@ const Navbar = () => {
                 <TooltipComponent content="Profile" position="BottomCenter">
                     <div
                         className="flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg"
-                        onClick={() => handleClick('userProfile')}
+                        onClick={toggleUserProfile}
                     >
                         <img
                             className="rounded-full w-8 h-8"

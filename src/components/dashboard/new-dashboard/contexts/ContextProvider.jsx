@@ -31,8 +31,13 @@ export const ContextProvider = ({ children }) => {
     localStorage.setItem('colorMode', color);
   };
 
-  const handleClick = (clicked) => setIsClicked({ ...initialState, [clicked]: true });
-
+  // const handleClick = (clicked) => setIsClicked({ ...initialState, [clicked]: true });
+    const handleClick = (clicked) => {
+        setIsClicked((prevState) => ({
+            ...initialState,
+            [clicked]: !prevState[clicked], // Toggle the clicked state
+        }));
+    };
   return (
       <StateContext.Provider value={{
         currentColor,
