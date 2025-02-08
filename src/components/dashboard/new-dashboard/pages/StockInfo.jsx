@@ -5,16 +5,14 @@ import {
     StockChartSeriesDirective,
     Inject,
     DateTime,
-    SplineSeries, // Import SplineSeries
     Tooltip,
     Crosshair,
     Legend,
+    CandleSeries, // Import CandleSeries for OHLCV
 } from '@syncfusion/ej2-react-charts';
 import { ButtonComponent } from '@syncfusion/ej2-react-buttons';
 import '@syncfusion/ej2/styles/customized/material.css';
 import OHLCVMarketCap from './buy-sell/OHLCVMarketCap.jsx';
-import DashHeader from '../components/DashHeader';
-import LoadingBars from "../../../UItilities/LoadingBars.jsx";
 
 const StockInfo = ({ stock }) => {
     const [chartData, setChartData] = useState([]);
@@ -24,7 +22,7 @@ const StockInfo = ({ stock }) => {
     useEffect(() => {
         if (!stock) return;
 
-        // Fetch historical data from the backend API
+        // Fetch historical data from the new API
         const fetchHistoricalData = async () => {
             try {
                 const response = await fetch(`https://archlinux.tail9023a4.ts.net/stocks/${stock.symbol}`);
@@ -34,9 +32,13 @@ const StockInfo = ({ stock }) => {
                 const result = await response.json();
 
                 // Format data for the chart
-                const formattedData = result.map((entry) => ({
-                    x: new Date(entry.date), // Use 'x' for the date axis
-                    high: entry.price, // Use 'high' for the price (or any other field you want to plot)
+                const formattedData = Object.entries(result).map(([date, values]) => ({
+                    x: new Date(date),
+                    open: values.Open,
+                    high: values.High,
+                    low: values.Low,
+                    close: values.Close,
+                    volume: values.Volume,
                 }));
 
                 setChartData(formattedData);
@@ -52,21 +54,12 @@ const StockInfo = ({ stock }) => {
     }, [stock]);
 
     if (!stock) {
-        return (
-            <div className="flex items-center justify-center h-screen overflow-hidden"> {/* Add overflow-hidden to prevent scrollbar */}
-                <div style={{ transform: 'scale(2)' }}>
-                    <LoadingBars />
-                </div>
-            </div>
-        );
+        return <div className="bg-gray-800 text-white rounded-lg shadow-md p-4">Buy & Sell</div>;
     }
-
 
     return (
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
             {/* Stock Information */}
-            <DashHeader category="Trading" title="Buy & Sell" /> {/* Add DashHeader here */}
-
             <div className="flex items-center mb-6">
                 <img
                     src={stock.logo_high_light}
@@ -84,7 +77,7 @@ const StockInfo = ({ stock }) => {
             {/* OHLCV and Market Cap Data */}
             <OHLCVMarketCap stock={stock} />
 
-            {/* Syncfusion Spline Chart */}
+            {/* Syncfusion OHLCV Chart */}
             <div className="mb-6">
                 {loading ? (
                     <p className="text-center text-white dark:text-blue-900">Loading chart data...</p>
@@ -92,7 +85,7 @@ const StockInfo = ({ stock }) => {
                     <p className="text-center text-red-500">{error}</p>
                 ) : (
                     <StockChartComponent
-                        id="stockchartspline"
+                        id="stockchart"
                         primaryXAxis={{
                             valueType: 'DateTime',
                             majorGridLines: { width: 0 },
@@ -107,13 +100,17 @@ const StockInfo = ({ stock }) => {
                         legendSettings={{ visible: true }}
                         title={`${stock.symbol} Stock Price`}
                     >
-                        <Inject services={[DateTime, SplineSeries, Tooltip, Crosshair, Legend]} /> {/* Inject SplineSeries and other required modules */}
+                        <Inject services={[DateTime, CandleSeries, Tooltip, Crosshair, Legend]} />
                         <StockChartSeriesCollectionDirective>
                             <StockChartSeriesDirective
                                 dataSource={chartData}
                                 xName="x"
-                                yName="high"
-                                type="Spline" // Use Spline series
+                                open="open"
+                                high="high"
+                                low="low"
+                                close="close"
+                                volume="volume"
+                                type="Candle" // Use Candle series for OHLCV
                                 name="Price"
                             />
                         </StockChartSeriesCollectionDirective>

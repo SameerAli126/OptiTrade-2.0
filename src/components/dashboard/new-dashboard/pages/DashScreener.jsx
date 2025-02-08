@@ -49,7 +49,7 @@ const DashScreener = ({ setSelectedStock }) => {
     };
 
     return (
-        <div style={{ margin: '10%', marginTop: '5%', marginLeft: '0%', marginRight: '2%', maxWidth: '95%', overflowX: 'auto' }}>
+        <div style={{ margin: '10%', marginTop: '1%', marginLeft: '0%', maxWidth: '95%', overflowX: 'auto'  }}>
             <DashHeader category="Analysis" title="Stock Screener" /> {/* Add DashHeader here */}
             <GridComponent
                 dataSource={stocks}
