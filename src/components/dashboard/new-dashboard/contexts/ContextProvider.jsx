@@ -20,8 +20,9 @@ export const ContextProvider = ({ children }) => {
   const [isClicked, setIsClicked] = useState(initialState);
   const [category, setCategory] = useState('Dashboard');
   const [title, setTitle] = useState('Overview');
+    const [user, setUser] = useState(null); // Add user state
 
-  const setMode = (e) => {
+    const setMode = (e) => {
     setCurrentMode(e.target.value);
     localStorage.setItem('themeMode', e.target.value);
   };
@@ -59,7 +60,9 @@ export const ContextProvider = ({ children }) => {
         category,
         setCategory,
         title,
-        setTitle
+        setTitle,
+          user,
+          setUser
       }}>
         {children}
       </StateContext.Provider>

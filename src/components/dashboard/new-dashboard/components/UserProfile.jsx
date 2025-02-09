@@ -3,9 +3,19 @@ import { Button } from '.';
 import { userProfileData } from '../data/dummy.jsx';
 import { useStateContext } from '../contexts/ContextProvider.jsx';
 import avatar from '../data/avatar.jpg';
+import { useNavigate } from 'react-router-dom';
 
 const UserProfile = () => {
-    const { currentColor } = useStateContext();
+    const { currentColor, user } = useStateContext(); // Destructure user from context
+    const navigate = useNavigate(); // Initialize navigate
+
+    const handleLogout = () => {
+        // Remove token from localStorage
+        localStorage.removeItem('token');
+
+        // Redirect to Main.jsx
+        navigate('/');
+    };
 
     return (
         <div className="nav-item absolute right-1 top-16 bg-white dark:bg-[#42464D] p-8 rounded-lg w-96" style={{ zIndex: 1000 }}>
@@ -19,9 +29,9 @@ const UserProfile = () => {
                     alt="user-profile"
                 />
                 <div>
-                    <p className="font-semibold text-xl dark:text-gray-200">Michael Roberts</p>
+                    <p className="font-semibold text-xl dark:text-gray-200">{user?.u_name || 'User'}</p>
                     <p className="text-gray-500 text-sm dark:text-gray-400">Administrator</p>
-                    <p className="text-gray-500 text-sm font-semibold dark:text-gray-400">info@shop.com</p>
+                    <p className="text-gray-500 text-sm font-semibold dark:text-gray-400">{user?.email || 'info@shop.com'}</p>
                 </div>
             </div>
             <div>
@@ -51,6 +61,7 @@ const UserProfile = () => {
                     text="Logout"
                     borderRadius="10px"
                     width="full"
+                    onClick={handleLogout} // Add onClick handler
                 />
             </div>
         </div>

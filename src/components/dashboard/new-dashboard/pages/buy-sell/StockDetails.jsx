@@ -1,10 +1,8 @@
 import React from 'react';
 import { ButtonComponent } from '@syncfusion/ej2-react-buttons';
-import '@syncfusion/ej2/styles/customized/material.css';
-import OHLCVMarketCap from './buy-sell/OHLCVMarketCap.jsx';
-import StockData from './buy-sell/StockChart.jsx'; // Import the new StockData component
+import OHLCVMarketCap from './OHLCVMarketCap.jsx';
 
-const StockInfo = ({ stock }) => {
+const StockDetails = ({ stock }) => {
     if (!stock) {
         return <div className="bg-gray-800 text-white rounded-lg shadow-md p-4">Buy & Sell</div>;
     }
@@ -29,9 +27,6 @@ const StockInfo = ({ stock }) => {
             {/* OHLCV and Market Cap Data */}
             <OHLCVMarketCap stock={stock} />
 
-            {/* Stock Data Chart */}
-            <StockData stock={stock} />
-
             {/* Buy/Sell Buttons */}
             <div className="flex justify-between">
                 <ButtonComponent
@@ -49,4 +44,4 @@ const StockInfo = ({ stock }) => {
     );
 };
 
-export default StockInfo;
+export default StockDetails;
