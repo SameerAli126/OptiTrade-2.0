@@ -6,11 +6,11 @@ import {
     ColumnsDirective,
     Page,
     Inject,
-    Filter,
-    Group
+    Filter
 } from '@syncfusion/ej2-react-grids';
 import '../../../../assets/DashScreener.css'; // Import custom CSS
 import DashHeader from '../components/DashHeader';
+
 const DashScreener = ({ setSelectedStock }) => {
     const [stocks, setStocks] = useState([]);
     const navigate = useNavigate();
@@ -49,14 +49,15 @@ const DashScreener = ({ setSelectedStock }) => {
     };
 
     return (
-        <div style={{ margin: '10%', marginTop: '0%', marginLeft: '0%',marginRight: '2%', maxWidth: '95%', overflowX: 'auto'  }}>
-            <DashHeader category="Analysis" title="Stock Screener" /> {/* Add DashHeader here */}
+        <div style={{ margin: '10%', marginTop: '0%', marginLeft: '0%', marginRight: '2%', maxWidth: '95%', overflowX: 'auto' }}>
+            <DashHeader category="Analysis" title="Stock Screener" /> {/* DashHeader title */}
+            <h2 style={{ marginBottom: '20px', textAlign: 'center' }}>Stock Data Table</h2> {/* Table title */}
             <GridComponent
                 dataSource={stocks}
                 allowPaging={true}
                 pageSettings={{ pageSize: 10 }}
                 allowFiltering={true}
-                allowGrouping={true}
+                allowGrouping={false} // Disable grouping
                 filterSettings={{ type: 'Excel' }} // Enable Excel-style filtering
                 cssClass="custom-grid" // Apply custom CSS class
             >
@@ -97,7 +98,7 @@ const DashScreener = ({ setSelectedStock }) => {
                         )}
                     />
                 </ColumnsDirective>
-                <Inject services={[Page, Filter, Group]} />
+                <Inject services={[Page, Filter]} /> {/* Removed Group service */}
             </GridComponent>
         </div>
     );

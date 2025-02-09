@@ -28,6 +28,7 @@
     "@syncfusion/ej2-react-popups": "^28.1.38",
     "@syncfusion/ej2-react-richtexteditor": "^28.1.38",
     "@syncfusion/ej2-react-schedule": "^28.1.38",
+    "@vercel/analytics": "^1.4.1",
     "bcrypt": "^5.1.1",
     "chart.js": "^4.4.7",
     "cors": "^2.8.5",
