@@ -1,9 +1,11 @@
 import React from 'react';
+import { useStateContext } from '../new-dashboard/contexts/ContextProvider.jsx';
 
 const PortfolioCost = () => {
-    const portfolioCostValue = 0; // Example value, replace with dynamic data as needed
-    const portfolioCostAmount = 10000; // Example value, replace with dynamic data as needed
-    const isNeutral = true; // Adjust this flag as needed
+    const { currentColor } = useStateContext();
+    const portfolioCostValue = 0;
+    const portfolioCostAmount = 10000;
+    const isNeutral = true;
 
     const getColorClass = (value, isNeutral) => {
         if (isNeutral) return 'text-white';
@@ -13,13 +15,12 @@ const PortfolioCost = () => {
     };
 
     return (
-        <div className="bg-cyan-700 text-white rounded-lg shadow-md p-4 m-2 flex-1">
+        <div className="text-white rounded-lg shadow-md p-4 m-2 flex-1" style={{ backgroundColor: currentColor }}>
             <div className="flex items-center justify-between mb-2">
                 <span className="text-md font-bold text-white flex items-center">
                     Portfolio Cost
                 </span>
-                <span
-                    className={`text-lg px-2 py-1 rounded ${getColorClass(portfolioCostValue, isNeutral)}`}>
+                <span className={`text-lg px-2 py-1 rounded ${getColorClass(portfolioCostValue, isNeutral)}`}>
                     {portfolioCostValue > 0 ? '+' : ''}{portfolioCostValue}%
                 </span>
             </div>

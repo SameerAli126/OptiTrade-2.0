@@ -1,5 +1,4 @@
-// Filepath: src/components/dashboard/new-dashboard/components/Sidebar.jsx
-
+// Sidebar.jsx
 import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { SiShopware } from 'react-icons/si';
@@ -10,7 +9,7 @@ import { links } from '../data/dummy.jsx';
 import { useStateContext } from '../contexts/ContextProvider.jsx';
 
 const Sidebar = () => {
-  const { setCategory, setTitle, currentColor, activeMenu, setActiveMenu, screenSize } = useStateContext();
+  const { setCategory, setTitle, sidebarColor, activeMenu, setActiveMenu, screenSize } = useStateContext();
 
   const handleCloseSideBar = () => {
     if (activeMenu !== undefined && screenSize <= 900) {
@@ -18,7 +17,7 @@ const Sidebar = () => {
     }
   };
 
-  const activeLink = 'flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-white text-md m-2';
+  const activeLink = `flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-white text-md m-2 bg-${sidebarColor}`;
   const normalLink = 'flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-md text-gray-700 dark:text-gray-200 dark:hover:text-black hover:bg-light-gray m-2';
 
   const handleLinkClick = (category, title) => {
@@ -27,7 +26,7 @@ const Sidebar = () => {
   };
 
   return (
-      <div className="ml-3 h-screen md:overflow-hidden overflow-auto md:hover:overflow-auto pb-10 bg-[#696969]">
+      <div className={`ml-3 h-screen md:overflow-hidden overflow-auto md:hover:overflow-auto pb-10`} style={{ backgroundColor: sidebarColor }}>
         {activeMenu && (
             <>
               <div className="flex justify-between items-center">
@@ -39,7 +38,7 @@ const Sidebar = () => {
                   <button
                       type="button"
                       onClick={() => setActiveMenu(!activeMenu)}
-                      style={{color: currentColor}}
+                      style={{color: sidebarColor}}
                       className="text-xl rounded-full p-3 hover:bg-light-gray mt-4 block md:hidden"
                   >
                     <MdOutlineCancel/>
@@ -56,7 +55,7 @@ const Sidebar = () => {
                           handleCloseSideBar();
                         }}
                         style={({ isActive }) => ({
-                          backgroundColor: isActive ? currentColor : '',
+                          backgroundColor: isActive ? sidebarColor : '',
                         })}
                         className={({ isActive }) => (isActive ? activeLink : normalLink)}
                     >

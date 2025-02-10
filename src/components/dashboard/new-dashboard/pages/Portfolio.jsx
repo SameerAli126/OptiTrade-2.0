@@ -6,16 +6,12 @@ import OverallReturn from '../../../dashboard/portfolio-components/OverallReturn
 import PortfolioCost from '../../../dashboard/portfolio-components/PortfolioCost.jsx';
 import PortfolioValue from '../../../dashboard/portfolio-components/PortfolioValue.jsx';
 import Dividends from '../../../dashboard/portfolio-components/Dividends.jsx';
+import NewComponent from "../../portfolio-components/NewComponent.jsx";
 import { useStateContext } from '../contexts/ContextProvider.jsx'; // Import the context
 import DashHeader from '../components/DashHeader'; // Import DashHeader
 
 // New component for the sixth box
-const NewComponent = () => (
-    <div className="bg-cyan-700 text-white rounded-lg shadow-md p-4 m-2 flex-1">
-        <h2 className="text-lg font-semibold mb-4">New Component</h2>
-        <p>This is a new component for the portfolio.</p>
-    </div>
-);
+
 
 const Portfolio = () => {
     return (

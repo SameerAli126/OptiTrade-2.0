@@ -1,26 +1,26 @@
 import React from 'react';
+import { useStateContext } from '../new-dashboard/contexts/ContextProvider.jsx';
 
 const OverallReturn = () => {
-    const overallReturnValue = 1.23; // Example value, replace with dynamic data as needed
-    const overallReturnAmount = 12444; // Example value, replace with dynamic data as needed
-    const isNeutral = true; // Set this flag to true for neutral values
+    const { currentColor } = useStateContext();
+    const overallReturnValue = 1.23;
+    const overallReturnAmount = 12444;
+    const isNeutral = true;
 
-    // Determine the color class based on the sign of the value
     const getColorClass = (value, isNeutral) => {
-        if (isNeutral) return 'text-white'; // Neutral color
-        if (value > 0) return 'text-green-400'; // Updated to match the second component
-        if (value < 0) return 'text-red-800'; // Updated to match the second component
+        if (isNeutral) return 'text-white';
+        if (value > 0) return 'text-green-400';
+        if (value < 0) return 'text-red-800';
         return 'text-white';
     };
 
     return (
-        <div className="bg-cyan-700 text-white rounded-lg shadow-md p-4 m-2 flex-1"> {/* Updated background color */}
+        <div className="text-white rounded-lg shadow-md p-4 m-2 flex-1" style={{ backgroundColor: currentColor }}>
             <div className="flex items-center justify-between mb-2">
                 <span className="text-md font-bold text-white flex items-center">
                     Overall Return
                 </span>
-                <span
-                    className={`text-lg px-2 py-1 rounded ${getColorClass(overallReturnValue, false)}`}> {/* Updated text size */}
+                <span className={`text-lg px-2 py-1 rounded ${getColorClass(overallReturnValue, false)}`}>
                     {overallReturnValue > 0 ? '+' : ''}{overallReturnValue}%
                 </span>
             </div>
