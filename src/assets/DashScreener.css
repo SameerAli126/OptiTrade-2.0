@@ -5,34 +5,32 @@
     border-radius: 12px; /* Rounded corners for the table */
     overflow: hidden; /* Ensures the rounded corners are applied */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-    border: 1px solid #086EBA; /* Border color */
-    font-size: 16px; /* Increase text size by 4px (default is 12px) */
+    border: 1px solid #e0e0e0; /* Light border color */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern font */
+    background-color: #ffffff; /* White background */
 }
 
 /* Header Styling */
 .custom-grid .e-headercell {
     background-color: #086EBA; /* Header background color */
     color: white; /* Header text color */
-    font-weight: bold; /* Bold header text */
-    padding: 12px; /* Header padding */
-    border-bottom: 2px solid #086EBA; /* Header bottom border */
-    font-size: 18px; /* Increase header text size */
-    min-width: 50px; /* Set a minimum width for header cells */
-    white-space: nowrap; /* Prevent text from wrapping */
-    overflow: hidden; /* Hide overflow */
-    text-overflow: ellipsis; /* Add ellipsis for overflow text */
+    font-weight: 600; /* Semi-bold header text */
+    padding: 16px; /* Header padding */
+    font-size: 16px; /* Header text size */
+    text-transform: uppercase; /* Uppercase header text */
+    border-bottom: 2px solid #055a9e; /* Darker bottom border */
 }
 
 /* Row Styling */
 .custom-grid .e-row {
-    border-bottom: 1px solid #e0e0e0; /* Row bottom border */
-    padding: 10px; /* Row padding */
+    border-bottom: 1px solid #e0e0e0; /* Light border between rows */
+    padding: 12px; /* Row padding */
     transition: background-color 0.3s ease; /* Smooth hover effect */
 }
 
 /* Hover Effect */
 .custom-grid .e-row:hover {
-    background-color: #f0f8ff; /* Light blue hover effect */
+    background-color: #f5f9fd; /* Light blue hover effect */
 }
 
 /* Alternating Row Styling */
@@ -42,9 +40,9 @@
 
 /* Pager Styling */
 .custom-grid .e-pager {
-    background-color: #f5f5f5; /* Pager background color */
-    border-top: 1px solid #086EBA; /* Pager top border */
-    padding: 10px; /* Pager padding */
+    background-color: #f5f5f5; /* Light gray background for pagination */
+    border-top: 1px solid #e0e0e0; /* Light top border */
+    padding: 12px; /* Pager padding */
     border-radius: 0 0 12px 12px; /* Rounded corners only at the bottom */
 }
 
@@ -52,8 +50,11 @@
 .custom-grid .e-pager .e-numericitem {
     color: #086EBA; /* Pager button text color */
     border: 1px solid #086EBA; /* Pager button border */
-    border-radius: 5px; /* Rounded corners for pager buttons */
-    margin: 0 5px; /* Spacing between pager buttons */
+    border-radius: 6px; /* Rounded corners for pager buttons */
+    margin: 0 4px; /* Spacing between pager buttons */
+    padding: 6px 12px; /* Button padding */
+    font-size: 14px; /* Button text size */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
 }
 
 .custom-grid .e-pager .e-numericitem:hover {
@@ -70,10 +71,32 @@
 /* Filter Bar Styling */
 .custom-grid .e-filterbar {
     background-color: #f9f9f9; /* Light gray background for filter bar */
-    padding: 8px; /* Add some padding */
+    padding: 12px; /* Add some padding */
+    border-bottom: 1px solid #e0e0e0; /* Light bottom border */
 }
 
 /* Table Cell Styling */
 .custom-grid .e-rowcell {
     padding: 12px; /* Add padding to cells for better spacing */
+    font-size: 14px; /* Cell text size */
+    color: #333333; /* Dark text color */
+}
+
+/* Logo Styling */
+.custom-grid .e-rowcell img {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+    border-radius: 50%; /* Rounded logo */
+}
+
+/* Symbol Link Styling */
+.custom-grid .e-rowcell span {
+    color: #086EBA; /* Blue text color */
+    cursor: pointer;
+    transition: color 0.3s ease; /* Smooth transition */
+}
+
+.custom-grid .e-rowcell span:hover {
+    color: #055a9e; /* Darker blue on hover */
 }

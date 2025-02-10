@@ -8,6 +8,7 @@ import Signup from './components/Signup';
 import Trading from './components/Trading';
 import Dashboard from './components/dashboard/Dashboard';
 import ProtectedRoute from './components/ProtectedRoute';
+import { Analytics } from '@vercel/analytics/react';
 
 const App = () => {
     const location = useLocation();
@@ -25,6 +26,7 @@ const App = () => {
                     <Route path="/dashboard/*" element={<ProtectedRoute element={Dashboard} />} />
                 </Routes>
             </div>
+            <Analytics />
         </div>
     );
 };

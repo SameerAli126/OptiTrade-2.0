@@ -4,6 +4,7 @@ import React from 'react';
 import { Stacked, Pie, LineChart, SparkLine } from '../components'; // Import charts
 import { useStateContext } from '../contexts/ContextProvider.jsx';
 import DashHeader from '../components/DashHeader';
+import Footer from '../../../Footer.jsx'
 
 const DashHome = () => {
   const { currentColor, currentMode } = useStateContext();
@@ -35,6 +36,7 @@ const DashHome = () => {
             </div>
           </div>
         </div>
+          <Footer />
       </div>
   );
 };

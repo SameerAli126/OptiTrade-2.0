@@ -51,7 +51,9 @@ const DashScreener = ({ setSelectedStock }) => {
     return (
         <div style={{ margin: '10%', marginTop: '0%', marginLeft: '0%', marginRight: '2%', maxWidth: '95%', overflowX: 'auto' }}>
             <DashHeader category="Analysis" title="Stock Screener" /> {/* DashHeader title */}
-            <h2 style={{ marginBottom: '20px', textAlign: 'center' }}>Stock Data Table</h2> {/* Table title */}
+            <h2 style={{ marginBottom: '20px', textAlign: 'center', color: '#086EBA', fontSize: '24px', fontWeight: '600' }}>
+                Stock Data Table
+            </h2> {/* Table title */}
             <GridComponent
                 dataSource={stocks}
                 allowPaging={true}
@@ -71,7 +73,7 @@ const DashScreener = ({ setSelectedStock }) => {
                                 <img
                                     src={props.logo_light} // Use the 64-size logo
                                     alt={`${props.symbol} Logo`}
-                                    style={{ width: '24px', height: '24px', marginRight: '8px' }}
+                                    style={{ width: '24px', height: '24px', marginRight: '8px', borderRadius: '50%' }} // Rounded logo
                                 />
                                 <span
                                     onClick={() => handleSymbolClick(props)}
