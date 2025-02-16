@@ -55,7 +55,7 @@ const Navbar = () => {
     }, []);
 
     return (
-        <div className="flex justify-between p-2 md:ml-6 md:mr-6 relative border-b border-[#02a1ac] dark:border-[#02a1ac]">
+        <div className="flex justify-between p-2 md:ml-6 md:mr-6 relative border-b" style={{ borderColor: currentColor }}>
             <NavButton title="Menu" customFunc={handleActiveMenu} color={currentColor} icon={<AiOutlineMenu />} />
             <div className="flex">
                 <BalanceDisplay balance={10000} />

@@ -1,100 +1,92 @@
 import React from 'react';
-import { MdOutlineCancel } from 'react-icons/md';
 import { BsCheck } from 'react-icons/bs';
 import { TooltipComponent } from '@syncfusion/ej2-react-popups';
-
 import { themeColors } from '../data/dummy.jsx';
 import { useStateContext } from '../contexts/ContextProvider.jsx';
 
 const ThemeSettings = () => {
-  const { setColor, setMode, currentMode, currentColor, setThemeSettings, sidebarColor, setSidebarColor } = useStateContext();
+    const { setColor, setMode, currentMode, currentColor, sidebarColor, setSidebarColor } = useStateContext();
 
-  return (
-      <div className="bg-half-transparent w-screen fixed nav-item top-0 right-0">
-        <div className="float-right h-screen dark:text-gray-200 bg-white dark:bg-[#484B52] w-400">
-          <div className="flex justify-between items-center p-4 ml-4">
-            <p className="font-semibold text-lg">Settings</p>
-            <button
-                type="button"
-                onClick={() => setThemeSettings(false)}
-                style={{ color: 'rgb(153, 171, 180)', borderRadius: '50%' }}
-                className="text-2xl p-3 hover:drop-shadow-xl hover:bg-light-gray"
-            >
-              <MdOutlineCancel />
-            </button>
-          </div>
-          <div className="flex-col border-t-1 border-color p-4 ml-4">
-            <p className="font-semibold text-xl">Theme Option</p>
-            <div className="mt-4">
-              <input
-                  type="radio"
-                  id="light"
-                  name="theme"
-                  value="Light"
-                  className="cursor-pointer"
-                  onChange={setMode}
-                  checked={currentMode === 'Light'}
-              />
-              <label htmlFor="light" className="ml-2 text-md cursor-pointer">
-                Light
-              </label>
+    return (
+        <div
+            className="bg-white dark:bg-[#42464D] p-4 rounded-lg shadow-xl"
+            style={{
+                width: '20rem',
+                maxWidth: 'calc(100vw - 2rem)',
+            }}
+        >
+            {/* Theme Options */}
+            <div className="border-b-1 border-gray-200 dark:border-gray-600 pb-4 mb-4">
+                <p className="font-semibold text-lg mb-4">Theme Options</p>
+                <div className="space-y-2">
+                    <label className="flex items-center space-x-2 cursor-pointer">
+                        <input
+                            type="radio"
+                            name="theme"
+                            value="Light"
+                            className="cursor-pointer"
+                            onChange={setMode}
+                            checked={currentMode === 'Light'}
+                        />
+                        <span className="text-gray-700 dark:text-gray-300">Light Mode</span>
+                    </label>
+                    <label className="flex items-center space-x-2 cursor-pointer">
+                        <input
+                            type="radio"
+                            name="theme"
+                            value="Dark"
+                            onChange={setMode}
+                            className="cursor-pointer"
+                            checked={currentMode === 'Dark'}
+                        />
+                        <span className="text-gray-700 dark:text-gray-300">Dark Mode</span>
+                    </label>
+                </div>
             </div>
-            <div className="mt-2">
-              <input
-                  type="radio"
-                  id="dark"
-                  name="theme"
-                  value="Dark"
-                  onChange={setMode}
-                  className="cursor-pointer"
-                  checked={currentMode === 'Dark'}
-              />
-              <label htmlFor="dark" className="ml-2 text-md cursor-pointer">
-                Dark
-              </label>
+
+            {/* Theme Colors */}
+            <div className="border-b-1 border-gray-200 dark:border-gray-600 pb-4 mb-4">
+                <p className="font-semibold text-lg mb-4">Theme Colors</p>
+                <div className="flex flex-wrap gap-3">
+                    {themeColors.map((item, index) => (
+                        <TooltipComponent key={index} content={item.name} position="TopCenter">
+                            <div className="relative cursor-pointer">
+                                <button
+                                    type="button"
+                                    className="h-8 w-8 rounded-full flex items-center justify-center"
+                                    style={{ backgroundColor: item.color }}
+                                    onClick={() => setColor(item.color)}
+                                >
+                                    <BsCheck className={`text-white text-xl ${item.color === currentColor ? 'opacity-100' : 'opacity-0'}`} />
+                                </button>
+                            </div>
+                        </TooltipComponent>
+                    ))}
+                </div>
             </div>
-          </div>
-          <div className="p-4 border-t-1 border-color ml-4">
-            <p className="font-semibold text-xl">Theme Colors</p>
-            <div className="flex gap-3">
-              {themeColors.map((item, index) => (
-                  <TooltipComponent key={index} content={item.name} position="TopCenter">
-                    <div className="relative mt-2 cursor-pointer flex gap-5 items-center" key={item.name}>
-                      <button
-                          type="button"
-                          className="h-10 w-10 rounded-full cursor-pointer"
-                          style={{ backgroundColor: item.color }}
-                          onClick={() => setColor(item.color)}
-                      >
-                        <BsCheck className={`ml-2 text-2xl text-white ${item.color === currentColor ? 'block' : 'hidden'}`} />
-                      </button>
-                    </div>
-                  </TooltipComponent>
-              ))}
+
+            {/* Sidebar Colors */}
+            <div>
+                <p className="font-semibold text-lg mb-4">Sidebar Colors</p>
+                <div className="flex flex-wrap gap-3">
+                    {themeColors.map((item, index) => (
+                        <TooltipComponent key={index} content={item.name} position="TopCenter">
+                            <div className="relative cursor-pointer">
+                                <button
+                                    type="button"
+                                    className="h-8 w-8 rounded-full flex items-center justify-center"
+                                    style={{ backgroundColor: item.color }}
+                                    onClick={() => setSidebarColor(item.color)}
+                                >
+                                    <BsCheck className={`text-white text-xl ${item.color === sidebarColor ? 'opacity-100' : 'opacity-0'}`} />
+                                </button>
+                            </div>
+                        </TooltipComponent>
+                    ))}
+                </div>
             </div>
-          </div>
-          <div className="p-4 border-t-1 border-color ml-4">
-            <p className="font-semibold text-xl">Sidebar Colors</p>
-            <div className="flex gap-3">
-              {themeColors.map((item, index) => (
-                  <TooltipComponent key={index} content={item.name} position="TopCenter">
-                    <div className="relative mt-2 cursor-pointer flex gap-5 items-center" key={item.name}>
-                      <button
-                          type="button"
-                          className="h-10 w-10 rounded-full cursor-pointer"
-                          style={{ backgroundColor: item.color }}
-                          onClick={() => setSidebarColor(item.color)}
-                      >
-                        <BsCheck className={`ml-2 text-2xl text-white ${item.color === sidebarColor ? 'block' : 'hidden'}`} />
-                      </button>
-                    </div>
-                  </TooltipComponent>
-              ))}
-            </div>
-          </div>
         </div>
-      </div>
-  );
+    );
 };
 
 export default ThemeSettings;

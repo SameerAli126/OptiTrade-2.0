@@ -1,0 +1,22 @@
+[
+  {
+    "symbol": "AAPL",
+    "name": "Apple Inc.",
+    "open": 150.00,
+    "high": 155.00,
+    "low": 149.00,
+    "close": 154.00,
+    "volume": 1000000,
+    "marketCap": 2500000000
+  },
+  {
+    "symbol": "GOOGL",
+    "name": "Alphabet Inc.",
+    "open": 2800.00,
+    "high": 2850.00,
+    "low": 2790.00,
+    "close": 2840.00,
+    "volume": 1500000,
+    "marketCap": 1800000000
+  }
+]

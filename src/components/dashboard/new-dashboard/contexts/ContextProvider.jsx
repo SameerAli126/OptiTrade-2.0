@@ -7,6 +7,7 @@ const initialState = {
     cart: false,
     userProfile: false,
     notification: false,
+    themeSettings: false
 };
 
 export const ContextProvider = ({ children }) => {

@@ -100,3 +100,76 @@
 .custom-grid .e-rowcell span:hover {
     color: #055a9e; /* Darker blue on hover */
 }
+
+/*!* Enhanced Grid Styles *!*/
+/*.enhanced-grid .e-gridheader,*/
+/*.enhanced-grid .e-gridcontent {*/
+/*    border: 2px solid #e0e0e0 !important;*/
+/*    border-radius: 8px;*/
+/*}*/
+
+/*.enhanced-grid .e-headercell {*/
+/*    background: #f8f9fa !important;*/
+/*    border-right: 2px solid #e0e0e0 !important;*/
+/*    border-bottom: 3px solid #d0d0d0 !important;*/
+/*    padding: 12px 8px !important;*/
+/*    font-weight: 600 !important;*/
+/*    color: #2a2a2a !important;*/
+/*}*/
+
+/*.enhanced-grid .e-rowcell {*/
+/*    border-right: 2px solid #e0e0e0 !important;*/
+/*    border-bottom: 1px solid #e0e0e0 !important;*/
+/*    padding: 10px 8px !important;*/
+/*    vertical-align: middle !important;*/
+/*}*/
+
+/*!* Title Header *!*/
+/*.enhanced-grid .e-headercell[aria-colindex="1"] {*/
+/*    background: #086EBA !important;*/
+/*    border-bottom: 3px solid #065492 !important;*/
+/*}*/
+
+/*.enhanced-grid .e-headercell[aria-colindex="1"] .e-templatecell {*/
+/*    height: 50px !important;*/
+/*    display: flex !important;*/
+/*    align-items: center !important;*/
+/*    justify-content: center !important;*/
+/*}*/
+
+/*!* Hover Effects *!*/
+/*.enhanced-grid .e-row:hover .e-rowcell {*/
+/*    background: #f5f7fa !important;*/
+/*}*/
+
+/*!* Pagination Styles *!*/
+/*.enhanced-grid .e-pager {*/
+/*    border-top: 2px solid #e0e0e0 !important;*/
+/*    padding: 12px 0 !important;*/
+/*}*/
+
+/*!* Filter Icon Customization *!*/
+/*.enhanced-grid .e-filtericon {*/
+/*    color: #086EBA !important;*/
+/*    font-size: 14px !important;*/
+/*}*/
+
+/*!* Scrollbar Styling *!*/
+/*.enhanced-grid ::-webkit-scrollbar {*/
+/*    width: 8px;*/
+/*    height: 8px;*/
+/*}*/
+
+/*.enhanced-grid ::-webkit-scrollbar-track {*/
+/*    background: #f1f1f1;*/
+/*    border-radius: 4px;*/
+/*}*/
+
+/*.enhanced-grid ::-webkit-scrollbar-thumb {*/
+/*    background: #c1c1c1;*/
+/*    border-radius: 4px;*/
+/*}*/
+
+/*.enhanced-grid ::-webkit-scrollbar-thumb:hover {*/
+/*    background: #a8a8a8;*/
+/*}*/

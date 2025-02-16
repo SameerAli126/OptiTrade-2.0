@@ -11,6 +11,13 @@ import {
 import '../../../../assets/DashScreener.css'; // Import custom CSS
 import DashHeader from '../components/DashHeader';
 
+// Local stock data to use when the API is offline
+const localStockData = [
+    { symbol: 'AAPL', name: 'Apple Inc.', open: 150, high: 155, low: 149, close: 154, volume: 1000000, marketCap: 2500000000000 },
+    { symbol: 'GOOGL', name: 'Alphabet Inc.', open: 2800, high: 2850, low: 2780, close: 2840, volume: 1200000, marketCap: 1900000000000 },
+    // Add more local stock data as needed
+];
+
 const DashScreener = ({ setSelectedStock }) => {
     const [stocks, setStocks] = useState([]);
     const navigate = useNavigate();
@@ -19,10 +26,14 @@ const DashScreener = ({ setSelectedStock }) => {
         const fetchStocks = async () => {
             try {
                 const response = await fetch('https://archlinux.tail9023a4.ts.net/stocks');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
                 const data = await response.json();
                 setStocks(data);
             } catch (error) {
-                console.error('Error fetching stocks:', error);
+                console.error('Error fetching stocks from API:', error);
+                setStocks(localStockData); // Use local data if API fetch fails
             }
         };
 
@@ -51,9 +62,7 @@ const DashScreener = ({ setSelectedStock }) => {
     return (
         <div style={{ margin: '10%', marginTop: '0%', marginLeft: '0%', marginRight: '2%', maxWidth: '95%', overflowX: 'auto' }}>
             <DashHeader category="Analysis" title="Stock Screener" /> {/* DashHeader title */}
-            <h2 style={{ marginBottom: '20px', textAlign: 'center', color: '#086EBA', fontSize: '24px', fontWeight: '600' }}>
-                Stock Data Table
-            </h2> {/* Table title */}
+
             <GridComponent
                 dataSource={stocks}
                 allowPaging={true}
