@@ -8,13 +8,12 @@ import { useNavigate } from 'react-router-dom';
 const UserProfile = () => {
     const { currentColor, user } = useStateContext(); // Destructure user from context
     const navigate = useNavigate(); // Initialize navigate
+    const { setUser } = useStateContext(); // Get setUser from context
 
     const handleLogout = () => {
-        // Remove token from localStorage
         localStorage.removeItem('token');
-
-        // Redirect to Main.jsx
-        navigate('/');
+        setUser(null); // Clear user from context
+        window.location.href = '/';
     };
 
     return (
