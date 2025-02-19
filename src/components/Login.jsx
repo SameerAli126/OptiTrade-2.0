@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 // import ConnectionCheck from "./ConnectionCheck.jsx";
 import LoginImage from "../assets/img/LoginImage.jpg";
+import { useAuth } from './dashboard/new-dashboard/contexts/AuthContext'; // Import useAuth
 import "../App.css";
 
 const Login = () => {
@@ -11,27 +12,30 @@ const Login = () => {
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
+    const { login } = useAuth(); // Destructure login from useAuth
+
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        const response = await fetch("https://archlinux.tail9023a4.ts.net/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ email, u_pass: password }),
-        });
+        try {
+            const response = await fetch("https://archlinux.tail9023a4.ts.net/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, u_pass: password }),
+            });
 
-        const data = await response.json();
-        if (response.ok) {
-            alert("Login successful!");
-            console.log(data);
-            // Store the token in localStorage
-            localStorage.setItem("token", data.token);
-            // Redirect to Dashboard
-            navigate("/dashboard");
-        } else {
-            alert("Login failed: " + data.message);
+            const data = await response.json();
+            if (response.ok) {
+                // Use the actual user data structure from your API response
+                login(data.token, {
+                    id: data.user.id, // Ensure this matches your API response
+                    u_name: data.user.u_name,
+                    email: data.user.email
+                });
+                navigate("/dashboard");
+            }
+        } catch (error) {
+            console.error('Login error:', error);
         }
     };
 

@@ -1,62 +1,72 @@
+// Filepath: src/components/dashboard/new-dashboard/pages/Watchlist.jsx
 import React, { useState, useEffect } from 'react';
-import {
-    GridComponent,
-    ColumnDirective,
-    ColumnsDirective,
-    Page,
-    Inject,
-    Filter,
-    Group
-} from '@syncfusion/ej2-react-grids';
+import { GridComponent, ColumnDirective, ColumnsDirective, Inject, Filter } from '@syncfusion/ej2-react-grids';
 import DashHeader from '../components/DashHeader';
+import { WatchlistService } from '../services/WatchlistService';
+import { Button } from '../components';
+import { useStateContext } from '../contexts/ContextProvider';
 
 const Watchlist = () => {
-    const [stocks, setStocks] = useState([]);
+    const [watchlist, setWatchlist] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const { user } = useStateContext();
+
+    const fetchWatchlist = async () => {
+        setLoading(true);
+        try {
+            const data = await WatchlistService.getWatchlist(user.id);
+            setWatchlist(data);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+        setLoading(false);
+    };
 
     useEffect(() => {
-        const fetchStocks = async () => {
-            try {
-                const response = await fetch('https://archlinux.tail9023a4.ts.net/stocks');
-                const data = await response.json();
-                // Take the first 10 stocks
-                const topStocks = data.slice(0, 10);
-                setStocks(topStocks);
-            } catch (error) {
-                console.error('Error fetching stocks:', error);
-            }
-        };
+        if (user?.id) fetchWatchlist();
+    }, [user]);
 
-        fetchStocks();
-    }, []);
+    const handleRemove = async (symbol) => {
+        if (await WatchlistService.removeFromWatchlist(user.id, symbol)) {
+            setWatchlist(prev => prev.filter(item => item.stock_symbol !== symbol));
+        }
+    };
 
     return (
         <div style={{ margin: '10%', marginTop: '1%', marginLeft: '0%', maxWidth: '95%', overflowX: 'auto' }}>
-            <DashHeader category="Favorites" title="Watchlist" /> {/* Add DashHeader here */}
-            <GridComponent
-                dataSource={stocks}
-                allowPaging={false} // Disable paging since we only show top 10
-                allowFiltering={true}
-                allowGrouping={true}
-                filterSettings={{ type: 'Excel' }} // Enable Excel-style filtering
-            >
-                <ColumnsDirective>
-                    <ColumnDirective field='symbol' headerText='Symbol' width='100' />
-                    <ColumnDirective field='name' headerText='Name' width='150' />
-                    <ColumnDirective field='open' headerText='Open' textAlign='Right' width='100' />
-                    <ColumnDirective field='high' headerText='High' textAlign='Right' width='100' />
-                    <ColumnDirective field='low' headerText='Low' textAlign='Right' width='100' />
-                    <ColumnDirective field='close' headerText='Close' textAlign='Right' width='100' />
-                    <ColumnDirective field='volume' headerText='Volume' textAlign='Right' width='100' />
-                    <ColumnDirective field='netchange' headerText='Net Change' textAlign='Right' width='100' />
-                    <ColumnDirective field='pctchange' headerText='Pct Change' textAlign='Right' width='100' />
-                    <ColumnDirective field='marketCap' headerText='Market Cap' textAlign='Right' width='150' />
-                    <ColumnDirective field='industry' headerText='Industry' width='150' />
-                    <ColumnDirective field='sector' headerText='Sector' width='150' />
-                </ColumnsDirective>
-                <Inject services={[Filter, Group]} />
-            </GridComponent>
+            <DashHeader category="Favorites" title="Watchlist" />
+
+            {loading ? (
+                <p>Loading watchlist...</p>
+            ) : watchlist.length === 0 ? (
+                <p>No stocks in your watchlist. Start adding some!</p>
+            ) : (
+                <GridComponent
+                    dataSource={watchlist}
+                    allowFiltering={true}
+                    filterSettings={{ type: 'Excel' }}
+                >
+                    <ColumnsDirective>
+                        <ColumnDirective field='stock_symbol' headerText='Symbol' width='100' />
+                        <ColumnDirective
+                            headerText='Actions'
+                            width='120'
+                            template={(props) => (
+                                <Button
+                                    text="Remove"
+                                    color="white"
+                                    bgColor="#e31626"
+                                    borderRadius="5px"
+                                    onClick={() => handleRemove(props.stock_symbol)}
+                                />
+                            )}
+                        />
+                    </ColumnsDirective>
+                    <Inject services={[Filter]} />
+                </GridComponent>
+            )}
         </div>
     );
-}
+};
 
 export default Watchlist;

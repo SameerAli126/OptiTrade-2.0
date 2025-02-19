@@ -1,3 +1,5 @@
+// Filepath: C:\Users\SAM\Downloads\Dashboard\opti-trade-pct\src\components\dashboard\new-dashboard\components\Navbar.jsx
+
 import React, { useEffect, useRef } from 'react';
 import { AiOutlineMenu } from 'react-icons/ai';
 import { FiShoppingCart } from 'react-icons/fi';
@@ -8,6 +10,7 @@ import { TooltipComponent } from '@syncfusion/ej2-react-popups';
 import avatar from '../data/avatar.jpg';
 import { Cart, Notification, UserProfile } from '.';
 import { useStateContext } from '../contexts/ContextProvider.jsx';
+import { useAuth } from '../contexts/AuthContext.jsx'; // Import useAuth
 import BalanceDisplay from './BalanceDisplay';
 
 const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
@@ -29,6 +32,7 @@ const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
 
 const Navbar = () => {
     const { currentColor, activeMenu, setActiveMenu, handleClick, isClicked, setScreenSize, screenSize } = useStateContext();
+    const { user } = useAuth(); // Destructure user from useAuth
     const cartRef = useRef(null);
     const notificationRef = useRef(null);
     const userProfileRef = useRef(null);
@@ -69,7 +73,7 @@ const Navbar = () => {
                         <img className="rounded-full w-8 h-8" src={avatar} alt="user-profile" />
                         <p>
                             <span className="text-gray-400 text-14">Hi,</span>{' '}
-                            <span className="text-gray-400 font-bold ml-1 text-14">Michael</span>
+                            <span className="text-gray-400 font-bold ml-1 text-14">{user?.u_name || 'User'}</span>
                         </p>
                         <MdKeyboardArrowDown className="text-gray-400 text-14" />
                     </div>

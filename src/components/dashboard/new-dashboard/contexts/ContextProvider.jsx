@@ -1,4 +1,6 @@
+// ContextProvider.jsx
 import React, { createContext, useContext, useState } from 'react';
+import { useAuth } from './AuthContext';
 
 const StateContext = createContext();
 
@@ -11,6 +13,7 @@ const initialState = {
 };
 
 export const ContextProvider = ({ children }) => {
+    const { user } = useAuth() || {};
     const [screenSize, setScreenSize] = useState(undefined);
     const [currentColor, setCurrentColor] = useState('#03C9D7');
     const [currentMode, setCurrentMode] = useState('Light');
@@ -19,8 +22,15 @@ export const ContextProvider = ({ children }) => {
     const [isClicked, setIsClicked] = useState(initialState);
     const [category, setCategory] = useState('Dashboard');
     const [title, setTitle] = useState('Overview');
-    const [user, setUser] = useState(null);
-    const [sidebarColor, setSidebarColor] = useState('#7352FF'); // Add sidebarColor state
+    const [sidebarColor, setSidebarColor] = useState('#7352FF');
+
+    // Add the missing handleClick function
+    const handleClick = (clicked) => {
+        setIsClicked((prevState) => ({
+            ...initialState,
+            [clicked]: !prevState[clicked],
+        }));
+    };
 
     const setMode = (e) => {
         setCurrentMode(e.target.value);
@@ -32,13 +42,6 @@ export const ContextProvider = ({ children }) => {
         localStorage.setItem('colorMode', color);
     };
 
-    const handleClick = (clicked) => {
-        setIsClicked((prevState) => ({
-            ...initialState,
-            [clicked]: !prevState[clicked],
-        }));
-    };
-
     return (
         <StateContext.Provider value={{
             currentColor,
@@ -46,7 +49,7 @@ export const ContextProvider = ({ children }) => {
             activeMenu,
             screenSize,
             setScreenSize,
-            handleClick,
+            handleClick, // Now properly defined
             isClicked,
             initialState,
             setIsClicked,
@@ -62,9 +65,8 @@ export const ContextProvider = ({ children }) => {
             title,
             setTitle,
             user,
-            setUser,
-            sidebarColor, // Provide sidebarColor
-            setSidebarColor, // Provide setSidebarColor
+            sidebarColor,
+            setSidebarColor,
         }}>
             {children}
         </StateContext.Provider>

@@ -173,3 +173,13 @@
 /*.enhanced-grid ::-webkit-scrollbar-thumb:hover {*/
 /*    background: #a8a8a8;*/
 /*}*/
+
+.e-grid .e-rowcell {
+    position: static;
+    overflow: visible;
+}
+
+/* Adjust cell padding for flip cards */
+.e-grid .e-rowcell.custom-flip-cell {
+    padding: 8px;
+}

@@ -1,23 +1,39 @@
+// Filepath: src/components/dashboard/new-dashboard/pages/StockInfo.jsx
+
 import React from 'react';
-import { ButtonComponent } from '@syncfusion/ej2-react-buttons'; // Import the ButtonComponent
-import { FiPlus } from 'react-icons/fi'; // Import the plus icon
+import { ButtonComponent } from '@syncfusion/ej2-react-buttons';
+import { FiPlus } from 'react-icons/fi';
 import '@syncfusion/ej2/styles/customized/material.css';
 import OHLCVMarketCap from './buy-sell/OHLCVMarketCap.jsx';
 import StockData from './buy-sell/StockChart.jsx';
+import { WatchlistService } from '../services/WatchlistService';
+import { useStateContext } from '../contexts/ContextProvider';
 
 const StockInfo = ({ stock }) => {
+    const { user } = useStateContext();
+
     if (!stock) {
         return <div className="bg-gray-800 text-white rounded-lg shadow-md p-4">Buy & Sell</div>;
     }
 
-    const handleAddToFavorites = () => {
-        // Implement the logic to add the stock to favorites
-        console.log(`Added ${stock.symbol} to favorites`);
+    const handleAddToFavorites = async () => {
+        if (!user?.id) {
+            alert('Please login to add to watchlist');
+            return;
+        }
+
+        console.log('Current user:', user); // Debug log
+
+        if (await WatchlistService.addToWatchlist(user.id, stock.symbol)) {
+            alert(`${stock.symbol} added to watchlist!`);
+        } else {
+            alert(`Failed to add ${stock.symbol} to watchlist.`);
+        }
     };
+
 
     return (
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-            {/* Stock Information */}
             <div className="flex items-center mb-6">
                 <img
                     src={stock.logo_high_light}
@@ -42,13 +58,9 @@ const StockInfo = ({ stock }) => {
                 </div>
             </div>
 
-            {/* OHLCV and Market Cap Data */}
             <OHLCVMarketCap stock={stock} />
-
-            {/* Stock Data Chart */}
             <StockData stock={stock} />
 
-            {/* Buy/Sell Buttons */}
             <div className="flex justify-between">
                 <ButtonComponent
                     cssClass="e-success"

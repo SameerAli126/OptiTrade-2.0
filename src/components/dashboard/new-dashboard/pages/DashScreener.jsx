@@ -54,7 +54,11 @@ const DashScreener = ({ setSelectedStock }) => {
             return `$${(marketCap / 1e9).toFixed(2)}B`; // Billions
         } else if (marketCap >= 1e6) {
             return `$${(marketCap / 1e6).toFixed(2)}M`; // Millions
-        } else {
+        }
+        else if (marketCap == null) {
+            return `N/A`; // Less than a million
+        }
+        else {
             return `$${marketCap.toLocaleString()}`; // Less than a million
         }
     };
