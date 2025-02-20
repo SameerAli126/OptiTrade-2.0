@@ -1,8 +1,6 @@
-// Filepath: src/components/dashboard/new-dashboard/pages/StockInfo.jsx
-
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ButtonComponent } from '@syncfusion/ej2-react-buttons';
-import { FiPlus } from 'react-icons/fi';
+import { FiPlus, FiCheck } from 'react-icons/fi';
 import '@syncfusion/ej2/styles/customized/material.css';
 import OHLCVMarketCap from './buy-sell/OHLCVMarketCap.jsx';
 import StockData from './buy-sell/StockChart.jsx';
@@ -11,26 +9,38 @@ import { useStateContext } from '../contexts/ContextProvider';
 
 const StockInfo = ({ stock }) => {
     const { user } = useStateContext();
+    const [isInWatchlist, setIsInWatchlist] = useState(false);
+
+    // Check if stock is in watchlist on component mount
+    useEffect(() => {
+        const checkWatchlistStatus = async () => {
+            if (user?.id && stock?.symbol) {
+                try {
+                    const watchlist = await WatchlistService.getWatchlist(user.id);
+                    const symbols = watchlist.map(item => item.stock_symbol);
+                    setIsInWatchlist(symbols.includes(stock.symbol));
+                } catch (error) {
+                    console.error('Error checking watchlist status:', error);
+                }
+            }
+        };
+        checkWatchlistStatus();
+    }, [user, stock]);
+
+    const handleAddToFavorites = async () => {
+        if (!user?.id || !stock?.symbol) return;
+
+        try {
+            const success = await WatchlistService.addToWatchlist(user.id, stock.symbol);
+            if (success) setIsInWatchlist(true);
+        } catch (error) {
+            console.error('Watchlist update error:', error);
+        }
+    };
 
     if (!stock) {
         return <div className="bg-gray-800 text-white rounded-lg shadow-md p-4">Buy & Sell</div>;
     }
-
-    const handleAddToFavorites = async () => {
-        if (!user?.id) {
-            alert('Please login to add to watchlist');
-            return;
-        }
-
-        console.log('Current user:', user); // Debug log
-
-        if (await WatchlistService.addToWatchlist(user.id, stock.symbol)) {
-            alert(`${stock.symbol} added to watchlist!`);
-        } else {
-            alert(`Failed to add ${stock.symbol} to watchlist.`);
-        }
-    };
-
 
     return (
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
@@ -50,10 +60,19 @@ const StockInfo = ({ stock }) => {
                         </div>
                     </div>
                     <button
-                        onClick={handleAddToFavorites}
-                        className="text-xl text-gray-900 dark:text-white hover:text-blue-500"
+                        onClick={!isInWatchlist ? handleAddToFavorites : undefined}
+                        className={`text-xl p-2 rounded-full transition-all duration-300 ${
+                            isInWatchlist
+                                ? 'text-green-500 bg-green-100 dark:bg-green-900/30 cursor-default'
+                                : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer'
+                        }`}
+                        disabled={isInWatchlist}
                     >
-                        <FiPlus />
+                        {isInWatchlist ? (
+                            <FiCheck className="w-5 h-5" />
+                        ) : (
+                            <FiPlus className="w-5 h-5" />
+                        )}
                     </button>
                 </div>
             </div>
