@@ -60,7 +60,7 @@ const Watchlist = () => {
     // (Use the same JSX structure as in previous examples)
 
     return (
-        <div style={{ margin: '10%', marginTop: '1%', marginLeft: '0%', maxWidth: '95%', overflowX: 'auto' }}>
+        <div style={{ marginTop: '0%', marginLeft: '0%', maxWidth: '95%', overflowX: 'auto' }}>
             <DashHeader category="Favorites" title="Watchlist" />
 
             {loading ? (
@@ -113,10 +113,10 @@ const Watchlist = () => {
 
                         {/* Stock Details Columns */}
                         <ColumnDirective field='name' headerText='Company Name' width='200' />
-                        <ColumnDirective field='open' headerText='Open' width='100' format='N2' textAlign='Right' />
-                        <ColumnDirective field='high' headerText='High' width='100' format='N2' textAlign='Right' />
-                        <ColumnDirective field='low' headerText='Low' width='100' format='N2' textAlign='Right' />
-                        <ColumnDirective field='close' headerText='Close' width='100' format='N2' textAlign='Right' />
+                        <ColumnDirective field='open' headerText='Open' width='120' format='N2' textAlign='Right' />
+                        <ColumnDirective field='high' headerText='High' width='120' format='N2' textAlign='Right' />
+                        <ColumnDirective field='low' headerText='Low' width='120' format='N2' textAlign='Right' />
+                        <ColumnDirective field='close' headerText='Close' width='120' format='N2' textAlign='Right' />
                         <ColumnDirective field='volume' headerText='Volume' width='120' format='N0' textAlign='Right' />
                         <ColumnDirective
                             field='marketCap'
