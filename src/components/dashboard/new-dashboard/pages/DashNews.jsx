@@ -1,3 +1,5 @@
+// C:\Users\SAM\Downloads\Dashboard\opti-trade-pct\src\components\dashboard\new-dashboard\pages\DashNews.jsx
+
 import React, { useState, useEffect } from 'react';
 import {
   GridComponent,
