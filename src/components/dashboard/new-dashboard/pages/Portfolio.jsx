@@ -15,7 +15,7 @@ import DashHeader from '../components/DashHeader'; // Import DashHeader
 
 const Portfolio = () => {
     return (
-        <div className="m-2 md:m-10 mt-24 p-2 md:p-2 bg-white rounded-3xl">
+        <div className=" bg-white rounded-3xl">
             <DashHeader category="Numbers" title="Portfolio" /> {/* Add DashHeader here */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <PerformanceToday />

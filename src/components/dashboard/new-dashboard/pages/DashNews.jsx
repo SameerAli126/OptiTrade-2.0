@@ -9,6 +9,7 @@ import {
   Group
 } from '@syncfusion/ej2-react-grids';
 import DashHeader from '../components/DashHeader'; // Import DashHeader
+import '../../../../assets/DashScreener.css'; // Import the same CSS file
 
 const DashNews = () => {
   const [news, setNews] = useState([]);
@@ -47,6 +48,7 @@ const DashNews = () => {
             allowFiltering={true}
             allowGrouping={true}
             filterSettings={{ type: 'Excel' }} // Enable Excel-style filtering
+            cssClass="custom-grid" // Apply the custom grid class
         >
           <ColumnsDirective>
             <ColumnDirective field='Date' headerText='Date' width='150' />
