@@ -1,17 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import { ButtonComponent } from '@syncfusion/ej2-react-buttons';
 import { FiPlus, FiCheck } from 'react-icons/fi';
+import { FaIndustry, FaHeartbeat, FaBuilding, FaLaptop, FaLeaf, FaShoppingCart, FaGasPump, FaPhone, FaHome, FaLightbulb, FaShieldAlt } from 'react-icons/fa';
 import '@syncfusion/ej2/styles/customized/material.css';
 import OHLCVMarketCap from './buy-sell/OHLCVMarketCap.jsx';
 import StockData from './buy-sell/StockChart.jsx';
 import { WatchlistService } from '../services/WatchlistService';
 import { useStateContext } from '../contexts/ContextProvider';
 
+const sectorIcons = {
+    'Healthcare': <FaHeartbeat />,
+    'Industrials': <FaIndustry />,
+    'Financial Services': <FaBuilding />,
+    'Technology': <FaLaptop />,
+    'Basic Materials': <FaLeaf />,
+    'Consumer Cyclical': <FaShoppingCart />,
+    'Energy': <FaGasPump />,
+    'Communication Services': <FaPhone />,
+    'Real Estate': <FaHome />,
+    'Utilities': <FaLightbulb />,
+    'Consumer Defensive': <FaShieldAlt />
+};
+
 const StockInfo = ({ stock }) => {
     const { user } = useStateContext();
     const [isInWatchlist, setIsInWatchlist] = useState(false);
 
-    // Check if stock is in watchlist on component mount
     useEffect(() => {
         const checkWatchlistStatus = async () => {
             if (user?.id && stock?.symbol) {
@@ -74,6 +88,11 @@ const StockInfo = ({ stock }) => {
                             <FiPlus className="w-5 h-5" />
                         )}
                     </button>
+                    {sectorIcons[stock.sector] && (
+                        <span className="ml-2 text-2xl text-gray-900 dark:text-white">
+                            {sectorIcons[stock.sector]}
+                        </span>
+                    )}
                 </div>
             </div>
 
