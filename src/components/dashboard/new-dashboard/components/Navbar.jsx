@@ -12,6 +12,7 @@ import { Cart, Notification, UserProfile } from '.';
 import { useStateContext } from '../contexts/ContextProvider.jsx';
 import { useAuth } from '../contexts/AuthContext.jsx'; // Import useAuth
 import BalanceDisplay from './BalanceDisplay';
+import StockSearch from './StockSearch'; // Add this import
 
 const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
     <TooltipComponent content={title} position="BottomCenter">
@@ -63,6 +64,7 @@ const Navbar = () => {
             <NavButton title="Menu" customFunc={handleActiveMenu} color={currentColor} icon={<AiOutlineMenu />} />
             <div className="flex">
                 <BalanceDisplay balance={10000} />
+                <StockSearch />
                 <NavButton title="Cart" customFunc={() => handleClick('cart')} color={currentColor} icon={<FiShoppingCart />} />
                 <NavButton title="Notification" dotColor="rgb(254, 201, 15)" customFunc={() => handleClick('notification')} color={currentColor} icon={<RiNotification3Line />} />
                 <TooltipComponent content="Profile" position="BottomCenter">

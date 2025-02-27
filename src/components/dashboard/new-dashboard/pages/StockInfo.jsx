@@ -7,6 +7,7 @@ import OHLCVMarketCap from './buy-sell/OHLCVMarketCap.jsx';
 import StockData from './buy-sell/StockChart.jsx';
 import { WatchlistService } from '../services/WatchlistService';
 import { useStateContext } from '../contexts/ContextProvider';
+import { useLocation } from 'react-router-dom';
 
 const sectorIcons = {
     'Healthcare': <FaHeartbeat />,
@@ -22,8 +23,10 @@ const sectorIcons = {
     'Consumer Defensive': <FaShieldAlt />
 };
 
-const StockInfo = ({ stock }) => {
-    const { user } = useStateContext();
+const StockInfo = ({ stock: propStock }) => {
+    const { state } = useLocation();
+    const stock = state?.stock || propStock; // Use state first, then prop
+    const { user, sidebarColor } = useStateContext(); // Destructure sidebarColor
     const [isInWatchlist, setIsInWatchlist] = useState(false);
 
     useEffect(() => {
@@ -57,7 +60,7 @@ const StockInfo = ({ stock }) => {
     }
 
     return (
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+        <div className="rounded-lg shadow-md p-6" style={{ backgroundColor: sidebarColor }}>
             <div className="flex items-center mb-6">
                 <img
                     src={stock.logo_high_light}

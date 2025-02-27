@@ -1,47 +1,37 @@
-// Filepath: src/components/dashboard/new-dashboard/pages/Watchlist.jsx
 import React, { useState, useEffect } from 'react';
 import { GridComponent, ColumnDirective, ColumnsDirective, Inject, Filter } from '@syncfusion/ej2-react-grids';
 import DashHeader from '../components/DashHeader';
 import { WatchlistService } from '../services/WatchlistService';
 import { useStateContext } from '../contexts/ContextProvider';
+import { useStockData } from '../contexts/StockDataContext';
 import { FaTrash } from 'react-icons/fa';
 
 const Watchlist = () => {
     const [watchlistStocks, setWatchlistStocks] = useState([]);
-    const [allStocks, setAllStocks] = useState([]);
     const [loading, setLoading] = useState(true);
     const { user } = useStateContext();
+    const { stockData, isLoading: stocksLoading, error: stocksError } = useStockData();
 
-    // Fetch all stocks and watchlist symbols
-    const fetchData = async () => {
-        if (!user?.id) return;
+    const fetchWatchlist = async () => {
+        if (!user?.id || !stockData) return;
 
         setLoading(true);
         try {
-            // 1. Fetch all stocks
-            const stocksResponse = await fetch('https://archlinux.tail9023a4.ts.net/stocks');
-            const allStocksData = await stocksResponse.json();
-            setAllStocks(allStocksData);
-
-            // 2. Get watchlist symbols
             const watchlistResponse = await WatchlistService.getWatchlist(user.id);
             const watchlistSymbols = watchlistResponse.map(item => item.stock_symbol);
-
-            // 3. Filter stocks based on watchlist symbols
-            const filteredStocks = allStocksData.filter(stock =>
+            const filteredStocks = stockData.filter(stock =>
                 watchlistSymbols.includes(stock.symbol)
             );
-
             setWatchlistStocks(filteredStocks);
         } catch (error) {
-            console.error('Error fetching data:', error);
+            console.error('Error fetching watchlist:', error);
         }
         setLoading(false);
     };
 
     useEffect(() => {
-        fetchData();
-    }, [user]);
+        fetchWatchlist();
+    }, [user, stockData]);
 
     const handleRemove = async (symbol) => {
         if (await WatchlistService.removeFromWatchlist(user.id, symbol)) {
@@ -56,8 +46,8 @@ const Watchlist = () => {
         return marketCap ? `$${marketCap.toLocaleString()}` : 'N/A';
     };
 
-    // Keep the same GridComponent and columns structure from previous implementation
-    // (Use the same JSX structure as in previous examples)
+    if (stocksLoading) return <p>Loading stock data...</p>;
+    if (stocksError) return <p>Error loading stock data: {stocksError.message}</p>;
 
     return (
         <div style={{ marginTop: '0%', marginLeft: '0%', maxWidth: '95%', overflowX: 'auto' }}>
@@ -74,7 +64,6 @@ const Watchlist = () => {
                     filterSettings={{ type: 'Excel' }}
                 >
                     <ColumnsDirective>
-                        {/* Symbol Column with Delete Button */}
                         <ColumnDirective
                             field='symbol'
                             headerText='Symbol'
@@ -110,14 +99,47 @@ const Watchlist = () => {
                                 </div>
                             )}
                         />
-
-                        {/* Stock Details Columns */}
-                        <ColumnDirective field='name' headerText='Company Name' width='200' />
-                        <ColumnDirective field='open' headerText='Open' width='120' format='N2' textAlign='Right' />
-                        <ColumnDirective field='high' headerText='High' width='120' format='N2' textAlign='Right' />
-                        <ColumnDirective field='low' headerText='Low' width='120' format='N2' textAlign='Right' />
-                        <ColumnDirective field='close' headerText='Close' width='120' format='N2' textAlign='Right' />
-                        <ColumnDirective field='volume' headerText='Volume' width='120' format='N0' textAlign='Right' />
+                        <ColumnDirective
+                            field='name'
+                            headerText='Company Name'
+                            width='200'
+                            textAlign='Left'
+                        />
+                        <ColumnDirective
+                            field='open'
+                            headerText='Open'
+                            width='120'
+                            format='N2'
+                            textAlign='Right'
+                        />
+                        <ColumnDirective
+                            field='high'
+                            headerText='High'
+                            width='120'
+                            format='N2'
+                            textAlign='Right'
+                        />
+                        <ColumnDirective
+                            field='low'
+                            headerText='Low'
+                            width='120'
+                            format='N2'
+                            textAlign='Right'
+                        />
+                        <ColumnDirective
+                            field='close'
+                            headerText='Close'
+                            width='120'
+                            format='N2'
+                            textAlign='Right'
+                        />
+                        <ColumnDirective
+                            field='volume'
+                            headerText='Volume'
+                            width='120'
+                            format='N0'
+                            textAlign='Right'
+                        />
                         <ColumnDirective
                             field='marketCap'
                             headerText='Market Cap'
