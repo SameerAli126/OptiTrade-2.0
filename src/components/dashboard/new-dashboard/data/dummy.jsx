@@ -823,8 +823,8 @@ export const userProfileData = [
   },
   {
     icon: <FiCreditCard />,
-    title: 'My Tasks',
-    desc: 'To-do and Daily Tasks',
+    title: 'Transaction History',
+    desc: 'Details of Deposits and Withdraws',
     iconColor: 'rgb(255, 244, 229)',
     iconBg: 'rgb(254, 201, 15)',
   },

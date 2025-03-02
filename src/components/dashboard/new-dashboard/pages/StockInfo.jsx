@@ -5,6 +5,7 @@ import { FaIndustry, FaHeartbeat, FaBuilding, FaLaptop, FaLeaf, FaShoppingCart, 
 import '@syncfusion/ej2/styles/customized/material.css';
 import OHLCVMarketCap from './buy-sell/OHLCVMarketCap.jsx';
 import StockData from './buy-sell/StockChart.jsx';
+import BuyButton from "../components/BuyButton.jsx"
 import { WatchlistService } from '../services/WatchlistService';
 import { useStateContext } from '../contexts/ContextProvider';
 import { useLocation } from 'react-router-dom';
@@ -103,11 +104,7 @@ const StockInfo = ({ stock: propStock }) => {
             <StockData stock={stock} />
 
             <div className="flex justify-between">
-                <ButtonComponent
-                    cssClass="e-success"
-                    content="Buy"
-                    style={{ padding: '10px 20px', borderRadius: '8px' }}
-                />
+                <BuyButton stock={stock} user={user} />
                 <ButtonComponent
                     cssClass="e-danger"
                     content="Sell"
