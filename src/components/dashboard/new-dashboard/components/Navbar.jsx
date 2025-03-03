@@ -1,6 +1,6 @@
 // Filepath: C:\Users\SAM\Downloads\Dashboard\opti-trade-pct\src\components\dashboard\new-dashboard\components\Navbar.jsx
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { AiOutlineMenu } from 'react-icons/ai';
 import { FiShoppingCart } from 'react-icons/fi';
 import { RiNotification3Line } from 'react-icons/ri';
@@ -12,7 +12,8 @@ import { Cart, Notification, UserProfile } from '.';
 import { useStateContext } from '../contexts/ContextProvider.jsx';
 import { useAuth } from '../contexts/AuthContext.jsx'; // Import useAuth
 import BalanceDisplay from './BalanceDisplay';
-import StockSearch from './StockSearch'; // Add this import
+import StockSearch from './StockSearch';
+import axios from "axios"; // Add this import
 
 const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
     <TooltipComponent content={title} position="BottomCenter">
@@ -37,7 +38,28 @@ const Navbar = () => {
     const cartRef = useRef(null);
     const notificationRef = useRef(null);
     const userProfileRef = useRef(null);
+    const [cashBalance, setCashBalance] = useState(0);
 
+    useEffect(() => {
+        const fetchBalance = async () => {
+            if (user?.id) {
+                try {
+                    const response = await axios.get(
+                        `https://archlinux.tail9023a4.ts.net/user-balance/${user.id}`,
+                        {
+                            headers: {
+                                Authorization: `Bearer ${localStorage.getItem('token')}`
+                            }
+                        }
+                    );
+                    setCashBalance(response.data.cash_balance);
+                } catch (error) {
+                    console.error('Error fetching balance:', error);
+                }
+            }
+        };
+        fetchBalance();
+    }, [user?.id]);
     const handleActiveMenu = () => setActiveMenu(!activeMenu);
 
     const handleClickOutside = (event) => {
@@ -63,7 +85,7 @@ const Navbar = () => {
         <div className="flex justify-between p-2 md:ml-6 md:mr-6 relative border-b" style={{ borderColor: currentColor }}>
             <NavButton title="Menu" customFunc={handleActiveMenu} color={currentColor} icon={<AiOutlineMenu />} />
             <div className="flex">
-                <BalanceDisplay balance={10000} />
+                <BalanceDisplay balance={cashBalance} />
                 <StockSearch />
                 <NavButton title="Cart" customFunc={() => handleClick('cart')} color={currentColor} icon={<FiShoppingCart />} />
                 <NavButton title="Notification" dotColor="rgb(254, 201, 15)" customFunc={() => handleClick('notification')} color={currentColor} icon={<RiNotification3Line />} />
