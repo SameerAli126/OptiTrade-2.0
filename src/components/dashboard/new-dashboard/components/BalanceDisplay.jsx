@@ -1,7 +1,7 @@
 import React from 'react';
 import { formatNumber } from '../utils/formatNumber.js'; // Import the utility function
 import { useStateContext } from '../contexts/ContextProvider.jsx'; // Import the context
-
+//commit
 const BalanceDisplay = ({ balance }) => {
     const formattedBalance = formatNumber(balance); // Format the balance dynamically
     const { currentColor } = useStateContext(); // Destructure the current theme color
