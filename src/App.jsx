@@ -16,6 +16,7 @@ import { Analytics } from '@vercel/analytics/react';
 import { StockDataProvider } from './components/dashboard/new-dashboard/contexts/StockDataContext';
 import LandingPage from './Landing/LandingPage.jsx';
 import Navbar from "./Landing/Navbar.jsx"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 const App = () => {
     const location = useLocation();
 
@@ -35,6 +36,7 @@ const App = () => {
                             </Routes>
                         </div>
                         <Analytics />
+                        <SpeedInsights />
                     </div>
                 </StockDataProvider>
             </AuthProvider>

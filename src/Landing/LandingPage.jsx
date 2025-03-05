@@ -1,11 +1,11 @@
 import React from 'react';
-import Navbar from '../landing/Navbar';
-import HeroSection from '../landing/HeroSection';
-import FeatureSection from '../landing/FeatureSection';
-import Workflow from '../landing/Workflow';
-import Pricing from '../landing/Pricing';
-import Testimonials from '../landing/Testimonials';
-import Footer from '../landing/Footer';
+// import Navbar from '../landing/Navbar';
+import HeroSection from '../landing/HeroSection.jsx';
+import FeatureSection from '../landing/FeatureSection.jsx';
+import Workflow from '../landing/Workflow.jsx';
+import Pricing from '../landing/Pricing.jsx';
+import Testimonials from '../landing/Testimonials.jsx';
+import Footer from '../landing/Footer.jsx';
 
 const LandingPage = () => {
     return (
