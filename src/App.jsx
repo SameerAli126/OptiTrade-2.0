@@ -14,8 +14,8 @@ import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider } from './components/dashboard/new-dashboard/contexts/AuthContext';
 import { Analytics } from '@vercel/analytics/react';
 import { StockDataProvider } from './components/dashboard/new-dashboard/contexts/StockDataContext';
-import LandingPage from './Landing/LandingPage.jsx';
-import Navbar from "./Landing/Navbar.jsx"
+import LandingPage from './landing/LandingPage.jsx';
+import Navbar from "./landing/Navbar.jsx"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 const App = () => {
     const location = useLocation();
