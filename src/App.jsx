@@ -16,7 +16,7 @@ import { Analytics } from '@vercel/analytics/react';
 import { StockDataProvider } from './components/dashboard/new-dashboard/contexts/StockDataContext';
 import LandingPage from './landing/LandingPage.jsx';
 import Navbar from "./landing/Navbar.jsx"
-import { SpeedInsights } from "@vercel/speed-insights/next"
+import { SpeedInsights } from "@vercel/speed-insights/react"
 const App = () => {
     const location = useLocation();
 
