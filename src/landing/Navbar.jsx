@@ -1,5 +1,9 @@
-// constants.js
-export const navItems = [
+import { Menu, X } from "lucide-react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import logo from "../assets/logo.png";
+
+const navItems = [
   { label: 'Home', href: '/' },
   { label: 'Trading', href: '/trading' },
   { label: 'Screener', href: '/screener' },
@@ -7,16 +11,18 @@ export const navItems = [
   { label: 'About', href: '/about' },
 ];
 
-// Navbar.jsx
-import { Menu, X } from "lucide-react";
-import { useState } from "react";
-import logo from "../assets/logo.png";
-
 const Navbar = () => {
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
 
   const toggleNavbar = () => {
     setMobileDrawerOpen(!mobileDrawerOpen);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
   };
 
   return (
@@ -35,15 +41,26 @@ const Navbar = () => {
               ))}
             </ul>
             <div className="hidden lg:flex justify-center space-x-12 items-center">
-              <a href="/login" className="py-2 px-3 border rounded-md">
-                Sign In
-              </a>
-              <a
-                  href="/signup"
-                  className="bg-gradient-to-r from-orange-500 to-orange-800 py-2 px-3 rounded-md"
-              >
-                Create an account
-              </a>
+              {token ? (
+                  <button
+                      onClick={handleLogout}
+                      className="py-2 px-3 border rounded-md"
+                  >
+                    Logout
+                  </button>
+              ) : (
+                  <>
+                    <a href="/login" className="py-2 px-3 border rounded-md">
+                      Sign In
+                    </a>
+                    <a
+                        href="/signup"
+                        className="bg-gradient-to-r from-orange-500 to-orange-800 py-2 px-3 rounded-md"
+                    >
+                      Create an account
+                    </a>
+                  </>
+              )}
             </div>
             <div className="lg:hidden md:flex flex-col justify-end">
               <button onClick={toggleNavbar}>
@@ -60,7 +77,28 @@ const Navbar = () => {
                       </li>
                   ))}
                 </ul>
-
+                <div className="flex space-x-6">
+                  {token ? (
+                      <button
+                          onClick={handleLogout}
+                          className="py-2 px-3 border rounded-md"
+                      >
+                        Logout
+                      </button>
+                  ) : (
+                      <>
+                        <a href="/login" className="py-2 px-3 border rounded-md">
+                          Sign In
+                        </a>
+                        <a
+                            href="/signup"
+                            className="py-2 px-3 rounded-md bg-gradient-to-r from-orange-500 to-orange-800"
+                        >
+                          Create an account
+                        </a>
+                      </>
+                  )}
+                </div>
               </div>
           )}
         </div>

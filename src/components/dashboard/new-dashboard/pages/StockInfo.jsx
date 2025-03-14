@@ -6,6 +6,7 @@ import '@syncfusion/ej2/styles/customized/material.css';
 import OHLCVMarketCap from './buy-sell/OHLCVMarketCap.jsx';
 import StockData from './buy-sell/StockChart.jsx';
 import BuyButton from "../components/BuyButton.jsx"
+import LoadingBars from "../../../UItilities/LoadingBars.jsx"
 import { WatchlistService } from '../services/WatchlistService';
 import { useStateContext } from '../contexts/ContextProvider';
 import { useLocation } from 'react-router-dom';
@@ -57,7 +58,11 @@ const StockInfo = ({ stock: propStock }) => {
     };
 
     if (!stock) {
-        return <div className="bg-gray-800 text-white rounded-lg shadow-md p-4">Buy & Sell</div>;
+        return (
+            <div className="flex justify-center items-center h-96">
+                <LoadingBars />
+            </div>
+        );
     }
 
     return (

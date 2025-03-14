@@ -1,185 +1,82 @@
 /* DashScreener.css */
-
-/* Custom Grid Styling */
 .custom-grid {
-    border-radius: 12px; /* Rounded corners for the table */
-    overflow: hidden; /* Ensures the rounded corners are applied */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-    border: 1px solid #e0e0e0; /* Light border color */
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern font */
-    background-color: #ffffff; /* White background */
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e0e0e0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: white;
 }
 
-/* Header Styling */
+/* Header Styles */
 .custom-grid .e-headercell {
-    background-color: #086EBA; /* Header background color */
-    color: white; /* Header text color */
-    font-weight: 600; /* Semi-bold header text */
-    padding: 16px; /* Header padding */
-    font-size: 16px; /* Header text size */
-    text-transform: uppercase; /* Uppercase header text */
-    border-bottom: 2px solid #055a9e; /* Darker bottom border */
+    background-color: #086EBA;
+    color: black;
+    font: 600 16px/1.5 'Segoe UI', sans-serif;
+    padding: 16px;
+    text-transform: uppercase;
+    border-bottom: 2px solid #055a9e;
 }
 
-/* Row Styling */
+/* Row & Cell Styles */
 .custom-grid .e-row {
-    border-bottom: 1px solid #e0e0e0; /* Light border between rows */
-    padding: 12px; /* Row padding */
-    transition: background-color 0.3s ease; /* Smooth hover effect */
+    border-bottom: 1px solid #e0e0e0;
+    padding: 12px;
+    transition: background-color 0.3s ease;
 }
 
-/* Hover Effect */
 .custom-grid .e-row:hover {
-    background-color: #f5f9fd; /* Light blue hover effect */
+    background-color: #f5f9fd;
 }
 
-/* Alternating Row Styling */
 .custom-grid .e-altrow {
-    background-color: #f9f9f9; /* Light gray for alternate rows */
+    background-color: #f9f9f9;
 }
 
-/* Pager Styling */
-.custom-grid .e-pager {
-    background-color: #f5f5f5; /* Light gray background for pagination */
-    border-top: 1px solid #e0e0e0; /* Light top border */
-    padding: 12px; /* Pager padding */
-    border-radius: 0 0 12px 12px; /* Rounded corners only at the bottom */
-}
-
-/* Pager Button Styling */
-.custom-grid .e-pager .e-numericitem {
-    color: #086EBA; /* Pager button text color */
-    border: 1px solid #086EBA; /* Pager button border */
-    border-radius: 6px; /* Rounded corners for pager buttons */
-    margin: 0 4px; /* Spacing between pager buttons */
-    padding: 6px 12px; /* Button padding */
-    font-size: 14px; /* Button text size */
-    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
-}
-
-.custom-grid .e-pager .e-numericitem:hover {
-    background-color: #086EBA; /* Hover background color */
-    color: white; /* Hover text color */
-}
-
-/* Selected Pager Button */
-.custom-grid .e-pager .e-numericitem.e-currentitem {
-    background-color: #086EBA; /* Selected button background color */
-    color: white; /* Selected button text color */
-}
-
-/* Filter Bar Styling */
-.custom-grid .e-filterbar {
-    background-color: #f9f9f9; /* Light gray background for filter bar */
-    padding: 12px; /* Add some padding */
-    border-bottom: 1px solid #e0e0e0; /* Light bottom border */
-}
-
-/* Table Cell Styling */
 .custom-grid .e-rowcell {
-    padding: 12px; /* Add padding to cells for better spacing */
-    font-size: 14px; /* Cell text size */
-    color: #333333; /* Dark text color */
+    padding: 12px;
+    font-size: 14px;
+    color: #333;
 }
 
-/* Logo Styling */
+/* Symbol Column Specific */
 .custom-grid .e-rowcell img {
     width: 24px;
     height: 24px;
     margin-right: 8px;
-    border-radius: 50%; /* Rounded logo */
+    border-radius: 50%;
 }
 
-/* Symbol Link Styling */
 .custom-grid .e-rowcell span {
-    color: #086EBA; /* Blue text color */
+    color: #086EBA;
     cursor: pointer;
-    transition: color 0.3s ease; /* Smooth transition */
+    transition: color 0.3s ease;
 }
 
 .custom-grid .e-rowcell span:hover {
-    color: #055a9e; /* Darker blue on hover */
+    color: #055a9e;
 }
 
-/*!* Enhanced Grid Styles *!*/
-/*.enhanced-grid .e-gridheader,*/
-/*.enhanced-grid .e-gridcontent {*/
-/*    border: 2px solid #e0e0e0 !important;*/
-/*    border-radius: 8px;*/
-/*}*/
-
-/*.enhanced-grid .e-headercell {*/
-/*    background: #f8f9fa !important;*/
-/*    border-right: 2px solid #e0e0e0 !important;*/
-/*    border-bottom: 3px solid #d0d0d0 !important;*/
-/*    padding: 12px 8px !important;*/
-/*    font-weight: 600 !important;*/
-/*    color: #2a2a2a !important;*/
-/*}*/
-
-/*.enhanced-grid .e-rowcell {*/
-/*    border-right: 2px solid #e0e0e0 !important;*/
-/*    border-bottom: 1px solid #e0e0e0 !important;*/
-/*    padding: 10px 8px !important;*/
-/*    vertical-align: middle !important;*/
-/*}*/
-
-/*!* Title Header *!*/
-/*.enhanced-grid .e-headercell[aria-colindex="1"] {*/
-/*    background: #086EBA !important;*/
-/*    border-bottom: 3px solid #065492 !important;*/
-/*}*/
-
-/*.enhanced-grid .e-headercell[aria-colindex="1"] .e-templatecell {*/
-/*    height: 50px !important;*/
-/*    display: flex !important;*/
-/*    align-items: center !important;*/
-/*    justify-content: center !important;*/
-/*}*/
-
-/*!* Hover Effects *!*/
-/*.enhanced-grid .e-row:hover .e-rowcell {*/
-/*    background: #f5f7fa !important;*/
-/*}*/
-
-/*!* Pagination Styles *!*/
-/*.enhanced-grid .e-pager {*/
-/*    border-top: 2px solid #e0e0e0 !important;*/
-/*    padding: 12px 0 !important;*/
-/*}*/
-
-/*!* Filter Icon Customization *!*/
-/*.enhanced-grid .e-filtericon {*/
-/*    color: #086EBA !important;*/
-/*    font-size: 14px !important;*/
-/*}*/
-
-/*!* Scrollbar Styling *!*/
-/*.enhanced-grid ::-webkit-scrollbar {*/
-/*    width: 8px;*/
-/*    height: 8px;*/
-/*}*/
-
-/*.enhanced-grid ::-webkit-scrollbar-track {*/
-/*    background: #f1f1f1;*/
-/*    border-radius: 4px;*/
-/*}*/
-
-/*.enhanced-grid ::-webkit-scrollbar-thumb {*/
-/*    background: #c1c1c1;*/
-/*    border-radius: 4px;*/
-/*}*/
-
-/*.enhanced-grid ::-webkit-scrollbar-thumb:hover {*/
-/*    background: #a8a8a8;*/
-/*}*/
-
-.e-grid .e-rowcell {
-    position: static;
-    overflow: visible;
+/* Pager Styles */
+.custom-grid .e-pager {
+    background-color: #f5f5f5;
+    border-top: 1px solid #e0e0e0;
+    padding: 12px;
+    border-radius: 0 0 12px 12px;
 }
 
-/* Adjust cell padding for flip cards */
-.e-grid .e-rowcell.custom-flip-cell {
-    padding: 8px;
+.custom-grid .e-pager .e-numericitem {
+    color: #086EBA;
+    border: 1px solid #086EBA;
+    border-radius: 6px;
+    margin: 0 4px;
+    padding: 6px 12px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.custom-grid .e-pager .e-numericitem:hover,
+.custom-grid .e-pager .e-numericitem.e-currentitem {
+    background-color: #086EBA;
+    color: white;
 }
