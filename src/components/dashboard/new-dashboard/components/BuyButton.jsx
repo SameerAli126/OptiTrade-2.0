@@ -17,7 +17,7 @@ import {
     Divider
 } from '@mui/material';
 import { CheckCircle, Error } from '@mui/icons-material';
-
+//commit
 const BuyButton = ({ stock, user }) => {
     // ... existing state declarations remain the same ...
 
