@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import {
     Dialog,
@@ -16,16 +16,14 @@ import {
     Divider
 } from '@mui/material';
 import { CheckCircle, Error } from '@mui/icons-material';
-//commit
-const BuyButton = ({ stock, user }) => {
 
+const SellButton = ({ stock, user }) => {
     const [showDialog, setShowDialog] = useState(false);
     const [orderType, setOrderType] = useState('market');
     const [quantity, setQuantity] = useState('');
     const [limitPrice, setLimitPrice] = useState('');
     const [error, setError] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
-    // ... existing state declarations remain the same ...
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -56,7 +54,7 @@ const BuyButton = ({ stock, user }) => {
             }
 
             const response = await axios.post(
-                'https://archlinux.tail9023a4.ts.net/buy-stock',
+                'https://archlinux.tail9023a4.ts.net/sell-stock',
                 payload,
                 { headers: { 'Content-Type': 'application/json' } }
             );
@@ -81,7 +79,6 @@ const BuyButton = ({ stock, user }) => {
         setSuccessMessage('');
     };
 
-    // ... existing helper methods remain the same ...
     const validateInputs = () => {
         const qty = Number(quantity);
         if (!quantity || qty <= 0) {
@@ -99,7 +96,7 @@ const BuyButton = ({ stock, user }) => {
         <div>
             <Button
                 variant="contained"
-                color="success"
+                color="error"
                 onClick={() => setShowDialog(true)}
                 sx={{
                     textTransform: 'none',
@@ -108,7 +105,7 @@ const BuyButton = ({ stock, user }) => {
                     '&:hover': { boxShadow: 'none' }
                 }}
             >
-                Buy {stock?.symbol}
+                Sell {stock?.symbol}
             </Button>
 
             <Dialog
@@ -124,7 +121,7 @@ const BuyButton = ({ stock, user }) => {
                 }}
             >
                 <DialogTitle variant="h6" sx={{ pb: 1 }}>
-                    Buy {stock?.symbol}
+                    Sell {stock?.symbol}
                     <Typography variant="body2" color="text.secondary">
                         {stock?.name}
                     </Typography>
@@ -197,7 +194,7 @@ const BuyButton = ({ stock, user }) => {
                             <Button
                                 type="submit"
                                 variant="contained"
-                                color="success"
+                                color="error"
                                 sx={{ borderRadius: 2 }}
                             >
                                 Confirm Order
@@ -210,4 +207,4 @@ const BuyButton = ({ stock, user }) => {
     );
 };
 
-export default BuyButton;
+export default SellButton;

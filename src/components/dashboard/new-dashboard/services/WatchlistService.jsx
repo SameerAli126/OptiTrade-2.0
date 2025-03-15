@@ -1,5 +1,5 @@
 // Filepath: src/components/dashboard/new-dashboard/services/WatchlistService.js
-const API_BASE = 'http://archlinux.tail9023a4.ts.net';
+const API_BASE = 'https://archlinux.tail9023a4.ts.net';
 
 export const WatchlistService = {
     getWatchlist: async (userId) => {

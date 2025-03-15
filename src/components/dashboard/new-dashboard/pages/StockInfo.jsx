@@ -6,6 +6,7 @@ import '@syncfusion/ej2/styles/customized/material.css';
 import OHLCVMarketCap from './buy-sell/OHLCVMarketCap.jsx';
 import StockData from './buy-sell/StockChart.jsx';
 import BuyButton from "../components/BuyButton.jsx"
+import SellButton from "../components/SellButton.jsx"
 import LoadingBars from "../../../UItilities/LoadingBars.jsx"
 import { WatchlistService } from '../services/WatchlistService';
 import { useStateContext } from '../contexts/ContextProvider';
@@ -108,13 +109,9 @@ const StockInfo = ({ stock: propStock }) => {
             <OHLCVMarketCap stock={stock} />
             <StockData stock={stock} />
 
-            <div className="flex justify-between">
+            <div className="flex justify-between mt-4">
                 <BuyButton stock={stock} user={user} />
-                <ButtonComponent
-                    cssClass="e-danger"
-                    content="Sell"
-                    style={{ padding: '10px 20px', borderRadius: '8px' }}
-                />
+                <SellButton stock={stock} user={user} />
             </div>
         </div>
     );
