@@ -7,7 +7,7 @@ const BalanceDisplay = ({ balance }) => {
     const { currentColor } = useStateContext(); // Destructure the current theme color
 
     return (
-        <div className="flex items-center justify-center md:rounded-[1.5rem] px-3 ml-4" style={{ backgroundColor: currentColor }}>
+        <div className="flex items-center justify-center md:rounded-[1.2rem] h-10 px-3 ml-4" style={{ backgroundColor: currentColor }}>
             <span className="text-white text-normal font-normal">Balance: ${formattedBalance}</span>
         </div>
     );
