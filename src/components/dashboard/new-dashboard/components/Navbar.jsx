@@ -33,33 +33,22 @@ const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
 );
 
 const Navbar = () => {
-    const { currentColor, activeMenu, setActiveMenu, handleClick, isClicked, setScreenSize, screenSize } = useStateContext();
+    const {
+        currentColor,
+        activeMenu,
+        setActiveMenu,
+        handleClick,
+        isClicked,
+        setScreenSize,
+        screenSize,
+        cashBalance // Get from context
+    } = useStateContext();
     const { user } = useAuth(); // Destructure user from useAuth
     const cartRef = useRef(null);
     const notificationRef = useRef(null);
     const userProfileRef = useRef(null);
-    const [cashBalance, setCashBalance] = useState(0);
 
-    useEffect(() => {
-        const fetchBalance = async () => {
-            if (user?.id) {
-                try {
-                    const response = await axios.get(
-                        `https://archlinux.tail9023a4.ts.net/user-balance/${user.id}`,
-                        {
-                            headers: {
-                                Authorization: `Bearer ${localStorage.getItem('token')}`
-                            }
-                        }
-                    );
-                    setCashBalance(response.data.cash_balance);
-                } catch (error) {
-                    console.error('Error fetching balance:', error);
-                }
-            }
-        };
-        fetchBalance();
-    }, [user?.id]);
+
     const handleActiveMenu = () => setActiveMenu(!activeMenu);
 
     const handleClickOutside = (event) => {

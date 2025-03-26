@@ -1,5 +1,3 @@
-// Filepath: src/components/dashboard/new-dashboard/pages/Portfolio.jsx
-
 import React, { useState, useEffect } from 'react';
 import PerformanceToday from '../../../dashboard/portfolio-components/PerformanceToday';
 import OverallReturn from '../../../dashboard/portfolio-components/OverallReturn.jsx';
@@ -11,7 +9,7 @@ import { useStateContext } from '../contexts/ContextProvider.jsx';
 import DashHeader from '../components/DashHeader';
 
 const Portfolio = () => {
-
+    const { user } = useStateContext();
     const [portfolioData, setPortfolioData] = useState([]);
 
     // Calculate values here
@@ -21,23 +19,32 @@ const Portfolio = () => {
 
     useEffect(() => {
         const fetchPortfolio = async () => {
+            if (!user?.id) return;
+
             try {
-                const response = await fetch('https://archlinux.tail9023a4.ts.net/portfolio?user_id=4');
+                const response = await fetch(`https://archlinux.tail9023a4.ts.net/portfolio?user_id=${user.id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+
+                if (!response.ok) throw new Error('Failed to fetch portfolio');
+
                 const data = await response.json();
-                setPortfolioData(data.portfolio);
+                setPortfolioData(data.portfolio || []);
             } catch (error) {
                 console.error('Error fetching portfolio data:', error);
+                setPortfolioData([]);
             }
         };
 
         fetchPortfolio();
-    }, []);
+    }, [user?.id]); // Add user.id to dependency array
 
     return (
         <div className="bg-white rounded-3xl p-6">
             <DashHeader category="Numbers" title="Portfolio" />
 
-            {/* Grid with 3 columns on medium screens */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
                 <PerformanceToday />
                 <OverallReturn
@@ -67,9 +74,15 @@ const Portfolio = () => {
                         <tr key={index}>
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{item.symbol}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{item.quantity}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${item.average_price.toFixed(2)}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${item.current_value.toFixed(2)}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${item.total_invested.toFixed(2)}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                ${item.average_price?.toFixed(2) || '0.00'}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                ${item.current_value?.toFixed(2) || '0.00'}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                ${item.total_invested?.toFixed(2) || '0.00'}
+                            </td>
                         </tr>
                     ))}
                     </tbody>

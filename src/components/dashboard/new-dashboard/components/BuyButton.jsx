@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useStateContext } from '../contexts/ContextProvider';
 import axios from 'axios';
 import {
     Dialog,
@@ -16,16 +17,16 @@ import {
     Divider
 } from '@mui/material';
 import { CheckCircle, Error } from '@mui/icons-material';
-//commit
-const BuyButton = ({ stock, user }) => {
 
+const BuyButton = ({ stock, user }) => {
     const [showDialog, setShowDialog] = useState(false);
     const [orderType, setOrderType] = useState('market');
     const [quantity, setQuantity] = useState('');
     const [limitPrice, setLimitPrice] = useState('');
     const [error, setError] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
-    // ... existing state declarations remain the same ...
+    const { cashBalance, refreshCashBalance } = useStateContext();
+    const currentPrice = stock?.close || 0;
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -63,6 +64,7 @@ const BuyButton = ({ stock, user }) => {
 
             if (response.status === 200) {
                 setSuccessMessage(response.data.message);
+                refreshCashBalance();
                 setTimeout(() => {
                     setShowDialog(false);
                     resetForm();
@@ -184,8 +186,40 @@ const BuyButton = ({ stock, user }) => {
                             </Alert>
                         )}
 
+
                         <Divider sx={{ my: 2 }} />
 
+                        <div className="calculation-section">
+                            {orderType === 'market' && (
+                                <Typography variant="body2" sx={{ mb: 1 }}>
+                                    Current Price: ${currentPrice.toFixed(2)}
+                                </Typography>
+                            )}
+                            {orderType === 'limit' && limitPrice && (
+                                <Typography variant="body2" sx={{ mb: 1 }}>
+                                    Limit Price: ${Number(limitPrice).toFixed(2)}
+                                </Typography>
+                            )}
+
+                            {quantity > 0 && (
+                                <>
+                                    <Typography variant="body2" sx={{ mb: 1 }}>
+                                        Total Cost: ${(
+                                        quantity *
+                                        (orderType === 'market' ? currentPrice : limitPrice || currentPrice)
+                                    ).toFixed(2)}
+                                    </Typography>
+                                    <Typography variant="body2" sx={{ mb: 2 }}>
+                                        New Balance: ${(
+                                        cashBalance -
+                                        quantity *
+                                        (orderType === 'market' ? currentPrice : limitPrice || currentPrice)
+                                    ).toFixed(2)}
+                                    </Typography>
+                                </>
+                            )}
+                        </div>
+                        <Divider sx={{ my: 2 }} />
                         <DialogActions sx={{ px: 0 }}>
                             <Button
                                 onClick={() => setShowDialog(false)}

@@ -1,5 +1,6 @@
 // ContextProvider.jsx
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import axios from 'axios';
 import { useAuth } from './AuthContext';
 
 const StateContext = createContext();
@@ -23,6 +24,7 @@ export const ContextProvider = ({ children }) => {
     const [category, setCategory] = useState('Dashboard');
     const [title, setTitle] = useState('Overview');
     const [sidebarColor, setSidebarColor] = useState('#7352FF');
+    const [cashBalance, setCashBalance] = useState(0);
 
     // Add the missing handleClick function
     const handleClick = (clicked) => {
@@ -32,6 +34,27 @@ export const ContextProvider = ({ children }) => {
         }));
     };
 
+    const refreshCashBalance = async () => {
+        if (user?.id) {
+            try {
+                const response = await axios.get(
+                    `https://archlinux.tail9023a4.ts.net/user-balance/${user.id}`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem('token')}`
+                        }
+                    }
+                );
+                setCashBalance(response.data.cash_balance);
+            } catch (error) {
+                console.error('Error refreshing balance:', error);
+            }
+        }
+    };
+
+    useEffect(() => {
+        refreshCashBalance();
+    }, [user?.id]);
     const setMode = (e) => {
         setCurrentMode(e.target.value);
         localStorage.setItem('themeMode', e.target.value);
@@ -67,6 +90,8 @@ export const ContextProvider = ({ children }) => {
             user,
             sidebarColor,
             setSidebarColor,
+            cashBalance,
+            refreshCashBalance
         }}>
             {children}
         </StateContext.Provider>

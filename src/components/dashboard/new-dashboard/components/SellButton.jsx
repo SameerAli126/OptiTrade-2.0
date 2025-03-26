@@ -16,6 +16,7 @@ import {
     Divider
 } from '@mui/material';
 import { CheckCircle, Error } from '@mui/icons-material';
+import { useStateContext } from '../contexts/ContextProvider';
 
 const SellButton = ({ stock, user }) => {
     const [showDialog, setShowDialog] = useState(false);
@@ -24,6 +25,8 @@ const SellButton = ({ stock, user }) => {
     const [limitPrice, setLimitPrice] = useState('');
     const [error, setError] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
+    const { cashBalance, refreshCashBalance } = useStateContext();
+    const currentPrice = stock?.close || 0;
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -180,6 +183,39 @@ const SellButton = ({ stock, user }) => {
                                 {successMessage}
                             </Alert>
                         )}
+
+                        <Divider sx={{ my: 2 }} />
+
+                        <div className="calculation-section">
+                            {orderType === 'market' && (
+                                <Typography variant="body2" sx={{ mb: 1 }}>
+                                    Current Price: ${currentPrice.toFixed(2)}
+                                </Typography>
+                            )}
+                            {orderType === 'limit' && limitPrice && (
+                                <Typography variant="body2" sx={{ mb: 1 }}>
+                                    Limit Price: ${Number(limitPrice).toFixed(2)}
+                                </Typography>
+                            )}
+
+                            {quantity > 0 && (
+                                <>
+                                    <Typography variant="body2" sx={{ mb: 1 }}>
+                                        Total Proceeds: ${(
+                                        quantity *
+                                        (orderType === 'market' ? currentPrice : limitPrice || currentPrice)
+                                    ).toFixed(2)}
+                                    </Typography>
+                                    <Typography variant="body2" sx={{ mb: 2 }}>
+                                        New Balance: ${(
+                                        cashBalance +
+                                        quantity *
+                                        (orderType === 'market' ? currentPrice : limitPrice || currentPrice)
+                                    ).toFixed(2)}
+                                    </Typography>
+                                </>
+                            )}
+                        </div>
 
                         <Divider sx={{ my: 2 }} />
 
