@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import DashHome from './components/dashboard/new-dashboard/pages/DashHome';
 import Portfolio from './components/dashboard/new-dashboard/pages/Portfolio';
 // Import other components as needed
@@ -7,6 +7,7 @@ import Portfolio from './components/dashboard/new-dashboard/pages/Portfolio';
 const DashboardRoutes = () => {
     return (
         <Routes>
+            <Route path="/" element={<Navigate to="/home" />} />
             <Route path="/" element={<DashHome />} /> {/* Default dashboard page */}
             <Route path="/home" element={<DashHome />} />
             <Route path="/portfolio" element={<Portfolio />} />
