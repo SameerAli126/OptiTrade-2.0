@@ -7,16 +7,24 @@ import Dividends from '../../../dashboard/portfolio-components/Dividends.jsx';
 import NewComponent from "../../portfolio-components/NewComponent.jsx";
 import { useStateContext } from '../contexts/ContextProvider.jsx';
 import DashHeader from '../components/DashHeader';
+import PortfolioCard from "../../../dashboard/portfolio-components/PortfolioCard.jsx";
+import TotalReturn from "../../../dashboard/portfolio-components/TotalReturn.jsx";
+import AnnualizedReturn from "../../../dashboard/portfolio-components/AnnualizedReturn.jsx";
+import CAGR from "../../../dashboard/portfolio-components//CAGR.jsx";
+import DividendYield from "../../../dashboard/portfolio-components/DividendYield.jsx";
+import axios from 'axios';
 
 const Portfolio = () => {
     const { user } = useStateContext();
     const [portfolioData, setPortfolioData] = useState([]);
+    const [metrics, setMetrics] = useState(null);
 
-    // Calculate values here
+    // Calculate portfolio values
     const totalInvested = portfolioData.reduce((acc, item) => acc + item.total_invested, 0);
     const currentValue = portfolioData.reduce((acc, item) => acc + item.current_value, 0);
     const overallReturn = currentValue - totalInvested;
 
+    // Fetch portfolio data
     useEffect(() => {
         const fetchPortfolio = async () => {
             if (!user?.id) return;
@@ -29,7 +37,6 @@ const Portfolio = () => {
                 });
 
                 if (!response.ok) throw new Error('Failed to fetch portfolio');
-
                 const data = await response.json();
                 setPortfolioData(data.portfolio || []);
             } catch (error) {
@@ -37,15 +44,36 @@ const Portfolio = () => {
                 setPortfolioData([]);
             }
         };
-
         fetchPortfolio();
-    }, [user?.id]); // Add user.id to dependency array
+    }, [user?.id]);
+
+    // Fetch metrics data
+    useEffect(() => {
+        const fetchMetrics = async () => {
+            if (!user?.id) return;
+            try {
+                const response = await axios.get(
+                    `https://archlinux.tail9023a4.ts.net/metrics/${user.id}`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem('token')}`
+                        }
+                    }
+                );
+                setMetrics(response.data);
+            } catch (error) {
+                console.error('Error fetching metrics:', error);
+            }
+        };
+        fetchMetrics();
+    }, [user?.id]);
 
     return (
         <div className="bg-white rounded-3xl p-6">
             <DashHeader category="Numbers" title="Portfolio" />
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <PortfolioCard>
+                {/* All cards in a single 5-column grid */}
                 <PerformanceToday />
                 <OverallReturn
                     totalInvested={totalInvested}
@@ -55,10 +83,23 @@ const Portfolio = () => {
                 <PortfolioValue value={currentValue || 0} />
                 <Dividends />
                 <NewComponent />
-            </div>
+
+                {/* Metric Cards */}
+                {metrics && (
+                    <>
+                        <TotalReturn
+                            value={metrics.total_return?.toFixed(2)}
+                            percentage={metrics.total_return_percentage}
+                        />
+                        <AnnualizedReturn value={metrics.annualized_return?.toFixed(2)} />
+                        <CAGR value={metrics.cagr?.toFixed(2)} />
+                        <DividendYield value={metrics.dividend_yield?.toFixed(2)} />
+                    </>
+                )}
+            </PortfolioCard>
 
             {/* Portfolio Holdings Table */}
-            <div className="overflow-x-auto rounded-lg shadow-sm">
+            <div className="overflow-x-auto rounded-lg shadow-sm mt-6">
                 <table className="w-full">
                     <thead className="bg-gray-50">
                     <tr>

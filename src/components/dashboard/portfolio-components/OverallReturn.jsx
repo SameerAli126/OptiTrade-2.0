@@ -1,34 +1,34 @@
 import React from 'react';
-import { useStateContext } from '../new-dashboard/contexts/ContextProvider.jsx';
+import { useStateContext } from '../new-dashboard/contexts/ContextProvider';
 
 const OverallReturn = ({ totalInvested, currentValue }) => {
     const { currentColor } = useStateContext();
-    const safeTotal = totalInvested || 0;
-    const safeCurrent = currentValue || 0;
-
-    const overallReturn = safeCurrent - safeTotal;
-    const returnPercentage = safeTotal > 0
-        ? ((overallReturn / safeTotal) * 100).toFixed(2)
+    const overallReturn = currentValue - totalInvested;
+    const returnPercentage = totalInvested > 0
+        ? ((overallReturn / totalInvested) * 100).toFixed(2)
         : 0;
 
-    const getColorClass = () => {
-        if (overallReturn === 0) return 'text-white';
-        return overallReturn > 0 ? 'text-green-400' : 'text-red-800';
-    };
-
     return (
-        <div className="text-white rounded-lg shadow-md p-4 m-2 flex-1" style={{ backgroundColor: currentColor }}>
-            <div className="flex items-center justify-between mb-2">
-                <span className="text-md font-bold text-white flex items-center">
-                    Overall Return
-                </span>
-                <span className={`text-lg px-2 py-1 rounded ${getColorClass()}`}>
-                    {overallReturn > 0 ? '+' : ''}{returnPercentage}%
-                </span>
-            </div>
-            <div className={`text-2xl font-bold ${getColorClass()}`}>
-                {overallReturn > 0 ? '+' : ''}${Math.abs(overallReturn).toLocaleString(undefined, { minimumFractionDigits: 2 })}
-            </div>
+        <div
+            className="rounded-lg p-3 transition-all duration-300 hover:scale-[1.02]"
+            style={{
+                backgroundColor: `${currentColor}10`,
+                border: `1px solid ${currentColor}20`
+            }}
+        >
+            <p className="text-xs font-medium text-slate-400">Overall Return</p>
+            <p
+                className="text-lg font-semibold my-1"
+                style={{ color: currentColor }}
+            >
+                ${Math.abs(overallReturn).toLocaleString(undefined, { minimumFractionDigits: 2 })}
+            </p>
+            <span
+                className="text-xs font-medium"
+                style={{ color: overallReturn >= 0 ? currentColor : '#991b1b' }}
+            >
+        {overallReturn > 0 ? '+' : ''}{returnPercentage}%
+      </span>
         </div>
     );
 };

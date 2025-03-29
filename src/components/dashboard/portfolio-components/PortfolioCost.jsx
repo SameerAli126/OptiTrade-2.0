@@ -1,27 +1,35 @@
 import React from 'react';
-import { useStateContext } from '../new-dashboard/contexts/ContextProvider.jsx';
+import { useStateContext } from '../new-dashboard/contexts/ContextProvider';
 
 const PortfolioCost = ({ value }) => {
     const { currentColor } = useStateContext();
-    const safeValue = value || 0; // Handle undefined
+    const safeValue = value || 0;
 
     return (
-        <div className="text-white rounded-lg shadow-md p-4 m-2 flex-1" style={{ backgroundColor: currentColor }}>
-            <div className="flex items-center justify-between mb-2">
-                <span className="text-md font-bold text-white flex items-center">
-                    Portfolio Cost
-                </span>
-                <span className="text-lg px-2 py-1 rounded text-white">
-                    0.00% {/* Static value */}
-                </span>
-            </div>
-            <div className="text-2xl font-bold text-white">
+        <div
+            className="rounded-lg p-3 transition-all duration-300 hover:scale-[1.02]"
+            style={{
+                backgroundColor: `${currentColor}10`,
+                border: `1px solid ${currentColor}20`
+            }}
+        >
+            <p className="text-xs font-medium text-slate-400">Total Invested</p>
+            <p
+                className="text-lg font-semibold my-1"
+                style={{ color: currentColor }}
+            >
                 ${safeValue.toLocaleString(undefined, {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2
             })}
-            </div>
+            </p>
+            <span
+                className="text-xs font-medium text-slate-400"
+            >
+        Since inception
+      </span>
         </div>
     );
 };
+
 export default PortfolioCost;
