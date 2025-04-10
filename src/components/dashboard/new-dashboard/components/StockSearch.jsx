@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useStockData } from '../contexts/StockDataContext';
+import styled from 'styled-components';
 
 const StockSearch = () => {
     const navigate = useNavigate();
@@ -37,7 +38,7 @@ const StockSearch = () => {
 
     const handleStockSelect = (stock) => {
         navigate('/dashboard/buy-sell', {
-            state: { stock } // Pass stock data via navigation state
+            state: { stock }
         });
         setSearchQuery('');
         setShowResults(false);
@@ -50,51 +51,147 @@ const StockSearch = () => {
     ).slice(0, 5);
 
     return (
-        <div ref={wrapperRef} className="relative mx-4" style={{ height: '40px' }}>
-            <div className="flex items-center h-full bg-white rounded-lg px-3 shadow-sm">
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    width={20}
-                    height={20}
-                    className="text-gray-400"
-                >
-                    <path d="M18.9,16.776A10.539,10.539,0,1,0,16.776,18.9l5.1,5.1L24,21.88ZM10.5,18A7.5,7.5,0,1,1,18,10.5,7.507,7.507,0,0,1,10.5,18Z" />
+        <StyledWrapper ref={wrapperRef}>
+            <div className="group">
+                <svg viewBox="0 0 24 24" aria-hidden="true" className="search-icon">
+                    <g>
+                        <path d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z" />
+                    </g>
                 </svg>
                 <input
-                    type="text"
+                    id="query"
+                    type="search"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     onFocus={() => setShowResults(true)}
                     placeholder="Search stocks..."
-                    className="w-48 ml-2 bg-transparent outline-none text-sm placeholder-gray-400"
-                    disabled={!!error} // Disable input when server is offline
+                    className="input"
+                    name="searchbar"
+                    disabled={!!error}
                 />
-            </div>
 
-            {showResults && filteredResults.length > 0 && (
-                <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-lg shadow-lg z-50 max-h-60 overflow-y-auto">
-                    {filteredResults.map((stock) => (
-                        <div
-                            key={stock.symbol}
-                            onClick={() => handleStockSelect(stock)}
-                            className="flex items-center p-2 hover:bg-gray-100 cursor-pointer"
-                        >
-                            <img
-                                src={stock.logo_light}
-                                alt={stock.symbol}
-                                className="w-6 h-6 mr-2 rounded-full"
-                            />
-                            <div>
-                                <div className="text-sm font-medium">{stock.symbol}</div>
-                                <div className="text-xs text-gray-500 truncate">{stock.name}</div>
+                {showResults && filteredResults.length > 0 && (
+                    <div className="results-dropdown">
+                        {filteredResults.map((stock) => (
+                            <div
+                                key={stock.symbol}
+                                onClick={() => handleStockSelect(stock)}
+                                className="result-item"
+                            >
+                                <img
+                                    src={stock.logo_light}
+                                    alt={stock.symbol}
+                                    className="stock-logo"
+                                />
+                                <div className="stock-info">
+                                    <div className="symbol">{stock.symbol}</div>
+                                    <div className="name">{stock.name}</div>
+                                </div>
                             </div>
-                        </div>
-                    ))}
-                </div>
-            )}
-        </div>
+                        ))}
+                    </div>
+                )}
+            </div>
+        </StyledWrapper>
     );
 };
+
+const StyledWrapper = styled.div`
+  .group {
+    display: flex;
+    line-height: 28px;
+    align-items: center;
+    position: relative;
+    width: 400px; /* Increased width */
+    max-width: 350px;
+  }
+  .input {
+    font-family: "Montserrat", sans-serif;
+    width: 100%;
+    height: 35px;
+    padding-left: 2.5rem;
+    box-shadow: 0 0 0 1.5px #2b2c37, 0 0 25px -17px #000;
+    border: 0;
+    border-radius: 12px;
+    background-color: #16171d;
+    outline: none;
+    color: #bdbecb;
+    transition: all 0.25s cubic-bezier(0.19, 1, 0.22, 1);
+    cursor: text;
+    z-index: 0;
+    font-size: 14px;
+  }
+
+  .input::placeholder {
+    color: #bdbecb;
+  }
+
+  .input:hover {
+    box-shadow: 0 0 0 2.5px #2f303d, 0px 0px 25px -15px #000;
+  }
+
+  .input:active {
+    transform: scale(0.95);
+  }
+
+  .input:focus {
+    box-shadow: 0 0 0 2.5px #2f303d;
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 1rem;
+    fill: #bdbecb;
+    width: 1rem;
+    height: 1rem;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .results-dropdown {
+    position: absolute;
+    top: 110%;
+    width: 100%;
+    background: #2b2c37;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    z-index: 100;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+
+  .result-item {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    cursor: pointer;
+    transition: background 0.2s;
+
+    &:hover {
+      background: #3a3b47;
+    }
+  }
+
+  .stock-logo {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    margin-right: 12px;
+  }
+
+  .stock-info {
+    .symbol {
+      color: #bdbecb;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .name {
+      color: #7e808f;
+      font-size: 12px;
+      margin-top: 2px;
+    }
+  }
+`;
 
 export default StockSearch;
