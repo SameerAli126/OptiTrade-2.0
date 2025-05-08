@@ -1,8 +1,10 @@
 // src/components/accounts/Login.jsx
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+// Corrected import path for useAuth
 import { useAuth } from './dashboard/new-dashboard/contexts/AuthContext.jsx';
 import { requestPasswordReset, verifyResetOTP } from "./accounts/services/authService";
+// Assuming authService is in the same 'accounts' folder
 import FormField from "./accounts/components/FormField";
 import PasswordField from "./accounts/components/PasswordField";
 import ForgotPasswordForm from "./accounts/components/ForgotPasswordForm";
@@ -22,33 +24,48 @@ const Login = () => {
     });
 
     const navigate = useNavigate();
-    const { login } = useAuth();
+    const { login } = useAuth(); // This hook MUST come from the SAME AuthContext instance that wraps ContextProvider
 
     const handleLogin = async (e) => {
         e.preventDefault();
+        console.log("Login.jsx: handleLogin initiated with email:", formData.email);
         try {
+            // Ensure your Vite proxy is configured for `/api_v1/login` if you're using it,
+            // OR use the direct URL if CORS is fixed on the server.
             const response = await fetch("https://archlinux.tail9023a4.ts.net/login", {
+                // const response = await fetch("/api_v1/login", { // Example if using Vite proxy
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email: formData.email, u_pass: formData.password }),
             });
 
             const data = await response.json();
-            if (response.ok) {
+            console.log("Login.jsx: API response received, status:", response.status, "data:", data);
+
+            if (response.ok && data.token && data.user) {
+                console.log("Login.jsx: Login successful, calling AuthContext.login with token and user data.");
+                // The login function from useAuth() will update the state in the AuthContext instance
                 login(data.token, {
                     id: data.user.id,
                     u_name: data.user.u_name,
                     email: data.user.email
                 });
+                console.log("Login.jsx: Navigating to /dashboard.");
                 navigate("/dashboard");
+            } else {
+                const errorMessage = data.message || "Login failed. Please check your credentials or API response.";
+                console.error("Login.jsx: Login failed.", errorMessage, "Response data:", data);
+                alert(errorMessage);
             }
         } catch (error) {
-            console.error('Login error:', error);
+            console.error('Login.jsx: Login error during fetch or processing:', error);
+            alert("An error occurred during login. Please try again.");
         }
     };
 
     const handlePasswordResetRequest = async (e) => {
         e.preventDefault();
+        // ... (rest of function - ensure paths within authService are correct)
         try {
             const response = await requestPasswordReset(formData.resetEmail);
             if (!response.ok) throw new Error(await response.text());
@@ -61,6 +78,7 @@ const Login = () => {
 
     const handlePasswordReset = async (e) => {
         e.preventDefault();
+        // ... (rest of function - ensure paths within authService are correct)
         try {
             const response = await verifyResetOTP(
                 formData.resetEmail,
@@ -81,10 +99,8 @@ const Login = () => {
         <div className="flex h-screen">
             {/* Left Side Image */}
             <div className="hidden md:flex w-1/2 bg-cover bg-no-repeat bg-center"
-                 style={{ backgroundImage: 'url("/path/to/image.jpg")' }}>
-                <div className="flex items-center justify-center w-full bg-gray-200 text-gray-700 text-2xl font-semibold">
-                    <img src={LoginImage} alt="LoginImage" />
-                </div>
+                 style={{ backgroundImage: `url(${LoginImage})` }}> {/* Use the imported LoginImage */}
+                {/* Removed redundant div and img tag if LoginImage is used as background */}
             </div>
 
             {/* Right Side Form */}
@@ -144,7 +160,7 @@ const Login = () => {
                         </form>
                     ) : (
                         <ForgotPasswordForm
-                            stages={{ showResetForm: view === 'reset' }}
+                            stages={{ showResetForm: view === 'reset' }} // Assuming 'reset' is the correct stage key
                             email={formData.resetEmail}
                             otp={formData.resetOTP}
                             newPassword={formData.newPassword}

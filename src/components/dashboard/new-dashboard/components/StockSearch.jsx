@@ -11,7 +11,7 @@ const StockSearch = () => {
     const [showResults, setShowResults] = useState(false);
     const wrapperRef = useRef(null);
 
-    // Handle click outside to close dropdown
+    // Handle click outside to close the dropdown
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
