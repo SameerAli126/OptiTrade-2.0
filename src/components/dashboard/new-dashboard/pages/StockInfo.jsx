@@ -128,8 +128,8 @@ const StockInfo = ({ stock: propStock }) => {
 
                 {/* Right part of the header (Live Price Display) */}
                 <div className="ml-auto text-right">
-                    <p className="text-sm text-gray-600 dark:text-gray-300">Live Price</p>
-                    <p className="text-2xl font-semibold text-gray-900 dark:text-white">
+                    <p className="text-md text-emerald-600 dark:text-gray-300">Live Price</p>
+                    <p className="text-3xl font-semibold text-gray-900 dark:text-white">
                         {isLoadingPrices && !currentPrice ? '...' :
                             pricesError ? 'Error' :
                                 currentPrice !== null ? `$${parseFloat(currentPrice).toFixed(2)}` : 'N/A'}
