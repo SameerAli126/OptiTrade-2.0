@@ -780,30 +780,16 @@ export const medicalproBranding = {
 };
 
 export const themeColors = [
-  {
-    name: 'blue-theme',
-    color: '#1A97F5',
-  },
-  {
-    name: 'green-theme',
-    color: '#03C9D7',
-  },
-  {
-    name: 'purple-theme',
-    color: '#7352FF',
-  },
-  {
-    name: 'red-theme',
-    color: '#FF5C8E',
-  },
-  {
-    name: 'indigo-theme',
-    color: '#1E4DB7',
-  },
-  {
-    color: '#FB9678',
-    name: 'orange-theme',
-  },
+  { name: 'blue-theme', color: '#1A97F5' },
+  { name: 'green-theme', color: '#03C9D7' },
+  { name: 'purple-theme', color: '#7352FF' },
+  { name: 'red-theme', color: '#FF5C8E' },
+  { name: 'indigo-theme', color: '#1E4DB7' },
+  { name: 'orange-theme', color: '#FB9678' },
+  { name: 'black-theme', color: '#000000' },
+  { name: 'pink-theme', color: '#EC4899' },
+  { name: 'teal-theme', color: '#14B8A6' },
+  { name: 'yellow-theme', color: '#F59E0B' }
 ];
 
 export const userProfileData = [
@@ -5831,3 +5817,4 @@ export const PyramidData = [
   { x: 'Fruits', y: 520, text: '520 cal' },
   { x: 'Bread, Rice, Pasta', y: 930, text: '930 cal' },
 ];
+

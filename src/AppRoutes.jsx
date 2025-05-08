@@ -2,6 +2,7 @@ import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import DashHome from './components/dashboard/new-dashboard/pages/DashHome';
 import Portfolio from './components/dashboard/new-dashboard/pages/Portfolio';
+import CssBaseline from '@mui/material/CssBaseline';
 // Import other components as needed
 
 const DashboardRoutes = () => {

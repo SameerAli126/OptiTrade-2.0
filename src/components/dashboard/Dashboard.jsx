@@ -1,38 +1,35 @@
-// Filepath: src/components/dashboard/Dashboard.jsx
+// src/components/dashboard/Dashboard.jsx
 import React, { useState, useEffect } from 'react';
-import { FiSettings } from 'react-icons/fi';
-import { TooltipComponent } from '@syncfusion/ej2-react-popups';
+// Removed FiSettings and TooltipComponent if only used for Theme Settings trigger in Layout
 import { useStateContext } from './new-dashboard/contexts/ContextProvider';
 import DashboardRoutes from './DashboardRoutes';
-import DashboardLayout from './DashboardLayout';
-import { ThemeSettings } from "./new-dashboard/components/index.jsx";
+import DashboardLayout from './DashboardLayout'; // Using the layout component
+import { ThemeSettings } from "./new-dashboard/components/index.jsx"; // Keep if needed within content
 import { useStockData } from './new-dashboard/contexts/StockDataContext';
 
 const Dashboard = () => {
-    const { setCurrentColor, setCurrentMode, currentMode, themeSettings, setThemeSettings } = useStateContext();
+    // Removed setCurrentColor, setCurrentMode, currentMode as they are primarily managed in ContextProvider now
+    // Kept themeSettings state if ThemeSettings component is rendered *inside* the main content area
+    const { themeSettings } = useStateContext();
     const [selectedStock, setSelectedStock] = useState(null);
     const { stockData } = useStockData();
 
-    useEffect(() => {
-        const currentThemeColor = localStorage.getItem('colorMode');
-        const currentThemeMode = localStorage.getItem('themeMode');
-        if (currentThemeColor && currentThemeMode) {
-            setCurrentColor(currentThemeColor);
-            setCurrentMode(currentThemeMode);
-        }
-    }, []);
+    // Initial theme setup is now handled within ContextProvider's useEffect
 
     return (
+        // Remove the outer div applying the 'dark' class locally
+        // <div className={currentMode === 'Dark' ? 'dark' : ''}>
         <DashboardLayout>
-            <div className="p-4">
-                {themeSettings && <ThemeSettings />}
-                <DashboardRoutes
-                    selectedStock={selectedStock}
-                    setSelectedStock={setSelectedStock}
-                    stockData={stockData}  // Pass stockData to child routes
-                />
-            </div>
+            {/* Content passed as children to DashboardLayout */}
+            {/* Optionally render ThemeSettings here if needed, though trigger is in Layout */}
+            {/* {themeSettings && <ThemeSettings />} */}
+            <DashboardRoutes
+                selectedStock={selectedStock}
+                setSelectedStock={setSelectedStock}
+                stockData={stockData}
+            />
         </DashboardLayout>
+        // </div>
     );
 };
 

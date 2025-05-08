@@ -7,11 +7,15 @@ import { useStateContext } from '../contexts/ContextProvider.jsx';
 const ThemeSettings = () => {
     const { setColor, setMode, currentMode, currentColor, sidebarColor, setSidebarColor } = useStateContext();
 
+    const formatColorName = (name) => {
+        return name.replace('-theme', '').charAt(0).toUpperCase() + name.replace('-theme', '').slice(1);
+    };
+
     return (
         <div
             className="bg-white dark:bg-[#42464D] p-4 rounded-lg shadow-xl"
             style={{
-                width: '20rem',
+                width: '24rem',
                 maxWidth: 'calc(100vw - 2rem)',
             }}
         >
@@ -49,15 +53,15 @@ const ThemeSettings = () => {
                 <p className="font-semibold text-lg mb-4">Theme Colors</p>
                 <div className="flex flex-wrap gap-3">
                     {themeColors.map((item, index) => (
-                        <TooltipComponent key={index} content={item.name} position="TopCenter">
-                            <div className="relative cursor-pointer">
+                        <TooltipComponent key={index} content={formatColorName(item.name)} position="TopCenter">
+                            <div className="relative cursor-pointer group">
                                 <button
                                     type="button"
-                                    className="h-8 w-8 rounded-full flex items-center justify-center"
+                                    className="h-9 w-9 rounded-full flex items-center justify-center ring-1 ring-gray-200 dark:ring-gray-600 hover:ring-2 hover:ring-primary transition-all"
                                     style={{ backgroundColor: item.color }}
                                     onClick={() => setColor(item.color)}
                                 >
-                                    <BsCheck className={`text-white text-xl ${item.color === currentColor ? 'opacity-100' : 'opacity-0'}`} />
+                                    <BsCheck className={`text-white text-xl ${item.color === currentColor ? 'opacity-100' : 'opacity-0'} transition-opacity`} />
                                 </button>
                             </div>
                         </TooltipComponent>
@@ -70,15 +74,15 @@ const ThemeSettings = () => {
                 <p className="font-semibold text-lg mb-4">Sidebar Colors</p>
                 <div className="flex flex-wrap gap-3">
                     {themeColors.map((item, index) => (
-                        <TooltipComponent key={index} content={item.name} position="TopCenter">
-                            <div className="relative cursor-pointer">
+                        <TooltipComponent key={index} content={formatColorName(item.name)} position="TopCenter">
+                            <div className="relative cursor-pointer group">
                                 <button
                                     type="button"
-                                    className="h-8 w-8 rounded-full flex items-center justify-center"
+                                    className="h-9 w-9 rounded-full flex items-center justify-center ring-1 ring-gray-200 dark:ring-gray-600 hover:ring-2 hover:ring-primary transition-all"
                                     style={{ backgroundColor: item.color }}
                                     onClick={() => setSidebarColor(item.color)}
                                 >
-                                    <BsCheck className={`text-white text-xl ${item.color === sidebarColor ? 'opacity-100' : 'opacity-0'}`} />
+                                    <BsCheck className={`text-white text-xl ${item.color === sidebarColor ? 'opacity-100' : 'opacity-0'} transition-opacity`} />
                                 </button>
                             </div>
                         </TooltipComponent>

@@ -6,46 +6,114 @@ import { WatchlistService } from '../services/WatchlistService';
 import { useStateContext } from '../contexts/ContextProvider';
 import { useStockData } from '../contexts/StockDataContext';
 import { FaTrash } from 'react-icons/fa';
+import { localStockData } from '../data/dummyTable';
+
+const dummyWatchlistStocks = [
+    {
+        ...localStockData.find(stock => stock.symbol === 'AAPL'),
+        logo_light: 'https://logo.clearbit.com/apple.com',
+        sector: 'Technology',
+        last_dividend_date: '2023-05-12',
+        last_dividend_amount: 0.24,
+        dividend_yield: 0.58,
+        payment_frequency: 'Quarterly'
+    },
+    {
+        ...localStockData.find(stock => stock.symbol === 'MSFT'),
+        logo_light: 'https://logo.clearbit.com/microsoft.com',
+        sector: 'Technology',
+        last_dividend_date: '2023-03-09',
+        last_dividend_amount: 0.68,
+        dividend_yield: 0.80,
+        payment_frequency: 'Quarterly'
+    },
+    {
+        ...localStockData.find(stock => stock.symbol === 'TSLA'),
+        logo_light: 'https://logo.clearbit.com/tesla.com',
+        sector: 'Automotive',
+        last_dividend_date: 'N/A',
+        last_dividend_amount: 0,
+        dividend_yield: 0,
+        payment_frequency: 'N/A'
+    },
+];
 
 const Watchlist = () => {
     const navigate = useNavigate();
-    const [watchlistStocks, setWatchlistStocks] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [watchlistStocks, setWatchlistStocks] = useState(dummyWatchlistStocks);
+    const [loading, setLoading] = useState(false);
     const { user } = useStateContext();
     const { stockData, isLoading: stocksLoading, error: stocksError } = useStockData();
 
-    const fetchWatchlist = async () => {
-        if (!user?.id || !stockData) return;
-
-        setLoading(true);
-        try {
-            const watchlistResponse = await WatchlistService.getWatchlist(user.id);
-            const watchlistSymbols = watchlistResponse.map(item => item.stock_symbol);
-            const filteredStocks = stockData
-                .filter(stock => watchlistSymbols.includes(stock.symbol))
-                .map(stock => ({
-                    ...stock,
-                    logo_light: stock.logo_light || '',
-                    sector: stock.sector || 'N/A'
-                }));
-            setWatchlistStocks(filteredStocks);
-        } catch (error) {
-            console.error('Error fetching watchlist:', error);
-        }
-        setLoading(false);
-    };
     useEffect(() => {
-        fetchWatchlist();
+        let isMounted = true;
+
+        const timeoutId = setTimeout(() => {
+            if (isMounted) {
+                console.warn('Timeout reached. Loading dummy data.');
+                setWatchlistStocks(dummyWatchlistStocks);
+                setLoading(false);
+            }
+        }, 10000); // 10 sec timeout
+
+        const fetchData = async () => {
+            if (!user?.id) {
+                setWatchlistStocks(dummyWatchlistStocks);
+                return;
+            }
+
+            setLoading(true);
+            try {
+                const watchlistResponse = await WatchlistService.getWatchlist(user.id);
+                if (watchlistResponse && stockData) {
+                    const watchlistSymbols = watchlistResponse.map(item => item.stock_symbol);
+                    const filteredStocks = stockData
+                        .filter(stock => watchlistSymbols.includes(stock.symbol))
+                        .map(stock => ({
+                            ...stock,
+                            logo_light: stock.logo_light || '',
+                            sector: stock.sector || 'N/A',
+                            last_dividend_date: stock.last_dividend_date || 'N/A',
+                            last_dividend_amount: stock.last_dividend_amount || 0,
+                            dividend_yield: stock.dividend_yield || 0,
+                            payment_frequency: stock.payment_frequency || 'N/A'
+                        }));
+                    if (isMounted) {
+                        clearTimeout(timeoutId);
+                        setWatchlistStocks(filteredStocks);
+                    }
+                }
+            } catch (error) {
+                console.error('API error, loading dummy data:', error);
+                if (isMounted) setWatchlistStocks(dummyWatchlistStocks);
+            }
+            if (isMounted) setLoading(false);
+        };
+
+        fetchData();
+
+        return () => {
+            isMounted = false;
+            clearTimeout(timeoutId);
+        };
     }, [user, stockData]);
 
     const handleRemove = async (symbol) => {
-        if (await WatchlistService.removeFromWatchlist(user.id, symbol)) {
+        if (!user?.id) {
             setWatchlistStocks(prev => prev.filter(stock => stock.symbol !== symbol));
+            return;
+        }
+
+        try {
+            if (await WatchlistService.removeFromWatchlist(user.id, symbol)) {
+                setWatchlistStocks(prev => prev.filter(stock => stock.symbol !== symbol));
+            }
+        } catch (error) {
+            console.error('Error removing from watchlist:', error);
         }
     };
 
     const handleSymbolClick = (stock) => {
-        // Create clean serializable stock object
         const cleanStock = {
             symbol: stock.symbol,
             name: stock.name,
@@ -55,7 +123,7 @@ const Watchlist = () => {
             close: stock.close,
             volume: stock.volume,
             marketCap: stock.marketCap,
-            logo_high_light: stock.logo_light, // Match property name used in StockInfo
+            logo_high_light: stock.logo_light,
             sector: stock.sector,
             last_dividend_date: stock.last_dividend_date,
             last_dividend_amount: stock.last_dividend_amount,
@@ -72,12 +140,15 @@ const Watchlist = () => {
         return marketCap ? `$${marketCap.toLocaleString()}` : 'N/A';
     };
 
-    if (stocksLoading) return <p>Loading stock data...</p>;
-    if (stocksError) return <p>Error loading stock data: {stocksError.message}</p>;
-
     return (
         <div style={{ marginTop: '0%', marginLeft: '0%', maxWidth: '95%', overflowX: 'auto' }}>
             <DashHeader category="Favorites" title="Watchlist" />
+
+            {(!user || stocksError) && (
+                <p style={{ color: 'orange', marginBottom: '10px' }}>
+                    Note: Using demo watchlist data {!user ? '(not logged in)' : '(server unavailable)'}
+                </p>
+            )}
 
             {loading ? (
                 <p>Loading watchlist...</p>
@@ -88,14 +159,21 @@ const Watchlist = () => {
                     dataSource={watchlistStocks}
                     allowFiltering={true}
                     filterSettings={{ type: 'Excel' }}
+                    cssClass="custom-grid"
+                    width="100%" // Added fluid width
+                    style={{
+                        maxWidth: '1200px', // Constrain maximum width
+                        margin: '0 auto'
+                    }}
                 >
                     <ColumnsDirective>
                         <ColumnDirective
                             field='symbol'
                             headerText='Symbol'
-                            width='180'
+                            width='140'
+
                             template={(props) => (
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                                     <img
                                         src={props.logo_light}
                                         alt={`${props.symbol} logo`}
@@ -105,6 +183,9 @@ const Watchlist = () => {
                                             borderRadius: '50%',
                                             backgroundColor: 'white',
                                             padding: '2px'
+                                        }}
+                                        onError={(e) => {
+                                            e.target.src = 'https://via.placeholder.com/28';
                                         }}
                                     />
                                     <span
@@ -132,56 +213,21 @@ const Watchlist = () => {
                                 </div>
                             )}
                         />
-                        {/* Other columns remain the same */}
-                        <ColumnDirective
-                            field='name'
-                            headerText='Company Name'
-                            width='200'
-                            textAlign='Left'
-                        />
-                        <ColumnDirective
-                            field='open'
-                            headerText='Open'
-                            width='120'
-                            format='N2'
-                            textAlign='Right'
-                        />
-                        <ColumnDirective
-                            field='high'
-                            headerText='High'
-                            width='120'
-                            format='N2'
-                            textAlign='Right'
-                        />
-                        <ColumnDirective
-                            field='low'
-                            headerText='Low'
-                            width='120'
-                            format='N2'
-                            textAlign='Right'
-                        />
-                        <ColumnDirective
-                            field='close'
-                            headerText='Close'
-                            width='120'
-                            format='N2'
-                            textAlign='Right'
-                        />
-                        <ColumnDirective
-                            field='volume'
-                            headerText='Volume'
-                            width='120'
-                            format='N0'
-                            textAlign='Right'
-                        />
+                        <ColumnDirective field='name' headerText='Company Name' width='150' textAlign='Left' />
+                        <ColumnDirective field='sector' headerText='Sector' width='150' textAlign='Left' />
+                        <ColumnDirective field='open' headerText='Open' width='100' format='N2' textAlign='Right' />
+                        <ColumnDirective field='high' headerText='High' width='100' format='N2' textAlign='Right' />
+                        <ColumnDirective field='low' headerText='Low' width='120' format='N2' textAlign='Right' />
+                        <ColumnDirective field='close' headerText='Close' width='120' format='N2' textAlign='Right' />
+                        <ColumnDirective field='volume' headerText='Volume' width='120' format='N0' textAlign='Right' />
                         <ColumnDirective
                             field='marketCap'
                             headerText='Market Cap'
                             width='140'
                             template={(props) => (
                                 <span style={{ textAlign: 'right', display: 'block' }}>
-                {formatMarketCap(props.marketCap)}
-            </span>
+                                    {formatMarketCap(props.marketCap)}
+                                </span>
                             )}
                         />
                     </ColumnsDirective>

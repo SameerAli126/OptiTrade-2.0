@@ -11,6 +11,7 @@ import LoadingBars from "../../../UItilities/LoadingBars.jsx"
 import { WatchlistService } from '../services/WatchlistService';
 import { useStateContext } from '../contexts/ContextProvider';
 import { useLocation } from 'react-router-dom';
+import { usePriceData } from '../contexts/PriceDataContext'; // Import the new hook
 
 const sectorIcons = {
     'Healthcare': <FaHeartbeat />,
@@ -28,9 +29,13 @@ const sectorIcons = {
 
 const StockInfo = ({ stock: propStock }) => {
     const { state } = useLocation();
-    const stock = state?.stock || propStock; // Use state first, then prop
-    const { user, sidebarColor } = useStateContext(); // Destructure sidebarColor
+    const stock = state?.stock || propStock;
+    const { user, sidebarColor } = useStateContext();
     const [isInWatchlist, setIsInWatchlist] = useState(false);
+
+    // Use the new PriceData context
+    const { pricesData, isLoadingPrices, pricesError } = usePriceData();
+    const [currentPrice, setCurrentPrice] = useState(null);
 
     useEffect(() => {
         const checkWatchlistStatus = async () => {
@@ -44,8 +49,21 @@ const StockInfo = ({ stock: propStock }) => {
                 }
             }
         };
-        checkWatchlistStatus();
+        if (stock?.symbol) { // Ensure stock object and symbol exist
+            checkWatchlistStatus();
+        }
     }, [user, stock]);
+
+    useEffect(() => {
+        if (pricesData && stock?.symbol) {
+            const stockPriceData = pricesData.find(p => p.symbol === stock.symbol);
+            if (stockPriceData) {
+                setCurrentPrice(stockPriceData.price);
+            } else {
+                setCurrentPrice(null); // Price not found for this symbol
+            }
+        }
+    }, [pricesData, stock]);
 
     const handleAddToFavorites = async () => {
         if (!user?.id || !stock?.symbol) return;
@@ -68,41 +86,54 @@ const StockInfo = ({ stock: propStock }) => {
 
     return (
         <div className="rounded-lg shadow-md p-6" style={{ backgroundColor: sidebarColor }}>
-            <div className="flex items-center mb-6">
-                <img
-                    src={stock.logo_high_light}
-                    alt={`${stock.symbol} Logo`}
-                    className="w-16 h-16 rounded-full mr-4"
-                />
+            <div className="flex items-center mb-6"> {/* Main header flex container */}
+                {/* Left part of the header (Logo, Symbol/Name, Watchlist, Sector) */}
                 <div className="flex items-center">
-                    <div className="flex flex-col mr-4">
-                        <div className="C1-top text-2xl font-semibold text-gray-900 dark:text-white">
-                            {stock.symbol}
+                    <img
+                        src={stock.logo_high_light || `https://via.placeholder.com/64?text=${stock.symbol}`} // Added fallback for logo
+                        alt={`${stock.symbol} Logo`}
+                        className="w-16 h-16 rounded-full mr-4"
+                    />
+                    <div className="flex items-center">
+                        <div className="flex flex-col mr-4">
+                            <div className="C1-top text-2xl font-semibold text-gray-900 dark:text-white">
+                                {stock.symbol}
+                            </div>
+                            <div className="C1-bottom text-gray-600 dark:text-gray-300">
+                                {stock.name}
+                            </div>
                         </div>
-                        <div className="C1-bottom text-gray-600 dark:text-gray-300">
-                            {stock.name}
-                        </div>
-                    </div>
-                    <button
-                        onClick={!isInWatchlist ? handleAddToFavorites : undefined}
-                        className={`text-xl p-2 rounded-full transition-all duration-300 ${
-                            isInWatchlist
-                                ? 'text-green-500 bg-green-100 dark:bg-green-900/30 cursor-default'
-                                : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer'
-                        }`}
-                        disabled={isInWatchlist}
-                    >
-                        {isInWatchlist ? (
-                            <FiCheck className="w-5 h-5" />
-                        ) : (
-                            <FiPlus className="w-5 h-5" />
+                        <button
+                            onClick={!isInWatchlist ? handleAddToFavorites : undefined}
+                            className={`text-xl p-2 rounded-full transition-all duration-300 ${
+                                isInWatchlist
+                                    ? 'text-green-500 bg-green-100 dark:bg-green-900/30 cursor-default'
+                                    : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer'
+                            }`}
+                            disabled={isInWatchlist}
+                        >
+                            {isInWatchlist ? (
+                                <FiCheck className="w-5 h-5" />
+                            ) : (
+                                <FiPlus className="w-5 h-5" />
+                            )}
+                        </button>
+                        {sectorIcons[stock.sector] && (
+                            <span className="ml-2 text-2xl text-gray-900 dark:text-white">
+                                {sectorIcons[stock.sector]}
+                            </span>
                         )}
-                    </button>
-                    {sectorIcons[stock.sector] && (
-                        <span className="ml-2 text-2xl text-gray-900 dark:text-white">
-                            {sectorIcons[stock.sector]}
-                        </span>
-                    )}
+                    </div>
+                </div>
+
+                {/* Right part of the header (Live Price Display) */}
+                <div className="ml-auto text-right">
+                    <p className="text-sm text-gray-600 dark:text-gray-300">Live Price</p>
+                    <p className="text-2xl font-semibold text-gray-900 dark:text-white">
+                        {isLoadingPrices && !currentPrice ? '...' :
+                            pricesError ? 'Error' :
+                                currentPrice !== null ? `$${parseFloat(currentPrice).toFixed(2)}` : 'N/A'}
+                    </p>
                 </div>
             </div>
 

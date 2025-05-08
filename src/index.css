@@ -1,11 +1,31 @@
+/* src/index.css */
+/* Import Light Syncfusion Theme (Example: Material) */
 @import url('https://cdn.syncfusion.com/ej2/material.css');
 @import '../node_modules/@syncfusion/ej2-layouts/styles/fluent.css';
 @import "../node_modules/@syncfusion/ej2-base/styles/fluent.css";
 @import "../node_modules/@syncfusion/ej2-buttons/styles/fluent.css";
+
+/* Import Dark Syncfusion Theme (Example: Material Dark) */
+/* Wrap dark theme in .dark scope if necessary, or rely on Syncfusion's built-in dark classes */
+html.dark .e-grid /* Example target */ {
+  /* You might need specific Syncfusion dark theme imports or overrides here */
+  /* Alternatively, Syncfusion might automatically detect the .dark class */
+  /* Consult Syncfusion documentation for the specific theme you're using */
+}
+/* If Syncfusion doesn't automatically switch with the .dark class, */
+/* you might import the dark theme directly: */
+/* @import url('https://cdn.syncfusion.com/ej2/material-dark.css'); */
+/* But ensure it's properly scoped or managed via class switching on the body/root */
+
+
+/* Keep existing layout imports if needed */
+
+/* Tailwind Imports */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Global Styles */
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -13,6 +33,9 @@ body {
   sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /* Apply base background/text colors using Tailwind for dark mode support */
+  @apply bg-gray-100 dark:bg-gray-800 text-black dark:text-gray-100; /* Adjusted default body background */
 }
 
 code {
@@ -20,5 +43,44 @@ code {
   monospace;
 }
 
+/* Remove or comment out conflicting styles from App.css */
+/*
+.App {
+  text-align: center;
+}
 
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
 
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+*/
