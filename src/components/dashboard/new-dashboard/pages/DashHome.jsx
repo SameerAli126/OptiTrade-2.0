@@ -5,7 +5,7 @@ import DashHeader from '../components/DashHeader';
 
 // --- Import your new custom components ---
 import NasdaqSnapshotCard from '../components/DashHome/NasdaqSnapshotCard';
-import AISpotlightStockCard from '../components/DashHome/AISpotlightStockCard';
+import AISpotlightStockCard from '../components/DashHome/AiSpotlightStockCard.jsx';
 // import MyWatchlistMoverCard from '../components/DashHome/MyWatchlistMoverCard'; // Create this if needed
 import MyPortfolioQuickSummaryCard from '../components/DashHome/MyPortfolioQuickSummaryCard';
 // import AIOpportunitiesRadarCard from '../components/DashHome/AIOpportunitiesRadarCard'; // Create this
