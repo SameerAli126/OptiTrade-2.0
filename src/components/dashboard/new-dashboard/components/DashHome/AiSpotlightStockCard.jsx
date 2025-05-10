@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom'; // Assuming you use React Router for navigation
 import { FaChartLine, FaLightbulb } from 'react-icons/fa'; // Example icons
-
+//push for build error
 const AISpotlightStockCard = ({ stock, currentColor }) => {
     if (!stock) return null;
 
