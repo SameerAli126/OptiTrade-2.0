@@ -57,7 +57,7 @@ const SellButton = ({ stock, user }) => {
             }
 
             const response = await axios.post(
-                'https://archlinux.tail9023a4.ts.net/sell-stock',
+                'https://archlinux.tail9023a4.ts.net/portfolio/sell',
                 payload,
                 { headers: { 'Content-Type': 'application/json' } }
             );

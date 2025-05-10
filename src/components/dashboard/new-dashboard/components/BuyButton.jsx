@@ -57,7 +57,7 @@ const BuyButton = ({ stock, user }) => {
             }
 
             const response = await axios.post(
-                'https://archlinux.tail9023a4.ts.net/buy-stock',
+                'https://archlinux.tail9023a4.ts.net/portfolio/buy',
                 payload,
                 { headers: { 'Content-Type': 'application/json' } }
             );
