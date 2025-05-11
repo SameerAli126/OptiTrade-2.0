@@ -7,7 +7,7 @@ const MyPortfolioQuickSummaryCard = ({ summary, currentColor }) => {
     if (!summary) return null;
 
     return (
-        <div className="bg-white dark:bg-secondary-dark-bg p-6 rounded-2xl shadow-md w-full lg:w-1/2"> {/* Adjust width as needed */}
+        <div className="bg-white dark:bg-secondary-dark-bg p-6 rounded-2xl shadow-md w-full "> {/* Adjust width as needed */}
             <div className="flex items-center mb-4">
                 <FaBriefcase className="text-2xl mr-3" style={{ color: currentColor }} />
                 <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200">My Portfolio Summary</h3>
@@ -37,7 +37,7 @@ const MyPortfolioQuickSummaryCard = ({ summary, currentColor }) => {
                     <FaRobot className="mr-2 mt-1 flex-shrink-0" style={{ color: currentColor }} />
                     <span className="font-semibold">AI Portfolio Tip:</span>
                 </p>
-                <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 ml-5">
+                <p className="text-md text-gray-600 dark:text-gray-400 mt-1 ml-5">
                     {summary.aiPortfolioTip}
                 </p>
             </div>

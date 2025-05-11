@@ -69,7 +69,7 @@ const Portfolio = () => {
     }, [user?.id]);
 
     return (
-        <div className="bg-white rounded-3xl p-6">
+        <div className=" rounded-3xl p-6">
             <DashHeader category="Numbers" title="Portfolio" />
 
             <PortfolioCard>

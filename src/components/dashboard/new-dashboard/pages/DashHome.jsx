@@ -30,7 +30,11 @@ const dummyPortfolioSummary = {
     todaysPnL_percent: "+1.38%",
     overallReturn_absolute: "+498.28",
     overallReturn_percent: "+10.0%",
-    aiPortfolioTip: "AI suggests your portfolio is tech-heavy. Consider diversifying into other sectors for better risk management."
+    aiPortfolioTip: "AI suggests your portfolio is tech-heavy. Consider diversifying into other sectors for better risk management." +
+        " You can also consider adding more stocks to your portfolio to increase diversification." +
+        " So far, your portfolio has a 100% return on investment (ROI) and is in the green." +
+        " You can also see your portfolio's performance in the AI Portfolio Overview card." +
+        " If you want to see more details, click the AI Portfolio Overview card."
 };
 // ... Add more dummy data for other cards as you build them
 
@@ -42,25 +46,39 @@ const DashHome = () => {
     const userHasPortfolio = user && true; // Replace 'true' with actual logic e.g. user.portfolio?.holdings?.length > 0
 
     return (
-        <div className="rounded-3xl p-4 md:p-6 bg-white dark:bg-secondary-dark-bg dark:text-gray-200">
+        <div className="rounded-3xl p-4 md:p-6 dark:bg-secondary-dark-bg dark:text-gray-200">
             <DashHeader category="Overview" title="Dashboard Home" />
 
             {/* --- TOP SECTION: MARKET & AI SNAPSHOT --- */}
-            <div className="mt-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                <NasdaqSnapshotCard data={dummyNasdaqData} currentColor={currentColor} />
+            <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Row 1 */}
+                <NasdaqSnapshotCard currentColor={currentColor} />
+
+                {/* Conditionally render Portfolio Summary if user has a portfolio,
+                    otherwise, you might want a placeholder or another card */}
+                {userHasPortfolio ? (
+                    <MyPortfolioQuickSummaryCard summary={dummyPortfolioSummary} currentColor={currentColor} />
+                ) : (
+                    // Optional: Placeholder if no portfolio
+                    <div className="bg-white dark:bg-secondary-dark-bg p-6 rounded-2xl shadow-md flex items-center justify-center min-h-[200px]"> {/* Adjust min-height as needed */}
+                        <p className="text-gray-500 dark:text-gray-400">Connect your portfolio to see summary here.</p>
+                    </div>
+                )}
+
+                {/* Row 2 (these will wrap to the next line in a 2-column grid) */}
                 <AISpotlightStockCard stock={dummyAiStock1} currentColor={currentColor} />
                 <AISpotlightStockCard stock={dummyAiStock2} currentColor={currentColor} />
-                {/* You can add MyWatchlistMoverCard here if you build it */}
+
+                {/* If you have more cards like AIOpportunitiesRadarCard or AIRelevantNewsCard,
+                    they would continue to fill this 2-column grid, wrapping as needed.
+                    For example:
+                */}
+                {/* <AIOpportunitiesRadarCard opportunities={dummyOpportunities} currentColor={currentColor} /> */}
+                {/* <AIRelevantNewsCard newsItems={dummyNewsItems} currentColor={currentColor} currentMode={currentMode} /> */}
+
             </div>
 
-            {/* --- MID SECTION: PERSONALIZED & ACTION-ORIENTED --- */}
-            <div className="mt-10 flex flex-wrap lg:flex-nowrap gap-6 justify-center">
-                {userHasPortfolio && (
-                    <MyPortfolioQuickSummaryCard summary={dummyPortfolioSummary} currentColor={currentColor} />
-                )}
-                {/* Add AIOpportunitiesRadarCard here when built */}
-                {/* Example: <AIOpportunitiesRadarCard opportunities={dummyOpportunities} currentColor={currentColor} /> */}
-            </div>
+            {/* You can add other sections below this main card grid if needed */}
 
 
             {/* --- BOTTOM SECTION: NEWS & LEARNING --- */}
