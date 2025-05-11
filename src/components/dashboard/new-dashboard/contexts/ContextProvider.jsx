@@ -27,7 +27,7 @@ const applyThemeMode = (mode) => {
 
 
 export const ContextProvider = ({ children }) => {
-    const { user } = useAuth() || {};
+    const { user, isAuthenticated } = useAuth() || {};
     const [screenSize, setScreenSize] = useState(undefined);
     // Use sidebarColor for sidebar background/accent from ThemeSettings
     const [sidebarColor, setSidebarColor] = useState(() => localStorage.getItem('sidebarColor') || '#7352FF');
@@ -39,7 +39,13 @@ export const ContextProvider = ({ children }) => {
     const [isClicked, setIsClicked] = useState(initialState);
     const [category, setCategory] = useState('Dashboard');
     const [title, setTitle] = useState('Overview');
-    const [cashBalance, setCashBalance] = useState(0);
+    // const [cashBalance, setCashBalance] = useState(0);
+
+    const [balanceDetails, setBalanceDetails] = useState({
+        cash_balance: 0,
+        portfolio_value: 0,
+        net_worth: 0,
+    });
 
     const handleClick = (clicked) => {
         setIsClicked((prevState) => ({
@@ -49,34 +55,58 @@ export const ContextProvider = ({ children }) => {
     };
 
     const refreshCashBalance = async () => {
-        console.log('Attempting to refresh cash balance...');
-        if (user?.id) {
+        const currentUser = user; // Capture current user
+        console.log('Attempting to refresh balance details for user:', currentUser);
+        if (currentUser?.id) {
             try {
-                console.log('Making API call for user ID:', user.id);
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    console.error('No token for balance fetch.');
+                    // Reset balance details if no token
+                    setBalanceDetails({ cash_balance: 0, portfolio_value: 0, net_worth: 0 });
+                    return;
+                }
+                console.log(`API call to /users/${currentUser.id}/balance`);
                 const response = await axios.get(
-                    `https://archlinux.tail9023a4.ts.net/users/${user.id}/balance`,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${localStorage.getItem('token')}`
-                        }
-                    }
+                    `https://archlinux.tail9023a4.ts.net/users/${currentUser.id}/balance`,
+                    // If using Vite proxy: `/api_v1/users/${currentUser.id}/balance`,
+                    { headers: { Authorization: `Bearer ${token}` } }
                 );
-                console.log('API Response:', response.data);
-                setCashBalance(response.data.cash_balance);
-                console.log('Updated cashBalance state:', response.data.cash_balance);
+                console.log('Balance API Response:', response.data);
+                if (response.data && typeof response.data.cash_balance !== 'undefined') {
+                    setBalanceDetails({
+                        cash_balance: response.data.cash_balance || 0,
+                        portfolio_value: response.data.portfolio_value || 0,
+                        net_worth: response.data.net_worth || 0,
+                    });
+                    console.log('Updated balanceDetails state:', response.data);
+                } else {
+                    console.error('Invalid balance data received:', response.data);
+                    setBalanceDetails({ cash_balance: 0, portfolio_value: 0, net_worth: 0 });
+                }
             } catch (error) {
-                console.error('Error refreshing balance:', error);
-                console.log('Error details:', error.response?.data);
+                console.error('Error refreshing balance details:', error);
+                if (error.response) {
+                    console.log('Error response data:', error.response.data);
+                }
+                // Reset balance on error
+                setBalanceDetails({ cash_balance: 0, portfolio_value: 0, net_worth: 0 });
             }
         } else {
-            console.log('No user ID available - skipping balance fetch');
+            console.log('No user ID available - skipping balance fetch, resetting details.');
+            setBalanceDetails({ cash_balance: 0, portfolio_value: 0, net_worth: 0 });
         }
     };
-
     useEffect(() => {
-        console.log('Balance refresh effect triggered, user ID:', user?.id);
-        refreshCashBalance();
-    }, [user?.id]);
+        console.log('Balance refresh effect triggered. IsAuthenticated:', isAuthenticated, 'User ID:', user?.id);
+        if (isAuthenticated && user && user.id) {
+            refreshCashBalance();
+        } else {
+            // Reset balance details if not authenticated or no user
+            setBalanceDetails({ cash_balance: 0, portfolio_value: 0, net_worth: 0 });
+            console.log('Conditions not met for balance refresh. Balance details reset.');
+        }
+    }, [user, isAuthenticated]);
 
 
     const setMode = (e) => {
@@ -136,7 +166,7 @@ export const ContextProvider = ({ children }) => {
             user,
             sidebarColor, // Pass sidebarColor
             setSidebarColor: setSidebarColorPersistence, // Pass the persistence function
-            cashBalance,
+            balanceDetails,
             refreshCashBalance
         }}>
             {children}

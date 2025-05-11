@@ -1,90 +1,97 @@
+// src/components/settings/ThemeSettings.jsx
 import React from 'react';
 import { BsCheck } from 'react-icons/bs';
 import { TooltipComponent } from '@syncfusion/ej2-react-popups';
 import { themeColors } from '../data/dummy.jsx';
 import { useStateContext } from '../contexts/ContextProvider.jsx';
+import Switch from '../components/themeSettings/Switch.jsx';  // <-- our new controlled toggle
 
 const ThemeSettings = () => {
-    const { setColor, setMode, currentMode, currentColor, sidebarColor, setSidebarColor } = useStateContext();
+    const {
+        setColor,
+        setMode,
+        currentMode,
+        currentColor,
+        sidebarColor,
+        setSidebarColor
+    } = useStateContext();
 
-    const formatColorName = (name) => {
-        return name.replace('-theme', '').charAt(0).toUpperCase() + name.replace('-theme', '').slice(1);
+    // Toggle handler for our Switch:
+    const handleThemeToggle = e => {
+        // e.target.checked === true → Dark mode
+        const newMode = e.target.checked ? 'Dark' : 'Light';
+        // ContextProvider.setMode expects an event-like object
+        setMode({ target: { value: newMode } });
     };
+
+    const formatColorName = name =>
+        name.replace('-theme', '').charAt(0).toUpperCase() +
+        name.replace('-theme', '').slice(1);
 
     return (
         <div
             className="bg-white dark:bg-[#42464D] p-4 rounded-lg shadow-xl"
-            style={{
-                width: '24rem',
-                maxWidth: 'calc(100vw - 2rem)',
-            }}
+            style={{ width: '24rem', maxWidth: 'calc(100vw - 2rem)' }}
         >
-            {/* Theme Options */}
-            <div className="border-b-1 border-gray-200 dark:border-gray-600 pb-4 mb-4">
-                <p className="font-semibold text-lg mb-4">Theme Options</p>
-                <div className="space-y-2">
-                    <label className="flex items-center space-x-2 cursor-pointer">
-                        <input
-                            type="radio"
-                            name="theme"
-                            value="Light"
-                            className="cursor-pointer"
-                            onChange={setMode}
-                            checked={currentMode === 'Light'}
-                        />
-                        <span className="text-gray-700 dark:text-gray-300">Light Mode</span>
-                    </label>
-                    <label className="flex items-center space-x-2 cursor-pointer">
-                        <input
-                            type="radio"
-                            name="theme"
-                            value="Dark"
-                            onChange={setMode}
-                            className="cursor-pointer"
-                            checked={currentMode === 'Dark'}
-                        />
-                        <span className="text-gray-700 dark:text-gray-300">Dark Mode</span>
-                    </label>
-                </div>
+            {/* THEME SWITCH */}
+            <div className="border-b-1 border-gray-200 dark:border-gray-600 pb-4 mb-4 flex items-center justify-between">
+                <p className="font-semibold text-lg">Theme Mode</p>
+                <Switch
+                    checked={currentMode === 'Dark'}
+                    onChange={handleThemeToggle}
+                    size="15px"
+                />
             </div>
 
-            {/* Theme Colors */}
+            {/* THEME COLORS */}
             <div className="border-b-1 border-gray-200 dark:border-gray-600 pb-4 mb-4">
                 <p className="font-semibold text-lg mb-4">Theme Colors</p>
                 <div className="flex flex-wrap gap-3">
-                    {themeColors.map((item, index) => (
-                        <TooltipComponent key={index} content={formatColorName(item.name)} position="TopCenter">
-                            <div className="relative cursor-pointer group">
-                                <button
-                                    type="button"
-                                    className="h-9 w-9 rounded-full flex items-center justify-center ring-1 ring-gray-200 dark:ring-gray-600 hover:ring-2 hover:ring-primary transition-all"
-                                    style={{ backgroundColor: item.color }}
-                                    onClick={() => setColor(item.color)}
-                                >
-                                    <BsCheck className={`text-white text-xl ${item.color === currentColor ? 'opacity-100' : 'opacity-0'} transition-opacity`} />
-                                </button>
-                            </div>
+                    {themeColors.map((item, idx) => (
+                        <TooltipComponent
+                            key={idx}
+                            content={formatColorName(item.name)}
+                            position="TopCenter"
+                        >
+                            <button
+                                type="button"
+                                className="relative h-9 w-9 rounded-full flex items-center justify-center ring-1 ring-gray-200 dark:ring-gray-600 hover:ring-2 hover:ring-primary transition-all"
+                                style={{ backgroundColor: item.color }}
+                                onClick={() => setColor(item.color)}
+                            >
+                                <BsCheck
+                                    className={`text-white text-xl transition-opacity ${
+                                        item.color === currentColor ? 'opacity-100' : 'opacity-0'
+                                    }`}
+                                />
+                            </button>
                         </TooltipComponent>
                     ))}
                 </div>
             </div>
 
-            {/* Sidebar Colors */}
+            {/* SIDEBAR COLORS */}
             <div>
                 <p className="font-semibold text-lg mb-4">Sidebar Colors</p>
                 <div className="flex flex-wrap gap-3">
-                    {themeColors.map((item, index) => (
-                        <TooltipComponent key={index} content={formatColorName(item.name)} position="TopCenter">
-                            <div className="relative cursor-pointer group">
-                                <button
-                                    type="button"
-                                    className="h-9 w-9 rounded-full flex items-center justify-center ring-1 ring-gray-200 dark:ring-gray-600 hover:ring-2 hover:ring-primary transition-all"
-                                    style={{ backgroundColor: item.color }}
-                                    onClick={() => setSidebarColor(item.color)}
-                                >
-                                    <BsCheck className={`text-white text-xl ${item.color === sidebarColor ? 'opacity-100' : 'opacity-0'} transition-opacity`} />
-                                </button>
-                            </div>
+                    {themeColors.map((item, idx) => (
+                        <TooltipComponent
+                            key={idx}
+                            content={formatColorName(item.name)}
+                            position="TopCenter"
+                        >
+                            <button
+                                type="button"
+                                className="relative h-9 w-9 rounded-full flex items-center justify-center ring-1 ring-gray-200 dark:ring-gray-600 hover:ring-2 hover:ring-primary transition-all"
+                                style={{ backgroundColor: item.color }}
+                                onClick={() => setSidebarColor(item.color)}
+                            >
+                                <BsCheck
+                                    className={`text-white text-xl transition-opacity ${
+                                        item.color === sidebarColor ? 'opacity-100' : 'opacity-0'
+                                    }`}
+                                />
+                            </button>
                         </TooltipComponent>
                     ))}
                 </div>

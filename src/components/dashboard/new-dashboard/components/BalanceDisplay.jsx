@@ -1,20 +1,29 @@
+// src/components/dashboard/new-dashboard/components/BalanceDisplay.jsx
 import React from 'react';
-import { formatNumber } from '../utils/formatNumber.js';
 import { useStateContext } from '../contexts/ContextProvider.jsx';
+import BalanceDropdown from './balanceDisplay/BalanceDropdown.jsx'; // Import the new component
 
 const BalanceDisplay = () => {
-    const { cashBalance, currentColor } = useStateContext();
-    console.log('BalanceDisplay render - cashBalance:', cashBalance, 'currentColor:', currentColor);
+    // Use balanceDetails from context
+    const { balanceDetails, currentColor } = useStateContext();
 
-    const formattedBalance = formatNumber(cashBalance);
-    console.log('Formatted balance:', formattedBalance);
+    console.log('BalanceDisplay render - balanceDetails:', balanceDetails, 'currentColor:', currentColor);
+
+    // Fallback if balanceDetails is not yet populated or is null/undefined
+    const cashBalance = balanceDetails?.cash_balance ?? 0;
+    const portfolioValue = balanceDetails?.portfolio_value ?? 0;
+    const netWorth = balanceDetails?.net_worth ?? 0;
 
     return (
-        <div className="flex items-center justify-center md:rounded-[1.2rem] h-10 px-3 ml-4"
-             style={{ backgroundColor: currentColor }}>
-            <span className="text-white text-normal font-normal">
-                Balance: ${formattedBalance}
-            </span>
+        // The div containing BalanceDropdown might need slight adjustments for positioning
+        // The original ml-4 was on the main div. BalanceDropdown itself is position:relative.
+        <div className="ml-4">
+            <BalanceDropdown
+                cashBalance={cashBalance}
+                portfolioValue={portfolioValue}
+                netWorth={netWorth}
+                currentColor={currentColor}
+            />
         </div>
     );
 };

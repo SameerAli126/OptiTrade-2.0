@@ -1,5 +1,14 @@
 import React from 'react';
-import { AiOutlineCalendar, AiOutlineShoppingCart, AiOutlineAreaChart, AiOutlineBarChart, AiOutlineStock } from 'react-icons/ai';
+import { AiOutlineCalendar, AiOutlineShoppingCart, AiOutlineAreaChart, AiOutlineBarChart, AiOutlineStock, AiOutlineSearch} from 'react-icons/ai';
+import {
+  IoNewspaperOutline,    // For News
+  IoWalletOutline        // For Portfolio (assets, wallet)
+} from 'react-icons/io5'; // Ionicons 5
+
+import {
+  BsGraphUp,             // For general growth, could be portfolio or market
+  BsStars                // For Watchlist (favorites)
+} from 'react-icons/bs';  // Bootstrap Icons
 import { FiShoppingBag, FiEdit, FiPieChart, FiBarChart, FiCreditCard, FiStar, FiShoppingCart } from 'react-icons/fi';
 import { BsKanban, BsBarChart, BsBoxSeam, BsCurrencyDollar, BsShield, BsChatLeft } from 'react-icons/bs';
 import { BiColorFill } from 'react-icons/bi';
@@ -22,6 +31,15 @@ import product5 from './product5.jpg';
 import product6 from './product6.jpg';
 import product7 from './product7.jpg';
 import product8 from './product8.jpg';
+import {
+  FiHome,                // For Home
+  FiTrendingUp,          // For Portfolio (growth, performance) or FiPieChart
+  FiRepeat,              // For Buy/Sell (exchange, swap) or FiShoppingCart
+  FiFilter,              // For Screener (filtering data)// For Editor (already good)
+  FiBookmark,            // For Watchlist (bookmarking favorites) or FiStar
+  FiBookOpen             // For News (reading, learning) or FiFileText
+} from 'react-icons/fi'; // Feather Icons - clean and modern
+
 
 export const gridOrderImage = (props) => (
   <div>
@@ -475,48 +493,52 @@ export const employeesGrid = [
 export const links = [
   {
     name: 'home',
-    icon: <FiShoppingBag />,
-    category: 'Dashboard',
-    title: 'Home',
+    icon: <FiHome />,         // Generic home icon
+    category: 'Dashboard',    // Category for grouping in sidebar (if used)
+    title: 'Home',            // Title displayed in header or breadcrumbs
   },
   {
     name: 'portfolio',
-    icon: <IoMdContacts />,
+    icon: <IoWalletOutline />, // Represents user's assets/holdings
+    // Alternatives: <FiTrendingUp />, <AiOutlineAreaChart />
     category: 'Portfolio',
     title: 'Overview',
   },
   {
-    name: 'buy-Sell',
-    icon: <AiOutlineShoppingCart />,
+    name: 'buy-sell', // Note: Consistent casing 'buy-sell' or 'Buy-Sell'
+    icon: <FiRepeat />,        // Represents exchange/transaction
+    // Alternatives: <FiShoppingCart />, <AiOutlineStock />
     category: 'Trading',
     title: 'Buy & Sell',
   },
   {
     name: 'screener',
-    icon: <RiContactsLine />,
-    category: 'Scouting',
+    icon: <FiFilter />,        // Represents filtering/searching for stocks
+    // Alternatives: <AiOutlineSearch />
+    category: 'Scouting',     // "Analysis" or "Tools" might also fit
     title: 'Screener',
   },
   {
     name: 'news',
-    icon: <AiOutlineCalendar />,
-    category: 'Learning',
+    icon: <IoNewspaperOutline />, // Clearly represents news/articles
+    // Alternatives: <FiBookOpen />
+    category: 'Learning',     // "Insights" or "Market" could also work
     title: 'News',
   },
   {
     name: 'watchlist',
-    icon: <BsKanban />,
-    category: 'Favourites',
+    icon: <FiBookmark />,      // Represents saved/favorite items
+    // Alternatives: <BsStars />, <FiStar />
+    category: 'Favourites',   // "Tracking" or "My Stocks"
     title: 'Watchlist',
   },
   {
     name: 'editor',
-    icon: <FiEdit />,
+    icon: <FiEdit />,          // Good choice for an editor or notes tool
     category: 'Tools',
     title: 'Editor',
   },
 ];
-
 
 export const cartData = [
   {
