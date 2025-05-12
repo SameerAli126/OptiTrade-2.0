@@ -12,7 +12,7 @@ const DashboardLayout = ({ children }) => {
     return (
         // The 'dark' class on <html> controlled by ContextProvider handles the mode
         <div>
-            <div className="flex flex-col md:flex-row min-h-screen overflow-x-hidden">
+            <div className="flex flex-col md:flex-row min-h-screen">
                 {/* Sidebar */}
                 {activeMenu ? (
                     // Ensure sidebar container itself doesn't impose conflicting background
@@ -27,7 +27,7 @@ const DashboardLayout = ({ children }) => {
 
                 {/* Main Content */}
                 {/* Updated background classes */}
-                <div className={`flex-1 bg-gray-100 dark:bg-gray-800 ${activeMenu ? 'md:ml-72' : 'w-full'}`}>
+                <div className={`flex-1 bg-gray-100 dark:bg-gray-800 ${activeMenu ? 'md:ml-72' : 'w-full'} overflow-y-auto`}> {/* Added overflow-y-auto */}
                     {/* Navbar */}
                     {/* Updated background classes */}
                     <div className="fixed md:static bg-gray-100 dark:bg-gray-800 navbar w-full z-10">
@@ -35,7 +35,7 @@ const DashboardLayout = ({ children }) => {
                     </div>
 
                     {/* Page Content */}
-                    <div className="relative p-4"> {/* Added padding here for content */}
+                    <div className="relative p-4 md:p-6"> {/* Added padding here for content */}
                         {children}
                         <Footer />
                     </div>
