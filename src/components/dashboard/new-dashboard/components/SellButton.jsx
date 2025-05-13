@@ -25,13 +25,16 @@ const SellButton = ({ stock, user }) => {
     const [limitPrice, setLimitPrice] = useState('');
     const [error, setError] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
-    const { cashBalance, refreshCashBalance } = useStateContext();
+    const { balanceDetails, refreshCashBalance } = useStateContext();
+    const currentCashBalance = balanceDetails?.cash_balance ?? 0;
     const currentPrice = stock?.close || 0;
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
         setSuccessMessage('');
+
+        if (!validateInputs()) return;
 
         try {
             const payload = {
@@ -59,7 +62,7 @@ const SellButton = ({ stock, user }) => {
             const response = await axios.post(
                 'https://archlinux.tail9023a4.ts.net/portfolio/sell',
                 payload,
-                { headers: { 'Content-Type': 'application/json' } }
+                { headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${localStorage.getItem('token')}` } }
             );
 
             if (response.status === 200) {
@@ -208,7 +211,7 @@ const SellButton = ({ stock, user }) => {
                                     </Typography>
                                     <Typography variant="body2" sx={{ mb: 2 }}>
                                         New Balance: ${(
-                                        cashBalance +
+                                        currentCashBalance +
                                         quantity *
                                         (orderType === 'market' ? currentPrice : limitPrice || currentPrice)
                                     ).toFixed(2)}

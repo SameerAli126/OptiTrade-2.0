@@ -25,13 +25,22 @@ const BuyButton = ({ stock, user }) => {
     const [limitPrice, setLimitPrice] = useState('');
     const [error, setError] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
-    const { cashBalance, refreshCashBalance } = useStateContext();
+    const { balanceDetails, refreshCashBalance, currentColor } = useStateContext();
+    const currentCashBalance = balanceDetails?.cash_balance ?? 0;
     const currentPrice = stock?.close || 0;
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
         setSuccessMessage('');
+
+        const estimatedCost = Number(quantity) * (orderType === 'market' ? currentPrice : Number(limitPrice) || currentPrice);
+        if (currentCashBalance < estimatedCost && estimatedCost > 0) { // also check estimatedCost > 0
+            setError('Insufficient funds for this order.');
+            return;
+        }
+// You might want to call validateInputs() here too
+        if (!validateInputs()) return;
 
         try {
             const payload = {
@@ -59,7 +68,7 @@ const BuyButton = ({ stock, user }) => {
             const response = await axios.post(
                 'https://archlinux.tail9023a4.ts.net/portfolio/buy',
                 payload,
-                { headers: { 'Content-Type': 'application/json' } }
+                { headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${localStorage.getItem('token')}` } }
             );
 
             if (response.status === 200) {
@@ -101,13 +110,15 @@ const BuyButton = ({ stock, user }) => {
         <div>
             <Button
                 variant="contained"
-                color="success"
                 onClick={() => setShowDialog(true)}
                 sx={{
+                    backgroundColor: currentColor || '#4caf50', // Use context color or fallback green
+                    color: 'white',
                     textTransform: 'none',
                     borderRadius: 2,
                     boxShadow: 'none',
-                    '&:hover': { boxShadow: 'none' }
+                    '&:hover': {  backgroundColor: currentColor ? `${currentColor}dd` : '#388e3c',
+                        boxShadow: 'none'  }
                 }}
             >
                 Buy {stock?.symbol}
@@ -211,10 +222,13 @@ const BuyButton = ({ stock, user }) => {
                                     </Typography>
                                     <Typography variant="body2" sx={{ mb: 2 }}>
                                         New Balance: ${(
-                                        cashBalance -
+                                        currentCashBalance -
                                         quantity *
                                         (orderType === 'market' ? currentPrice : limitPrice || currentPrice)
                                     ).toFixed(2)}
+                                    </Typography>
+                                    <Typography variant="body2" sx={{ mb: 1 }}>
+                                        Available Cash: ${currentCashBalance.toFixed(2)}
                                     </Typography>
                                 </>
                             )}
@@ -231,8 +245,11 @@ const BuyButton = ({ stock, user }) => {
                             <Button
                                 type="submit"
                                 variant="contained"
-                                color="success"
-                                sx={{ borderRadius: 2 }}
+                                sx={{
+                                    borderRadius: 2,
+                                    backgroundColor: currentColor || '#4caf50',
+                                    '&:hover': { backgroundColor: currentColor ? `${currentColor}dd` : '#388e3c'}
+                                }}
                             >
                                 Confirm Order
                             </Button>
