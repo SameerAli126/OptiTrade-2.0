@@ -1,6 +1,7 @@
 // StockChart.jsx
 import React, { useState, useEffect } from 'react';
 import ChartConfigurator from './ChartConfigurator';
+import { STOCK_HISTORICAL_DATA } from '../../../../../config/apiEndpoints';
 
 const StockChart = ({ stock }) => {
     const [chartData, setChartData] = useState([]);
@@ -23,7 +24,8 @@ const StockChart = ({ stock }) => {
 
         (async () => {
             try {
-                const resp = await fetch(`https://archlinux.tail9023a4.ts.net/stocks/${stock.symbol}`);
+                const resp = await fetch(`/api${STOCK_HISTORICAL_DATA(stock.symbol)}`);
+
                 if (!resp.ok) throw new Error(`Fetch failed: ${resp.status}`);
                 const json = await resp.json();
                 if (Object.keys(json).length === 0) throw new Error('No data for this symbol.');

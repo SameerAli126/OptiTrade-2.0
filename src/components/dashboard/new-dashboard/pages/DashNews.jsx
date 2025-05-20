@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import DashHeader from '../components/DashHeader';
 import '../../../../assets/DashScreener.css';
 import { useStateContext } from '../contexts/ContextProvider.jsx'; // Import the context
+import { NEWS_ARTICLES } from '../../../../config/apiEndpoints';
 
 const DashNews = () => {
     const [news, setNews] = useState([]);
@@ -17,7 +18,7 @@ const DashNews = () => {
     const fetchNews = async (page) => {
         try {
             const response = await fetch(
-                `https://archlinux.tail9023a4.ts.net/news?page=${page}&page_size=${newsPerPage}`
+                `/api${NEWS_ARTICLES}?page=${page}&page_size=${newsPerPage}`
             );
             const data = await response.json();
             setNews(data);

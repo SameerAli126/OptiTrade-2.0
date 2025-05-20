@@ -184,9 +184,7 @@ const Watchlist = () => {
                                             backgroundColor: 'white',
                                             padding: '2px'
                                         }}
-                                        onError={(e) => {
-                                            e.target.src = 'https://via.placeholder.com/28';
-                                        }}
+
                                     />
                                     <span
                                         onClick={() => handleSymbolClick(props)}

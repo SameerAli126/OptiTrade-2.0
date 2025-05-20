@@ -13,6 +13,7 @@ import AnnualizedReturn from "../../../dashboard/portfolio-components/Annualized
 import CAGR from "../../../dashboard/portfolio-components//CAGR.jsx";
 import DividendYield from "../../../dashboard/portfolio-components/DividendYield.jsx";
 import axios from 'axios';
+import { PORTFOLIO_DATA, USER_METRICS } from '../../../../config/apiEndpoints';
 
 const Portfolio = () => {
     const { user } = useStateContext();
@@ -30,11 +31,12 @@ const Portfolio = () => {
             if (!user?.id) return;
 
             try {
-                const response = await fetch(`https://archlinux.tail9023a4.ts.net/portfolio?user_id=${user.id}`, {
+                const response = await fetch(`/api${PORTFOLIO_DATA}?user_id=${user.id}`, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`
                     }
                 });
+
 
                 if (!response.ok) throw new Error('Failed to fetch portfolio');
                 const data = await response.json();

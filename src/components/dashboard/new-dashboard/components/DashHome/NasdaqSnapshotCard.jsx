@@ -4,6 +4,7 @@ import Highcharts from 'highcharts/highstock';
 import HighchartsReact from 'highcharts-react-official';
 import { FaArrowUp, FaArrowDown, FaMinus, FaBrain } from 'react-icons/fa';
 import moment from 'moment'; // Import moment for date formatting
+import { NASDAQ_SUMMARY, NASDAQ_INTRADAY } from '../../../../../config/apiEndpoints';
 
 // Optional: If you have a specific theme for Highcharts you want to apply
 // import HighchartsTheme from 'highcharts/themes/dark-unica'; // Example theme
@@ -24,8 +25,8 @@ const NasdaqSnapshotCard = ({ currentColor }) => {
             setError(null);
             try {
                 const [summaryResponse, intradayResponse] = await Promise.all([
-                    fetch('https://archlinux.tail9023a4.ts.net/NASDAQ-summary'),
-                    fetch('https://archlinux.tail9023a4.ts.net/NASDAQ-intraday')
+                    fetch(`/api${NASDAQ_SUMMARY}`),
+                    fetch(`/api${NASDAQ_INTRADAY}`)
                 ]);
 
                 if (!summaryResponse.ok) throw new Error(`Summary fetch failed: ${summaryResponse.status}`);

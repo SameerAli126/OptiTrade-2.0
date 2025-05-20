@@ -17,6 +17,7 @@ import {
     Divider
 } from '@mui/material';
 import { CheckCircle, Error } from '@mui/icons-material';
+import { PORTFOLIO_BUY } from '../../../../config/apiEndpoints';
 
 const BuyButton = ({ stock, user }) => {
     const [showDialog, setShowDialog] = useState(false);
@@ -66,7 +67,7 @@ const BuyButton = ({ stock, user }) => {
             }
 
             const response = await axios.post(
-                'https://archlinux.tail9023a4.ts.net/portfolio/buy',
+                `/api${PORTFOLIO_BUY}`,
                 payload,
                 { headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${localStorage.getItem('token')}` } }
             );

@@ -34,7 +34,7 @@ const Sidebar = () => {
       // Apply sidebarColor using inline style for background
       // Remove Tailwind background classes (bg-white dark:bg-...)
       <div
-          className="ml-3 h-screen md:overflow-hidden overflow-auto md:hover:overflow-auto pb-10"
+          className="ml-0 h-screen md:overflow-hidden overflow-auto md:hover:overflow-auto pb-10 "
           style={{ backgroundColor: sidebarColor }} // Apply sidebarColor directly
       >
         {activeMenu && (

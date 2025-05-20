@@ -3,6 +3,7 @@ import React from 'react'; // Removed useState, useEffect if data is static/pass
 import { useStateContext } from '../contexts/ContextProvider';
 import DashHeader from '../components/DashHeader';
 
+
 // --- Import your new custom components ---
 import NasdaqSnapshotCard from '../components/DashHome/NasdaqSnapshotCard';
 import AISpotlightStockCard from '../components/DashHome/AiSpotlightStockCard.jsx';

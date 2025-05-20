@@ -17,6 +17,7 @@ import {
 } from '@mui/material';
 import { CheckCircle, Error } from '@mui/icons-material';
 import { useStateContext } from '../contexts/ContextProvider';
+import { PORTFOLIO_SELL } from '../../../../config/apiEndpoints';
 
 const SellButton = ({ stock, user }) => {
     const [showDialog, setShowDialog] = useState(false);
@@ -60,7 +61,7 @@ const SellButton = ({ stock, user }) => {
             }
 
             const response = await axios.post(
-                'https://archlinux.tail9023a4.ts.net/portfolio/sell',
+                `/api${PORTFOLIO_SELL}`,
                 payload,
                 { headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${localStorage.getItem('token')}` } }
             );
