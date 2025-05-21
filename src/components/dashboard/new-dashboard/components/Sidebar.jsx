@@ -18,13 +18,9 @@ const Sidebar = () => {
     }
   };
 
-  // Revert link styles to remove dark: variants for text
-  // Use a text color that works well with sidebarColor (e.g., white)
-  const activeLink = 'flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-white text-md m-2'; // Keep text white for active
+  const activeLink = 'flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-white text-md m-2 cursor-pointer';
   // Use fixed text colors, not dark variants. Choose appropriate default (e.g., gray-700 or maybe a lighter gray if sidebar is dark)
-  // For simplicity, let's assume a light text color works generally, adjust if needed based on sidebarColor range
-  const normalLink = 'flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-md text-gray-200 hover:text-white hover:bg-white/10 m-2'; // Example: Light text, subtle hover
-
+  const normalLink = 'flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-md text-gray-200 hover:text-white hover:bg-white/10 m-2 cursor-pointer';
   const handleLinkClick = (category, title) => {
     setCategory(category);
     setTitle(title);
@@ -42,7 +38,7 @@ const Sidebar = () => {
               <div className="flex justify-between items-center">
                 {/* Use fixed text color, remove dark: variant */}
                 <Link to="/" onClick={handleCloseSideBar}
-                      className="items-center gap-3 ml-3 mt-4 flex text-xl font-extrabold tracking-tight text-white"> {/* Fixed text color */}
+                      className="items-center gap-3 ml-3 mt-4 flex text-xl font-extrabold tracking-tight text-white cursor-pointer"> {/* Added cursor-pointer */}
                   <SiShopware/> <span>OptiTrade</span>
                 </Link>
                 <TooltipComponent content="Menu" position="BottomCenter">
@@ -51,7 +47,7 @@ const Sidebar = () => {
                       onClick={() => setActiveMenu(!activeMenu)}
                       // Use sidebarColor for the button icon color? Or a fixed contrast color? Let's use white for simplicity.
                       style={{ color: 'white' }}
-                      className="text-xl rounded-full p-3 hover:bg-white/20 mt-4 block md:hidden" // Hover with transparency
+                      className="text-xl rounded-full p-3 hover:bg-white/20 mt-4 block md:hidden cursor-pointer" // Added cursor-pointer
                   >
                     <MdOutlineCancel/>
                   </button>

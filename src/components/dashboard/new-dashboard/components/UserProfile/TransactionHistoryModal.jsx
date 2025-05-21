@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Button from '../Button.jsx';
 import { formatNumber } from '../../utils/formatNumber.js';
+import {GET_TRANSACTION_HISTORY} from "../../../../../config/apiEndpoints.js";
 
 const TransactionHistoryModal = ({ userId, currentColor, onClose }) => {
     const [transactions, setTransactions] = useState([]);
@@ -13,7 +14,7 @@ const TransactionHistoryModal = ({ userId, currentColor, onClose }) => {
         setError('');
         try {
             const response = await axios.get(
-                'https://archlinux.tail9023a4.ts.net/transactions',
+                `/api${GET_TRANSACTION_HISTORY}`,
                 {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('token')}`

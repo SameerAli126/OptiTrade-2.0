@@ -1,9 +1,13 @@
 /* src/index.css */
 /* Import Light Syncfusion Theme (Example: Material) */
+
 @import url('https://cdn.syncfusion.com/ej2/material.css');
 @import '../node_modules/@syncfusion/ej2-layouts/styles/fluent.css';
 @import "../node_modules/@syncfusion/ej2-base/styles/fluent.css";
 @import "../node_modules/@syncfusion/ej2-buttons/styles/fluent.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /* Import Dark Syncfusion Theme (Example: Material Dark) */
 /* Wrap dark theme in .dark scope if necessary, or rely on Syncfusion's built-in dark classes */
@@ -21,9 +25,7 @@ html.dark .e-grid /* Example target */ {
 /* Keep existing layout imports if needed */
 
 /* Tailwind Imports */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+
 
 /* Global Styles */
 body {

@@ -14,13 +14,24 @@ export const PORTFOLIO_BUY = '/portfolio/buy';
 export const PORTFOLIO_SELL = '/portfolio/sell';
 
 // Stocks & Market Data
+export const DASH_SCREENER_DATA = '/stocks';
 export const STOCK_HISTORICAL_DATA = (stockSymbol) => `/stocks/${stockSymbol}`;
+
 export const NEWS_ARTICLES = '/news'; // Append ?page=:page&page_size=:pageSize in component
 export const NASDAQ_SUMMARY = '/NASDAQ-summary';
 export const NASDAQ_INTRADAY = '/NASDAQ-intraday';
 
-// If WatchlistService is used, its endpoints would go here or be handled within that service
-// Example:
-// export const GET_WATCHLIST = (userId) => `/watchlist/${userId}`; // Or however your API is structured
-// export const ADD_TO_WATCHLIST = '/watchlist/add';
-// export const REMOVE_FROM_WATCHLIST = '/watchlist/remove';
+
+// Watchlist
+export const GET_WATCHLIST = (userId) => `/watchlist/${userId}`;
+export const ADD_TO_WATCHLIST = (userId, symbol) => `/watchlist/${userId}/${symbol}`;
+export const REMOVE_FROM_WATCHLIST = (userId, symbol) => `/watchlist/${userId}/${symbol}`;
+
+//Transaction History
+export const GET_TRANSACTION_HISTORY = `/transactions`;
+
+// User
+export const USER_BALANCE = (userId) => `/users/${userId}/balance`;
+
+// Stock Prices
+export const ALL_STOCK_PRICES = `/stocks/prices`;

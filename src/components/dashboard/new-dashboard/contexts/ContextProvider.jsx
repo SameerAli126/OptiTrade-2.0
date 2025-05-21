@@ -2,6 +2,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from './AuthContext';
+import { USER_BALANCE} from "../../../../config/apiEndpoints.js";
 
 const StateContext = createContext();
 
@@ -68,7 +69,7 @@ export const ContextProvider = ({ children }) => {
                 }
                 console.log(`API call to /users/${currentUser.id}/balance`);
                 const response = await axios.get(
-                    `https://archlinux.tail9023a4.ts.net/users/${currentUser.id}/balance`,
+                    `/api${USER_BALANCE(currentUser.id)}`,
                     // If using Vite proxy: `/api_v1/users/${currentUser.id}/balance`,
                     { headers: { Authorization: `Bearer ${token}` } }
                 );

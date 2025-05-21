@@ -1,7 +1,7 @@
 // Filepath: E:\WEB JS\fyp\opti-trade\src\components\accounts\services\authService.js
-
+import { SIGNUP, VERIFY_OTP, FORGOT_PASSWORD, VERIFY_RESET_OTP } from '../../../config/apiEndpoints';
 export const signup = async (userData) => {
-    const response = await fetch("https://archlinux.tail9023a4.ts.net/signup", {
+    const response = await fetch(`/api${SIGNUP}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userData),
@@ -10,7 +10,7 @@ export const signup = async (userData) => {
 };
 
 export const verifyOTP = async (email, otp) => {
-    const response = await fetch("https://archlinux.tail9023a4.ts.net/verify-otp", {
+    const response = await fetch(`/api${VERIFY_OTP}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, otp }),
@@ -19,7 +19,7 @@ export const verifyOTP = async (email, otp) => {
 };
 
 export const requestPasswordReset = async (email) => {
-    const response = await fetch("https://archlinux.tail9023a4.ts.net/forgot-password", {
+    const response = await fetch(`/api${FORGOT_PASSWORD}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
@@ -29,7 +29,7 @@ export const requestPasswordReset = async (email) => {
 
 // In src/components/accounts/services/authService.js
 export const verifyResetOTP = async (email, otp, newPassword) => {
-    const response = await fetch("https://archlinux.tail9023a4.ts.net/verify-reset-otp", {
+    const response = await fetch(`/api${VERIFY_RESET_OTP}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

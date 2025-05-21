@@ -1,11 +1,12 @@
 // Filepath: src/components/dashboard/new-dashboard/contexts/StockDataContext.jsx
 import { createContext, useContext } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { DASH_SCREENER_DATA} from "../../../../config/apiEndpoints.js"
 
 const StockDataContext = createContext();
 
 const fetchStocks = async () => {
-    const response = await fetch('https://archlinux.tail9023a4.ts.net/stocks');
+    const response = await fetch(`/api${DASH_SCREENER_DATA}`);
     if (!response.ok) throw new Error('Failed to fetch stocks');
     return response.json();
 };

@@ -7,6 +7,7 @@ import FormField from "./accounts/components/FormField";
 import PasswordField from "./accounts/components/PasswordField";
 import ForgotPasswordForm from "./accounts/components/ForgotPasswordForm";
 import LoginImage from "../assets/img/LoginImage.jpg";
+import { LOGIN } from '../config/apiEndpoints';
 import "../App.css";
 //commit
 
@@ -28,7 +29,7 @@ const Login = () => {
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch("https://archlinux.tail9023a4.ts.net/login", {
+            const response = await fetch(`/api${LOGIN}`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email: formData.email, u_pass: formData.password }),

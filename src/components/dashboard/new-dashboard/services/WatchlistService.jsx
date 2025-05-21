@@ -1,10 +1,15 @@
 // Filepath: src/components/dashboard/new-dashboard/services/WatchlistService.js
-const API_BASE = 'https://archlinux.tail9023a4.ts.net';
+
+import {
+    GET_WATCHLIST,
+    ADD_TO_WATCHLIST,
+    REMOVE_FROM_WATCHLIST
+} from '../../../../config/apiEndpoints';
 
 export const WatchlistService = {
     getWatchlist: async (userId) => {
         try {
-            const response = await fetch(`${API_BASE}/watchlist/${userId}`);
+            const response = await fetch(`/api${GET_WATCHLIST(userId)}`);
             if (!response.ok) throw new Error('Failed to fetch watchlist');
             return await response.json();
         } catch (error) {
@@ -20,7 +25,7 @@ export const WatchlistService = {
         }
 
         try {
-            const response = await fetch(`${API_BASE}/watchlist/${userId}/${symbol}`, {
+            const response = await fetch(`/api${ADD_TO_WATCHLIST(userId, symbol)}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
             });
@@ -39,7 +44,7 @@ export const WatchlistService = {
 
     removeFromWatchlist: async (userId, symbol) => {
         try {
-            const response = await fetch(`${API_BASE}/watchlist/${userId}/${symbol}`, {
+            const response = await fetch(`/api${REMOVE_FROM_WATCHLIST(userId, symbol)}`, {
                 method: 'DELETE',
             });
             return response.ok;

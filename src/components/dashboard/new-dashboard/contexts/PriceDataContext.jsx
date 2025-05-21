@@ -1,11 +1,12 @@
 // src/components/dashboard/new-dashboard/contexts/PriceDataContext.jsx
 import React, { createContext, useContext } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { ALL_STOCK_PRICES} from "../../../../config/apiEndpoints.js";
 
 const PriceDataContext = createContext();
 
 const fetchStockPrices = async () => {
-    const response = await fetch('https://archlinux.tail9023a4.ts.net/stocks/prices');
+    const response = await fetch(`/api${ALL_STOCK_PRICES}`);
     if (!response.ok) {
         throw new Error('Failed to fetch stock prices');
     }
