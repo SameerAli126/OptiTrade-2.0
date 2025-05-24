@@ -74,34 +74,6 @@ const ChartConfigurator = ({ seriesData, stockSymbol, chartType }) => {
             lineColor:  '#2A2F38'
         },
         yAxis: [
-            {
-                title: { text: 'Price', style: { color: '#CCC' } },
-                labels: {
-                    formatter() { return fmt.format(this.value); },
-                    style:     { color: '#CCC' }
-                },
-                gridLineColor: '#2A2F38',
-                height:        '70%'
-            },
-            {
-                title: { text: 'Volume', style: { color: '#CCC' } },
-                labels: {
-                    formatter() {
-                        if (this.value >= 1e9) return (this.value/1e9).toFixed(1)+'B';
-                        if (this.value >= 1e6) return (this.value/1e6).toFixed(1)+'M';
-                        if (this.value >= 1e3) return (this.value/1e3).toFixed(1)+'K';
-                        return this.value;
-                    },
-                    style: { color: '#CCC' }
-                },
-                top:            '75%',
-                height:         '25%',
-                offset:         0,
-                opposite:       true,
-                gridLineColor:  '#2A2F38'
-            }
-        ],
-        yAxis: [
             { // Price Y-Axis (Main - for Candlestick/Line, SMA, EMA)
                 title: { text: 'Price', style: { color: '#CCC' } },
                 labels: {
@@ -139,7 +111,7 @@ const ChartConfigurator = ({ seriesData, stockSymbol, chartType }) => {
                     style: { color: '#CCC' }
                 },
                 top:            '82%', // Position below RSI
-                height:         '18%', // Allocate space for Volume
+                height:         '20%', // Allocate space for Volume
                 offset:         0,
                 opposite:       true,
                 gridLineColor:  '#2A2F38',

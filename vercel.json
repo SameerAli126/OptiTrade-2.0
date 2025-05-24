@@ -1,5 +1,7 @@
 {
   "rewrites": [
-    { "source": "/(.*)", "destination": "/" }
+    { "source": "/(.*)", "destination": "/" },
+    {   "source": "/api/:path*",
+      "destination": "https://archlinux.tail9023a4.ts.net/:path*"}
   ]
 }
