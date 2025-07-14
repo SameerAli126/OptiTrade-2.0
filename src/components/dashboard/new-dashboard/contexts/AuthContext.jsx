@@ -19,12 +19,23 @@ export function AuthProvider({ children }) {
         const token = localStorage.getItem("token");
         if (token) {
             try {
-                const decoded = jwtDecode(token);
-                setUser({
-                    id: decoded.id,
-                    u_name: decoded.u_name,
-                    email: decoded.email
-                });
+                let userData;
+                if (token === "dummy-token") {
+                    userData = {
+                        id: "dev-user",
+                        u_name: "Developer",
+                        email: "dev@example.com"
+                    };
+                } else {
+                    const decoded = jwtDecode(token);
+                    userData = {
+                        id: decoded.id,
+                        u_name: decoded.u_name,
+                        email: decoded.email
+                    };
+                }
+
+                setUser(userData);
                 setIsAuthenticated(true);
             } catch (error) {
                 console.error('Invalid token:', error);
@@ -33,18 +44,29 @@ export function AuthProvider({ children }) {
         }
     };
 
+
     const login = (token, userData) => {
         localStorage.setItem("token", token);
-        const decoded = jwtDecode(token);
-        const authUser = {
-            id: decoded.id,
-            u_name: decoded.u_name,
-            email: decoded.email,
-            ...userData
-        };
+
+        let authUser;
+        if (token === "dummy-token") {
+            // Use provided dummy data
+            authUser = userData;
+        } else {
+            // Decode real JWT
+            const decoded = jwtDecode(token);
+            authUser = {
+                id: decoded.id,
+                u_name: decoded.u_name,
+                email: decoded.email,
+                ...userData
+            };
+        }
+
         setUser(authUser);
         setIsAuthenticated(true);
     };
+
 
     const logout = () => {
         localStorage.removeItem("token");

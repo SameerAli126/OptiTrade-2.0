@@ -35,3 +35,10 @@ export const USER_BALANCE = (userId) => `/users/${userId}/balance`;
 
 // Stock Prices
 export const ALL_STOCK_PRICES = `/stocks/prices`;
+
+
+// Now implement this API in the screener. but don't fetch all the data. just fetch what you already are fetching. Just add a column before symbol that uses Logo's from the API.
+//
+//     endpoint: https://archlinux.tail9023a4.ts.net/stocks
+//
+//     Response example:

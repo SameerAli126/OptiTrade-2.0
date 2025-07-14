@@ -37,7 +37,12 @@ import {
   FiRepeat,              // For Buy/Sell (exchange, swap) or FiShoppingCart
   FiFilter,              // For Screener (filtering data)// For Editor (already good)
   FiBookmark,            // For Watchlist (bookmarking favorites) or FiStar
-  FiBookOpen             // For News (reading, learning) or FiFileText
+  FiBookOpen,            // For News (reading, learning) or FiFileText// For price alerts, portfolio performance
+  FiAlertTriangle,  // For warnings or significant alerts
+  FiCpu,            // For AI insights
+  FiDollarSign,     // For dividend or earning related
+  FiBell,           // Generic notification
+  FiBarChart2       // For market analysis
 } from 'react-icons/fi'; // Feather Icons - clean and modern
 
 
@@ -561,6 +566,64 @@ export const cartData = [
     name: 'Red color candy',
     category: 'Food Item',
     price: '$190',
+  },
+];
+
+export const notificationData = [
+  {
+    id: 'n1',
+    icon: <FiCpu />,
+    iconColor: '#1E90FF', // DodgerBlue
+    iconBg: '#EBF5FF',    // LightDodgerBlue
+    title: 'AI Portfolio Rebalance Suggested',
+    desc: 'AI detected high concentration in Tech. Consider diversifying.',
+    time: '9:08 AM',
+    type: 'ai_suggestion', // For potential filtering or specific handling
+    unread: true,
+  },
+  {
+    id: 'n2',
+    icon: <FiTrendingUp />,
+    iconColor: '#26A69A', // Teal (like your upColor for charts)
+    iconBg: '#E0F2F1',    // LightTeal
+    title: 'Price Alert: NVDA nearing target',
+    desc: 'NVIDIA (NVDA) is now $905.50, close to your set target of $910.00.',
+    time: '11:56 AM',
+    type: 'price_alert',
+    unread: true,
+  },
+  {
+    id: 'n3',
+    icon: <FiDollarSign />,
+    iconColor: '#FFB300', // Amber
+    iconBg: '#FFF8E1',    // LightAmber
+    title: 'Dividend Announcement: AAPL',
+    desc: 'Apple Inc. (AAPL) announced a dividend of $0.25/share.',
+    time: 'Yesterday',
+    type: 'dividend',
+    unread: true,
+  },
+  {
+    id: 'n4',
+    icon: <FiAlertTriangle />,
+    iconColor: '#EF5350', // Red (like your downColor for charts)
+    iconBg: '#FFEBEE',    // LightRed
+    title: 'Volatility Spike: TSLA',
+    desc: 'Tesla (TSLA) showing unusual trading volume and price swings.',
+    time: '1:12 AM',
+    type: 'market_alert',
+    unread: true,
+  },
+  {
+    id: 'n5',
+    icon: <FiBarChart2 />,
+    iconColor: '#7E57C2', // DeepPurple
+    iconBg: '#EDE7F6',    // LightPurple
+    title: 'AI Market Sentiment Shift',
+    desc: 'Nasdaq sentiment shifted to Neutral from Bullish based on recent data.',
+    time: '2 hours ago',
+    type: 'ai_insight',
+    unread: false, // Example of a read notification
   },
 ];
 

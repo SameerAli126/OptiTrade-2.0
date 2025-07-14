@@ -1,4 +1,3 @@
-// src/components/accounts/Login.jsx
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from './dashboard/new-dashboard/contexts/AuthContext.jsx';
@@ -9,7 +8,18 @@ import ForgotPasswordForm from "./accounts/components/ForgotPasswordForm";
 import LoginImage from "../assets/img/LoginImage.jpg";
 import { LOGIN } from '../config/apiEndpoints';
 import "../App.css";
-//commit
+
+// Dummy account for offline development
+const DUMMY_CREDENTIALS = {
+    email: 'dev@example.com',
+    password: 'devpassword',
+    token: 'dummy-token',
+    user: {
+        id: 'dev-user',
+        u_name: 'Developer',
+        email: 'dev@example.com'
+    }
+};
 
 const Login = () => {
     const [view, setView] = useState('login'); // 'login' | 'forgot'
@@ -25,9 +35,11 @@ const Login = () => {
 
     const navigate = useNavigate();
     const { login } = useAuth();
+    const isDev = process.env.NODE_ENV === 'development';
 
     const handleLogin = async (e) => {
         e.preventDefault();
+        // Attempt real login first
         try {
             const response = await fetch(`/api${LOGIN}`, {
                 method: "POST",
@@ -35,17 +47,30 @@ const Login = () => {
                 body: JSON.stringify({ email: formData.email, u_pass: formData.password }),
             });
 
-            const data = await response.json();
             if (response.ok) {
+                const data = await response.json();
                 login(data.token, {
                     id: data.user.id,
                     u_name: data.user.u_name,
                     email: data.user.email
                 });
                 navigate("/dashboard");
+                return;
             }
+            // If server responded but credentials invalid, show error
+            const errorText = await response.text();
+            console.warn('Login failed:', errorText);
+            alert('Login failed: ' + errorText);
         } catch (error) {
             console.error('Login error:', error);
+            // Fallback to dummy in development when offline
+            if (isDev && (formData.email === DUMMY_CREDENTIALS.email && formData.password === DUMMY_CREDENTIALS.password)) {
+                console.info('Using dummy credentials for offline login');
+                login(DUMMY_CREDENTIALS.token, DUMMY_CREDENTIALS.user);
+                navigate("/dashboard");
+            } else {
+                alert('Unable to reach server. Please check your network or try again later.');
+            }
         }
     };
 
